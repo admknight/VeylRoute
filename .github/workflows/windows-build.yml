@@ -1,0 +1,106 @@
+name: Windows qualification and builds
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '_internal/**'
+      - 'ui/**'
+      - 'config/**'
+      - 'packaging/**'
+      - 'tests/**'
+      - 'START-HERE.cmd'
+      - 'VeylRoute.vbs'
+      - 'VERSION.txt'
+      - '.github/workflows/windows-build.yml'
+  pull_request:
+    paths:
+      - '_internal/**'
+      - 'ui/**'
+      - 'config/**'
+      - 'packaging/**'
+      - 'tests/**'
+      - 'START-HERE.cmd'
+      - 'VeylRoute.vbs'
+      - 'VERSION.txt'
+      - '.github/workflows/windows-build.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    name: Windows 5.1 / WPF isolated qualification
+    runs-on: windows-2025
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check source and safe public defaults
+        shell: pwsh
+        run: |
+          $required = @('tests/Verify-Windows.ps1', 'ui/TorTunnel.ModernGui.ps1', 'ui/TorTunnel.ModernGui.xaml', '_internal/Start-TorTunnel.ps1', 'packaging/BUILD-WINDOWS.ps1', 'packaging/VeylRoute.iss', 'packaging/VeylRouteLauncher.cs', 'config/settings.json', 'config/bridges.txt')
+          foreach ($path in $required) {
+            if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Missing H5 source: $path" }
+          }
+          if ((Get-Item -LiteralPath 'config/bridges.txt').Length -ne 0) { throw 'Refusing to build: committed bridge config must remain empty.' }
+          Get-Content -LiteralPath 'config/settings.json' -Raw | ConvertFrom-Json | Out-Null
+      - name: Run native Windows PowerShell qualification (no live network changes)
+        shell: pwsh
+        run: |
+          & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoLogo -NoProfile -NonInteractive -STA -ExecutionPolicy Bypass -File .\tests\Verify-Windows.ps1
+          if ($LASTEXITCODE -ne 0) { throw "Windows qualification failed: $LASTEXITCODE" }
+
+  build:
+    name: Portable ZIP and unsigned Setup EXE
+    needs: qualify
+    runs-on: windows-2025
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure Inno Setup is available
+        shell: pwsh
+        run: |
+          $iscc = @(
+            (Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'),
+            (Join-Path $env:ProgramFiles 'Inno Setup 6\ISCC.exe'),
+            (Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 7\ISCC.exe'),
+            (Join-Path $env:ProgramFiles 'Inno Setup 7\ISCC.exe')
+          ) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+          if (-not $iscc) {
+            choco install innosetup --yes --no-progress --limit-output
+            if ($LASTEXITCODE -ne 0) { throw 'Unable to install Inno Setup.' }
+          }
+      - name: Compile native launcher and Setup EXE
+        shell: pwsh
+        run: |
+          & "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File .\packaging\BUILD-WINDOWS.ps1 -BuildInstaller
+          if ($LASTEXITCODE -ne 0) { throw "Windows build failed: $LASTEXITCODE" }
+      - name: Package and hash Windows candidates
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $stage = Join-Path $env:RUNNER_TEMP 'VeylRoute-Windows-v3.0-RC1-H5'
+          $out = Join-Path $env:GITHUB_WORKSPACE 'artifacts'
+          New-Item -ItemType Directory -Path $stage,$out -Force | Out-Null
+          foreach ($item in @('README-FIRST.txt','START-HERE.cmd','VERSION.txt','VeylRoute.vbs','VeylRoute.exe','_internal','ui','config','docs','tests')) {
+            if (-not (Test-Path -LiteralPath $item)) { throw "Missing portable payload: $item" }
+            Copy-Item -LiteralPath $item -Destination (Join-Path $stage $item) -Recurse -Force
+          }
+          $portable = Join-Path $out 'VeylRoute-Windows-v3.0-RC1-H5-Portable.zip'
+          Compress-Archive -LiteralPath $stage -DestinationPath $portable -CompressionLevel Optimal -Force
+          $setup = Join-Path $env:GITHUB_WORKSPACE 'packaging\output\VeylRoute-Windows-v3.0-RC1-H5-Setup.exe'
+          if (-not (Test-Path -LiteralPath $setup -PathType Leaf)) { throw 'Expected Setup EXE missing.' }
+          Copy-Item -LiteralPath $setup -Destination $out -Force
+          $lines = Get-ChildItem -LiteralPath $out -File | Sort-Object Name | ForEach-Object {
+            $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+            "$hash  $($_.Name)"
+          }
+          [IO.File]::WriteAllLines((Join-Path $out 'SHA256SUMS.txt'), [string[]]$lines, [Text.Encoding]::ASCII)
+      - name: Upload unsigned qualification builds
+        uses: actions/upload-artifact@v4
+        with:
+          name: VeylRoute-Windows-v3.0-RC1-H5-unsigned
+          path: artifacts/*
+          if-no-files-found: error
+          retention-days: 14
