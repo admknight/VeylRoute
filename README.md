@@ -136,10 +136,10 @@ tools/              Repository maintenance/import helpers
 | --- | --- |
 | **Windows 10/11 x64** | v3.0.1 stable release (H6 binaries) |
 | **macOS** | Planned — no app/build yet |
-| **Linux** | [Experimental v0.1.0 CLI/GUI](platforms/linux/README.md) · [Debian and portable developer downloads](https://github.com/admknight/VeylRoute/releases/tag/linux-v0.1.0-experimental) · **not yet privacy-qualified** |
+| **Linux** | [Experimental v0.2.0 CLI + 11-page GUI](platforms/linux/README.md) · [Debian / portable downloads](https://github.com/admknight/VeylRoute/releases/tag/linux-v0.2.0-experimental) · custom icons, dock identity, optional tray, Linux updates · **not yet privacy-qualified** |
 | **Android** | Planned — no app/build yet |
 
-Cross-platform editions require independent routing, permissions and test gates. Linux now has its own [Tor TransPort / nftables controller, GUI, recovery workflow and package builds](platforms/linux/README.md), with [isolated Linux CI](https://github.com/admknight/VeylRoute/actions/runs/44585890987). **These developer artifacts are not a production Linux privacy release**: end-to-end Tor traffic, DNS/IPv6 leak behavior and recovery in a user-owned Linux runtime are not independently qualified. Windows PowerShell/WPF does not automatically run on Linux. See the [platform roadmap](docs/PLATFORMS.md).
+Cross-platform editions require independent routing, permissions and test gates. Linux now has a separate [Tor TransPort / nftables controller, XDG desktop integration, custom icons, optional status tray, 11-page GUI, per-user settings and Linux-specific app updater](platforms/linux/README.md); the [v0.2.0 Linux CI](https://github.com/admknight/VeylRoute/actions/runs/44593706249) passed 26/26 isolated tests, GUI smoke and isolated nftables lifecycle checks. **This is not a production privacy release**: live Tor, DNS/IPv6 containment and fail-closed recovery on actual Linux systems remain unverified. **SelectedAppsOnly remains unimplemented on Linux.** The app updater deliberately checks only stable *Linux* tags, not Windows Latest or experimental previews. Windows PowerShell/WPF does not run natively on Linux. See the [platform roadmap](docs/PLATFORMS.md).
 
 ## Security, attribution and licensing
 
