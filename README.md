@@ -136,10 +136,10 @@ tools/              Repository maintenance/import helpers
 | --- | --- |
 | **Windows 10/11 x64** | v3.0.1 stable release (H6 binaries) |
 | **macOS** | Planned — no app/build yet |
-| **Linux** | [Read-only foundation probe + CI](platforms/linux/README.md); no VPN app yet |
+| **Linux** | [Experimental v0.1.0 CLI/GUI and Debian/portable builds](platforms/linux/README.md); **not live privacy-qualified** |
 | **Android** | Planned — no app/build yet |
 
-Cross-platform editions require their own native routing, permissions and test gates. A [Linux foundation probe](platforms/linux/README.md) is now checked by [Linux CI](https://github.com/admknight/VeylRoute/actions/workflows/linux-foundation.yml), but does not connect or reroute traffic. Windows PowerShell/WPF does not automatically run on other operating systems. See the [platform roadmap](docs/PLATFORMS.md).
+Cross-platform editions require independent routing, permissions and test gates. Linux now has its own [Tor TransPort / nftables controller, GUI, recovery workflow and package builds](platforms/linux/README.md), with [isolated Linux CI](https://github.com/admknight/VeylRoute/actions/runs/44585890987). **These developer artifacts are not a production Linux privacy release**: end-to-end Tor traffic, DNS/IPv6 leak behavior and recovery in a user-owned Linux runtime are not independently qualified. Windows PowerShell/WPF does not automatically run on Linux. See the [platform roadmap](docs/PLATFORMS.md).
 
 ## Security, attribution and licensing
 
