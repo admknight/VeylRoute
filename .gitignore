@@ -1,0 +1,27 @@
+# Never publish runtime state, private bridge data or downloaded third-party binaries
+/runtime/
+/Tor/
+/tun2socks/
+/data/
+/tor-data/
+*.log
+*.log.out
+*.bak
+*.tmp
+*.pfx
+*.p12
+*.pem
+*.key
+/packaging/output/
+/artifacts/
+/dist/
+/VeylRoute.exe
+*.zip
+*.7z
+*.exe
+*.msi
+.vs/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
