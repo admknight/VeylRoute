@@ -6,7 +6,7 @@
 
 [![Windows qualification & builds](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml/badge.svg)](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-43A7FF.svg)](LICENSE)
-[![Windows release](https://img.shields.io/github/v/release/admknight/VeylRoute?label=Windows&color=43A7FF)](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0)
+[![Windows release](https://img.shields.io/github/v/release/admknight/VeylRoute?label=Windows&color=43A7FF)](https://github.com/admknight/VeylRoute/releases/latest)
 [![Platform: Windows](https://img.shields.io/badge/platform-Windows%2010%2F11%20x64-2376d1.svg)](docs/BUILDING.md)
 [![Status: Stable](https://img.shields.io/badge/status-stable-43A7FF)](docs/RELEASE-CHECKLIST.md)
 
@@ -23,7 +23,7 @@
 The name blends *Veyl* (a stylized “veil,” suggesting privacy) with *Route* (the path internet traffic takes).
 
 > [!IMPORTANT]
-> **Current release: Windows v3.0.0 stable.** This release reuses the byte-identical RC1 H5 build that the project owner reports has been tested successfully on Windows. GitHub's isolated Windows PowerShell/WPF checks passed **31/31**, and both packages compiled. Runtime acceptance is **owner-reported**, not independently reproduced here. The binaries are unsigned; CI is **not** proof of anonymity or leak-free DNS.
+> **Current stable release: Windows v3.0.1 (H6).** GitHub's Windows PowerShell/WPF checks passed **37/37**, and both editions compiled. The H6 binary is identical to its published release candidate and was promoted to stable by project-owner decision. Live self-update behavior was not independently tested here. The executables are unsigned; passing CI is **not** proof of anonymity or leak-free DNS.
 
 ## Features at a glance
 
@@ -48,11 +48,11 @@ Tor can acknowledge **New circuit** without assigning a new public IP. Existing 
 
 | Edition | What you get | Status |
 | --- | --- | --- |
-| **Portable ZIP** | Extractable VeylRoute folder with a native `VeylRoute.exe` GUI launcher | Stable release (unsigned H5 build) |
-| **Setup EXE** | Inno Setup installer, Start Menu integration and optional desktop shortcut | Stable release (unsigned H5 build) |
+| **Portable ZIP** | Extractable VeylRoute folder with a native `VeylRoute.exe` GUI launcher | Stable v3.0.1 (unsigned) |
+| **Setup EXE** | Inno Setup installer, Start Menu integration and optional desktop shortcut | Stable v3.0.1 (unsigned) |
 | **Source** | PowerShell 5.1 / WPF control center, C# launcher source, build scripts and tests | MIT-licensed original project code |
 
-**Download Windows v3.0.0 stable:** [Setup EXE](https://github.com/admknight/VeylRoute/releases/download/v3.0.0/VeylRoute-Windows-v3.0-RC1-H5-Setup.exe) · [Portable ZIP](https://github.com/admknight/VeylRoute/releases/download/v3.0.0/VeylRoute-Windows-v3.0-RC1-H5-Portable.zip) · [SHA-256 checksums](https://github.com/admknight/VeylRoute/releases/download/v3.0.0/SHA256SUMS.txt) · [Release notes](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0). The retained RC1 H5 filenames identify the unchanged, tested binaries.
+**Download Windows v3.0.1 stable:** [Setup EXE](https://github.com/admknight/VeylRoute/releases/download/v3.0.1/VeylRoute-Windows-v3.0.1-Setup.exe) · [Portable ZIP](https://github.com/admknight/VeylRoute/releases/download/v3.0.1/VeylRoute-Windows-v3.0.1-Portable.zip) · [SHA-256 checksums](https://github.com/admknight/VeylRoute/releases/download/v3.0.1/SHA256SUMS.txt) · [Release notes](https://github.com/admknight/VeylRoute/releases/tag/v3.0.1).
 
 These are **unsigned stable-release binaries**, designated stable following the project owner's report of successful Windows testing. The separate [GitHub Actions build history](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml) records source qualification and compilation. Downloaded Tor, Wintun and tun2socks binaries are **not bundled** with release/source artifacts.
 
@@ -76,13 +76,13 @@ The setup edition does **not** automatically migrate an existing portable folder
 
 ## About VeylRoute and smart updates
 
-The **v3.0.1 (H6) preview release** adds a dedicated **About VeylRoute** page in place of the old sidebar copyright footer, with app/version details, developer credit **Adam Knight (@admknight)**, MIT acknowledgements and a simple **Check for updates** / **Download & update** flow.
+The **v3.0.1 (H6) stable release** adds a dedicated **About VeylRoute** page in place of the old sidebar copyright footer, with app/version details, developer credit **Adam Knight (@admknight)**, MIT acknowledgements and a simple **Check for updates** / **Download & update** flow.
 
 The updater deliberately distinguishes an **installed Setup edition** from a **Portable edition** using an explicit edition marker. It checks **stable GitHub releases**, selects only the matching Setup EXE or portable ZIP, verifies the published SHA-256 checksum, and requires a disconnected session. Installed editions run the normal installer after the GUI exits; portable editions back up and update application files without replacing configuration, Tor, tun2socks or runtime data. The detailed Tor component updater remains on **Versions & updates**.
 
-**Try v3.0.1 H6 (unsigned preview):** [Portable ZIP](https://github.com/admknight/VeylRoute/releases/download/v3.0.1-rc1/VeylRoute-Windows-v3.0.1-Portable.zip) · [Setup EXE](https://github.com/admknight/VeylRoute/releases/download/v3.0.1-rc1/VeylRoute-Windows-v3.0.1-Setup.exe) · [SHA-256](https://github.com/admknight/VeylRoute/releases/download/v3.0.1-rc1/SHA256SUMS.txt) · [Release notes](https://github.com/admknight/VeylRoute/releases/tag/v3.0.1-rc1).
+**Current stable:** [v3.0.1](https://github.com/admknight/VeylRoute/releases/tag/v3.0.1). The [v3.0.1 RC](https://github.com/admknight/VeylRoute/releases/tag/v3.0.1-rc1) is retained as a byte-identical, historical preview.
 
-GitHub's Windows runner passed **37/37** isolated qualification checks and compiled both H6 packages. Live self-update and installer-upgrade behavior in your Windows environment still require validation. **Latest stable:** [v3.0.0](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0), intentionally unchanged.
+GitHub's Windows runner passed **37/37** isolated checks and compiled both H6 packages; the project owner authorized stable promotion of those same files. Live portable self-update, Setup upgrade and rollback are not independently demonstrated here. The prior stable [v3.0.0](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0) remains available as an earlier version.
 
 ## How the Windows version works
 
@@ -134,7 +134,7 @@ tools/              Repository maintenance/import helpers
 
 | Platform | Status |
 | --- | --- |
-| **Windows 10/11 x64** | v3.0.0 stable release (RC1 H5 binaries) |
+| **Windows 10/11 x64** | v3.0.1 stable release (H6 binaries) |
 | **macOS** | Planned — no app/build yet |
 | **Linux** | Planned — no app/build yet |
 | **Android** | Planned — no app/build yet |
