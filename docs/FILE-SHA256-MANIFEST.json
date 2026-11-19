@@ -74,7 +74,7 @@
     "docs/WINDOWS-QUALIFICATION.txt": "16e49a7cdd3f085d694efc75a9bed89f9e9c418bdeaef6622481a3fe241f4d19",
     "packaging/BUILD-WINDOWS.ps1": "b98abbaba55964845d53d628337ed706be8dc5d0c17e0e40393175946e624f38",
     "packaging/README-WINDOWS-BUILD.txt": "0da26058d30077b20e5a437585037a7e0106806045ec034f3ee7772721c21ff8",
-    "packaging/VeylRoute.iss": "9adfaf9983404b1f70bce199469632941cbe4ca0aff9457dfd98dae15fe0d5ea",
+    "packaging/VeylRoute.iss": "dd61d69335cb0ec6defb3af402fdd17685dbfa65f0189b52b33d73a779924f9e",
     "packaging/VeylRouteLauncher.cs": "92c408a45d69251dbac0273728f131f7f6b47067a188080e0201701caa8bd2ce",
     "tests/VERIFY-WINDOWS.cmd": "d26a1b68c1d63b09add96f5e0ca91bffb9e2b3ac9bbaaf5e648bfd5ab760baa4",
     "tests/Verify-Windows.ps1": "2155ff89d4b7295d1a2f3b61bd374dfd108cbf4aa0ca6a6e25188934555ec66e",

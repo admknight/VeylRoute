@@ -30,6 +30,7 @@ Source: "..\VeylRoute.vbs"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\START-HERE.cmd"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\VERSION.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README-FIRST.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\ui\*"; DestDir: "{app}\ui"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\_internal\*"; DestDir: "{app}\_internal"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\docs\*"; DestDir: "{app}\docs"; Flags: ignoreversion recursesubdirs createallsubdirs

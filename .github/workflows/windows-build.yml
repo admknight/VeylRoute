@@ -90,7 +90,7 @@ jobs:
           $stage = Join-Path $env:RUNNER_TEMP 'VeylRoute-Windows-v3.0-RC1-H5'
           $out = Join-Path $env:GITHUB_WORKSPACE 'artifacts'
           New-Item -ItemType Directory -Path $stage,$out -Force | Out-Null
-          foreach ($item in @('README-FIRST.txt','START-HERE.cmd','VERSION.txt','VeylRoute.vbs','VeylRoute.exe','_internal','ui','config','docs','tests')) {
+          foreach ($item in @('README-FIRST.txt','LICENSE','START-HERE.cmd','VERSION.txt','VeylRoute.vbs','VeylRoute.exe','_internal','ui','config','docs','tests')) {
             if (-not (Test-Path -LiteralPath $item)) { throw "Missing portable payload: $item" }
             Copy-Item -LiteralPath $item -Destination (Join-Path $stage $item) -Recurse -Force
           }
