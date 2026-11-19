@@ -76,11 +76,13 @@ The setup edition does **not** automatically migrate an existing portable folder
 
 ## About VeylRoute and smart updates
 
-The next Windows candidate **v3.0.1 (H6)** adds a dedicated **About VeylRoute** page in place of the old sidebar copyright footer, with app/version details, developer credit **Adam Knight (@admknight)**, MIT acknowledgements and a simple **Check for updates** / **Download & update** flow.
+The **v3.0.1 (H6) preview release** adds a dedicated **About VeylRoute** page in place of the old sidebar copyright footer, with app/version details, developer credit **Adam Knight (@admknight)**, MIT acknowledgements and a simple **Check for updates** / **Download & update** flow.
 
 The updater deliberately distinguishes an **installed Setup edition** from a **Portable edition** using an explicit edition marker. It checks **stable GitHub releases**, selects only the matching Setup EXE or portable ZIP, verifies the published SHA-256 checksum, and requires a disconnected session. Installed editions run the normal installer after the GUI exits; portable editions back up and update application files without replacing configuration, Tor, tun2socks or runtime data. The detailed Tor component updater remains on **Versions & updates**.
 
-**Current stable download:** [Windows v3.0.0](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0). The v3.0.1 updater changes are a new source/build candidate until their Windows runtime qualification is complete.
+**Try v3.0.1 H6 (unsigned preview):** [Portable ZIP](https://github.com/admknight/VeylRoute/releases/download/v3.0.1-rc1/VeylRoute-Windows-v3.0.1-Portable.zip) · [Setup EXE](https://github.com/admknight/VeylRoute/releases/download/v3.0.1-rc1/VeylRoute-Windows-v3.0.1-Setup.exe) · [SHA-256](https://github.com/admknight/VeylRoute/releases/download/v3.0.1-rc1/SHA256SUMS.txt) · [Release notes](https://github.com/admknight/VeylRoute/releases/tag/v3.0.1-rc1).
+
+GitHub's Windows runner passed **37/37** isolated qualification checks and compiled both H6 packages. Live self-update and installer-upgrade behavior in your Windows environment still require validation. **Latest stable:** [v3.0.0](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0), intentionally unchanged.
 
 ## How the Windows version works
 
