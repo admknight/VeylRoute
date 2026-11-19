@@ -94,6 +94,13 @@ Check 'Application update safeguards and edition-specific packaging' {
         }
     }
 }
+Check 'Portable update rollback tracks partial writes' {
+    $source=[IO.File]::ReadAllText((Join-Path $root '_internal\gui\TorTunnel.AppUpdate.ps1'))
+    $mark=$source.IndexOf('$copied.Add($entry)')
+    $copy=$source.IndexOf('[IO.File]::Copy($src,$dest,$true)')
+    if($mark -lt 0 -or $copy -lt 0 -or $mark -gt $copy){throw 'Interrupted file copies are not included in portable rollback.'}
+    if(-not $source.Contains('if($entry.existed)') -or -not $source.Contains('rollback incomplete')){throw 'Portable restore and incomplete-rollback reporting are required.'}
+}
 Check 'Application updater Probe is local and never touches Tor networking' {
     $exe=Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'
     $dir=Join-Path ([IO.Path]::GetTempPath()) ('VeylRoute-ModeProbe-'+[guid]::NewGuid().ToString('N'))

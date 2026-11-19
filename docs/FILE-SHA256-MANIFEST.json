@@ -77,7 +77,7 @@
     "packaging/VeylRoute.iss": "612dfa6377c6f507fa8f2524802ccded0d6c5e3a4f7e4fb5ed99d286bc710000",
     "packaging/VeylRouteLauncher.cs": "264acdfd7019f446047e5cdda6651ff18a3dba127d966b5386d9538e226606c6",
     "tests/VERIFY-WINDOWS.cmd": "d26a1b68c1d63b09add96f5e0ca91bffb9e2b3ac9bbaaf5e648bfd5ab760baa4",
-    "tests/Verify-Windows.ps1": "cf91de0527389fa0dce464a99ce75e7582f268ca2d55b1eeea2ff1f18def3817",
+    "tests/Verify-Windows.ps1": "9bdaf26352b1d23f2e9a2667be8a4dbf15e6bda886169c96e4ba0e32201a2f09",
     "ui/TorTunnel.ModernGui.ps1": "aef6ca0e4a69bbc5936cf2eca15cfa8a85310a51da6ae8bae5b751f57965057a",
     "ui/TorTunnel.ModernGui.xaml": "cdc21a6d991dd4f8f251b1f91673714e135901099e3c4efdf3e74839a6447223",
     "ui/assets/VeylRoute-connected.ico": "d4fe3dd12d91b49be721c4f14740ab0c29aec67f407ab1f051ff5cf299c572f9",
@@ -88,7 +88,7 @@
     "install-context.json": "edb3c28ecaf0bdd4c6cf020f698721a7b7f2f425e0270897745c962a194fdb06",
     "docs/APP-VERSION.txt": "e337e20ebc352724fe074dfa4288ed15d73e951abfe1e15f7a4f26b90d3a0b0f",
     "docs/APP-UPDATER.txt": "c5f627b30242be9dc2edab467465438c74eee5aab3ff0cd0570e8b9dfc4915fd",
-    "_internal/gui/TorTunnel.AppUpdate.ps1": "e9da354165acc35c4d53f2d2cf3dfb0d87b5ee1289b7c7e7f7eb134cb8e753a0",
+    "_internal/gui/TorTunnel.AppUpdate.ps1": "5915c7c2cea693ea10e764692244ba00cbaa84c55b7d97bc82173acfe3a37b34",
     "packaging/install-context-portable.json": "edb3c28ecaf0bdd4c6cf020f698721a7b7f2f425e0270897745c962a194fdb06",
     "packaging/install-context-setup.json": "22dacc778525af5a14391f1ba3710c53c8c93c48d6e276a6a17cdc10638f991d"
   }

@@ -10,7 +10,7 @@ This build was compiled by [GitHub Actions on Windows](https://github.com/admkni
 - **Setup EXE:** `VeylRoute-Windows-v3.0-RC1-H5-Setup.exe` — Windows installer (UAC required).
 - **SHA256SUMS.txt:** checksums for both packages.
 
-Both contain VeylRoute's original source under the [MIT License](https://github.com/admknight/VeylRoute/blob/main/LICENSE) (Copyright © 2026 Zahid Hussain / Scopewise Consulting). Tor, Wintun, tun2socks and lyrebird binaries are **not included** and remain under their own licenses.
+Both contain VeylRoute source under the [MIT License](https://github.com/admknight/VeylRoute/blob/main/LICENSE). The historical H5 release retains its original copyright notices, which predate the H6 public-branding update. Tor, Wintun, tun2socks and lyrebird binaries are **not included** and remain under their own licenses.
 
 ## Included in H5
 

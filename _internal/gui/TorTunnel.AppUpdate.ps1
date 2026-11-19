@@ -159,13 +159,15 @@ function Apply-Portable([string]$Archive,[string]$Tag){
         $touched.Add([pscustomobject]@{rel=$rel;existed=[bool]$exists})
     }
     $copied=New-Object 'System.Collections.Generic.List[object]'
+    Assert-Idle
     try {
         foreach($entry in $touched){
             $dest=Get-ChildPath $rootPath ([string]$entry.rel)
             $src=Get-ChildPath $payload ([string]$entry.rel)
             [IO.Directory]::CreateDirectory(([IO.Path]::GetDirectoryName($dest))) | Out-Null
-            [IO.File]::Copy($src,$dest,$true)
+            # Register BEFORE copying: even a partial overwrite must be rolled back.
             $copied.Add($entry)
+            [IO.File]::Copy($src,$dest,$true)
         }
         $writtenVersion=[IO.File]::ReadAllText((Get-ChildPath $rootPath 'docs/APP-VERSION.txt')).Trim()
         if($writtenVersion -cne $newVersion){throw 'Post-copy version verification failed.'}
