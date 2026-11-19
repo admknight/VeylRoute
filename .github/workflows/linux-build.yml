@@ -62,12 +62,15 @@ jobs:
           cd linux-artifacts
           sha256sum --check SHA256SUMS-Linux.txt
           dpkg-deb --info VeylRoute-Linux-0.2.0-Preview.deb
-          dpkg-deb --contents VeylRoute-Linux-0.2.0-Preview.deb | grep -q '/usr/bin/veylroute'
-          dpkg-deb --contents VeylRoute-Linux-0.2.0-Preview.deb | grep -q '/usr/share/applications/veylroute.desktop'
-          dpkg-deb --contents VeylRoute-Linux-0.2.0-Preview.deb | grep -q '/usr/share/icons/hicolor/256x256/apps/veylroute.png'
-          tar -tzf VeylRoute-Linux-0.2.0-Portable.tar.gz | grep -q '/veylroute/updates.py'
-          tar -tzf VeylRoute-Linux-0.2.0-Portable.tar.gz | grep -q '/assets/veylroute.png'
+          dpkg-deb --contents VeylRoute-Linux-0.2.0-Preview.deb > debian-contents.txt
+          tar -tzf VeylRoute-Linux-0.2.0-Portable.tar.gz > portable-contents.txt
+          grep -F '/usr/bin/veylroute' debian-contents.txt >/dev/null
+          grep -F '/usr/share/applications/veylroute.desktop' debian-contents.txt >/dev/null
+          grep -F '/usr/share/icons/hicolor/256x256/apps/veylroute.png' debian-contents.txt >/dev/null
+          grep -F '/veylroute/updates.py' portable-contents.txt >/dev/null
+          grep -F '/assets/veylroute.png' portable-contents.txt >/dev/null
           test "$(find . -name '*.deb' | wc -l)" = 1
+          rm -f debian-contents.txt portable-contents.txt
       - name: Upload experimental Linux packages
         uses: actions/upload-artifact@v4
         with:

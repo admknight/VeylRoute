@@ -52,7 +52,7 @@ def desktop_text(root: Path) -> str:
             f"Exec={exec_quote(launcher)}\n"
             f"TryExec={_safe_path(launcher)}\n"
             f"Icon={_safe_path(icon)}\n"
-            "Categories=Network;Utility;\nKeywords=Tor;privacy;network;\n"
+            "Categories=Network;\nKeywords=Tor;privacy;network;\n"
             "Terminal=false\nStartupNotify=true\nStartupWMClass=Veylroute\n"
             "SingleMainWindow=true\nX-VeylRoute-Portable=true\n")
 
