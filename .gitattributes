@@ -1,10 +1,12 @@
-*.ps1 text eol=crlf
-*.cmd text eol=crlf
-*.vbs text eol=crlf
-*.cs text eol=crlf
-*.iss text eol=crlf
-*.xaml text eol=crlf
-*.json text eol=lf
+# Preserve original mixed-CRLF/LF H5 source bytes and signed-package manifests.
+*.ps1 -text
+*.cmd -text
+*.vbs -text
+*.cs -text
+*.iss -text
+*.xaml -text
+*.json -text
+*.txt -text
+*.ico binary
 *.yml text eol=lf
 *.md text eol=lf
-*.ico binary
