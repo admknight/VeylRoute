@@ -1,31 +1,29 @@
-# Windows release acceptance
+# Windows release and verification record
 
-**Current state:** Windows v3.0 RC1 H5 **unsigned prerelease** — [download](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0-rc1-h5). The code baseline compiled was `c34df13aea2c208b2c543205bdc500a79c4e8509`.
+**Release:** [VeylRoute for Windows v3.0.0 — stable](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0). **Binary baseline:** unchanged RC1 H5 build, commit `c34df13aea2c208b2c543205bdc500a79c4e8509`. **Distribution:** unsigned portable ZIP and Setup EXE, with MIT License and SHA-256 checksums.
 
-## Checks supported by observed evidence
+## Source and CI evidence — directly observed
 
-- [x] Full H5 source imported and 83 source file hashes reconciled
-- [x] MIT License selected and retained with source and compiled package payloads
-- [x] H5 Windows PowerShell 5.1/WPF isolated qualification **31 PASS / 0 FAIL** — [Run #3](https://github.com/admknight/VeylRoute/actions/runs/44507797802)
-- [x] Native x64 launcher **compiled** on GitHub's Windows runner
-- [x] Inno Setup EXE **compiled** on GitHub's Windows runner
-- [x] Portable ZIP includes launcher, MIT License and empty public bridges config
-- [x] Windows build artifacts SHA-256 checksums verified and included in [prerelease](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0-rc1-h5)
-- [x] Third-party networking binaries **excluded** from the public repository and packages
+- [x] Full H5 source published and 83 source file hashes reconciled
+- [x] Original VeylRoute code distributed under the MIT License, with historical rights-holder attribution preserved
+- [x] H5 Windows PowerShell 5.1/WPF isolated qualification **31 PASS / 0 FAIL** — [GitHub Actions run #3](https://github.com/admknight/VeylRoute/actions/runs/44507797802)
+- [x] Native x64 launcher and Inno Setup EXE compiled successfully on GitHub's Windows runner
+- [x] Portable ZIP contents, empty public bridge configuration and SHA-256 checksums verified
+- [x] Stable release asset digests match the earlier H5 prerelease byte-for-byte
+- [x] Third-party networking binaries are not bundled
 
-## Remaining before production qualification
+## Runtime evidence — project owner confirmation
 
-- [ ] Native EXE GUI launch, UAC approval/cancellation and error handling tested on a Windows user desktop
-- [ ] Portable package runs correctly with writable runtime data in real use
-- [ ] Setup EXE install, repair/upgrade, uninstall and session-state protection tested on Windows
-- [ ] First-run Tor / lyrebird, Wintun and tun2socks signed/source-verified provisioning tested
-- [ ] SystemWide connect, Tor identity, Health and **independent** post-Disconnect network restoration demonstrated for H5
-- [ ] SelectedAppsOnly mode and fail-closed protected-app routing demonstrated
-- [ ] Cancellation during stalled bootstrap, log streaming and recovery demonstrated
-- [ ] SAFECOOKIE / New Circuit live request and exit-IP comparison demonstrated
-- [ ] DNS traffic-path containment and fail-closed behavior independently tested
-- [ ] IPv6, DNS, firewall, Edge policy restore and repeat sessions demonstrated
-- [ ] Package signing/authenticity strategy established for a production distribution
-- [ ] Upstream license review completed **before** any future bundling of third-party binaries
+On **November 19, 2026**, the project owner reported: **“everything is checked and working actually, without any issue.”** This confirmation is the basis for the requested stable-release designation. It is **owner-reported acceptance**, not a substitute for an independently retained test log covering every failure mode.
 
-**Release gate:** GitHub compilation and isolated tests justify an **unsigned prerelease**, not a production or leak-free claim. Exit-country listings require current Tor relay evidence; PK availability is not guaranteed by its ISO country code.
+The reported acceptance concerns the Windows application and its tested functionality, including connection/disconnection, status dialogs, Overview privacy indicators, and other H5 operations. No new implementation or new Windows executable was created for the stable tag. The stable edition intentionally retains the H5 binary filenames and the same checksums.
+
+## Continuing distribution and security considerations
+
+- The packages remain **unsigned**; Windows SmartScreen may display warnings.
+- Tor, lyrebird, Wintun and tun2socks must be provisioned separately, under their respective licenses.
+- Tor exit-IP verification does not make an ordinary browser equivalent to Tor Browser.
+- A local DoH setting, firewall rule or exit-IP check cannot establish a universal guarantee that DNS or other traffic can never leak under every condition.
+- Avoid upgrading or uninstalling while the application has an active routing session.
+
+The earlier [RC1 H5 prerelease](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0-rc1-h5) is retained for traceability. Future platform releases (Linux, macOS and Android) require separate implementations and qualification.
