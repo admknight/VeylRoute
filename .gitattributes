@@ -1,0 +1,10 @@
+*.ps1 text eol=crlf
+*.cmd text eol=crlf
+*.vbs text eol=crlf
+*.cs text eol=crlf
+*.iss text eol=crlf
+*.xaml text eol=crlf
+*.json text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.ico binary
