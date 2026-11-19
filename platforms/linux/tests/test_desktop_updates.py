@@ -87,11 +87,18 @@ class DesktopTests(unittest.TestCase):
             Menu=lambda *items: items,
             MenuItem=lambda label, callback, **kw: (label, callback),
         )
+        # Fixture uses fake image data, not an optional Pillow installation.
+        class FakeImage:
+            def convert(self, _mode): return self
+        pil = types.ModuleType('PIL')
+        images = types.ModuleType('PIL.Image')
+        images.open = lambda _path: FakeImage()
+        pil.Image = images
         events = []
         class Root:
             def after(self, delay, callback):
                 callback()
-        with patch.dict(sys.modules, {'pystray': fake}):
+        with patch.dict(sys.modules, {'pystray': fake, 'PIL': pil, 'PIL.Image': images}):
             manager = tray.Tray(Root(), lambda: events.append('open'),
                                 lambda: events.append('disconnect'),
                                 lambda: events.append('exit'))
