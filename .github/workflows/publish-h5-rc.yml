@@ -22,8 +22,10 @@ jobs:
       SOURCE_SHA: 'c34df13aea2c208b2c543205bdc500a79c4e8509'
       TAG: 'v3.0.0-rc1-h5'
     steps:
-      - name: Checkout release notes
+      - name: Checkout release notes and pinned build commit
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Require successful pinned Windows qualification and build
         shell: bash
         run: |
