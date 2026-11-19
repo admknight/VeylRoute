@@ -2,7 +2,7 @@
 
 | Platform | Current state | Required future work |
 | --- | --- | --- |
-| **Windows 10/11 x64** | PowerShell 5.1/WPF TorTunnel v3.5.1 engine; v3.0 RC1 H5 candidate | Complete privacy, rollback and package testing |
+| **Windows 10/11 x64** | PowerShell 5.1/WPF TorTunnel v3.5.1 engine; v3.0.0 stable release using H5 binaries | Ongoing updates and platform-specific testing |
 | **Linux** | Not implemented | Linux tun, DNS, firewall, privileged service and UI |
 | **macOS** | Not implemented | macOS network extension/privilege, packaging, signing and notarization design |
 | **Android** | Not implemented | Android VpnService routing and app-lifecycle design |
