@@ -1,0 +1,215 @@
+{
+  "schema": "VeylRoute v2.5 Preview static validation",
+  "checks": [
+    {
+      "test": "Main XAML parses",
+      "passed": true
+    },
+    {
+      "test": "Main XAML valid XML",
+      "passed": true
+    },
+    {
+      "test": "First-run wizard XAML valid XML",
+      "passed": true
+    },
+    {
+      "test": "Message dialog XAML valid XML",
+      "passed": true
+    },
+    {
+      "test": "No duplicate WPF name declarations",
+      "passed": true
+    },
+    {
+      "test": "Wired: BtnSetupGuide",
+      "passed": true
+    },
+    {
+      "test": "Wired: BtnExitGui",
+      "passed": true
+    },
+    {
+      "test": "Wired: BtnInventory",
+      "passed": true
+    },
+    {
+      "test": "Wired: BtnProvisionHelpers",
+      "passed": true
+    },
+    {
+      "test": "Wired: BtnImportComponents",
+      "passed": true
+    },
+    {
+      "test": "Wired: MissingComponentsPanel",
+      "passed": true
+    },
+    {
+      "test": "Wired: MissingComponentsList",
+      "passed": true
+    },
+    {
+      "test": "Wired: InventorySummary",
+      "passed": true
+    },
+    {
+      "test": "Wired: ChipTor",
+      "passed": true
+    },
+    {
+      "test": "Wired: StateTor",
+      "passed": true
+    },
+    {
+      "test": "Wired: ChipLyrebird",
+      "passed": true
+    },
+    {
+      "test": "Wired: StateLyrebird",
+      "passed": true
+    },
+    {
+      "test": "Wired: ChipGeoIP",
+      "passed": true
+    },
+    {
+      "test": "Wired: StateGeoIP",
+      "passed": true
+    },
+    {
+      "test": "Wired: ChipGeoIP6",
+      "passed": true
+    },
+    {
+      "test": "Wired: StateGeoIP6",
+      "passed": true
+    },
+    {
+      "test": "Wired: ChipTun2socks",
+      "passed": true
+    },
+    {
+      "test": "Wired: StateTun2socks",
+      "passed": true
+    },
+    {
+      "test": "Wired: ChipWintun",
+      "passed": true
+    },
+    {
+      "test": "Wired: StateWintun",
+      "passed": true
+    },
+    {
+      "test": "Wired: ChipBridges",
+      "passed": true
+    },
+    {
+      "test": "Wired: StateBridges",
+      "passed": true
+    },
+    {
+      "test": "Wired: ChipSignedUpdate",
+      "passed": true
+    },
+    {
+      "test": "Wired: StateSignedUpdate",
+      "passed": true
+    },
+    {
+      "test": "All six component statuses included",
+      "passed": true
+    },
+    {
+      "test": "Missing list populated only from missing names",
+      "passed": true
+    },
+    {
+      "test": "Helper button hidden when not needed",
+      "passed": true
+    },
+    {
+      "test": "First-run flag separate from config settings",
+      "passed": true
+    },
+    {
+      "test": "Welcome modal displays on first launch",
+      "passed": true
+    },
+    {
+      "test": "Wizard reopen and exit button actions wired",
+      "passed": true
+    },
+    {
+      "test": "Exit GUI leaves tunnel separate",
+      "passed": true
+    },
+    {
+      "test": "Bridge automatic prompt replaced",
+      "passed": true
+    },
+    {
+      "test": "Signed update stages and failure reporting",
+      "passed": true
+    },
+    {
+      "test": "No unsigned/unchecked upgrade bypass added",
+      "passed": true
+    },
+    {
+      "test": "Title and README updated",
+      "passed": true
+    },
+    {
+      "test": "No executable binaries embedded",
+      "passed": true
+    },
+    {
+      "test": "No personal bridges distributed",
+      "passed": true
+    },
+    {
+      "test": "All engine, settings, worker and icons preserved",
+      "passed": true
+    },
+    {
+      "test": "Tor engine source hashes unchanged",
+      "passed": true
+    },
+    {
+      "test": "No C-drive-only root added",
+      "passed": true
+    },
+    {
+      "test": "Manifest reconciles to all files",
+      "passed": true
+    },
+    {
+      "test": "ZIP CRC integrity",
+      "passed": true
+    },
+    {
+      "test": "ZIP entry inventory complete",
+      "passed": true
+    },
+    {
+      "test": "ZIP paths contained under one root",
+      "passed": true
+    },
+    {
+      "test": "ZIP content equals final source",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "passed": 50,
+    "total": 50
+  },
+  "windows_runtime": "NOT_RUN",
+  "wpf_render": "NOT_RUN",
+  "real_component_download": "NOT_RUN",
+  "live_tor_routing": "NOT_RUN",
+  "baseline_unchanged_files": 49,
+  "unauthorized_differences": []
+}

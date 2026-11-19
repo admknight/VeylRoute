@@ -1,0 +1,35 @@
+VEYLROUTE CONTROL CENTER v2.3 PREVIEW - CHANGE AND RELEASE RECORD
+Source: TorTunnel Universal Control Center v2.2 UI Polish Preview
+Engine baseline: TorTunnel Universal v3.5.1
+Date: 2026-11-19
+Author: Zahid Hussain / Scopewise Consulting
+
+Changes from v2.2:
+- Approved visible product name: VeylRoute, sidebar/window/modal/tray/status.
+- Launcher is VeylRoute.vbs; private original GUI/worker source names retained.
+- Same tunnel-shaped logo and four stateful tray/taskbar icons, renamed assets.
+- Sidebar version/engine details split into two lines to avoid clipping.
+- Root tidy operation keeps VeylRoute.vbs and START-HERE.cmd visible.
+- Current quick-start and setup documentation clearly explain portable layout.
+
+Carried forward from v2.2 and intended in v2.3:
+- Custom-themed WPF dropdown menus, rounded input fields and focused controls.
+- Bridge clipboard paste button and Ctrl+V / Shift+Insert handling.
+- Nested mouse-wheel page scrolling and standalone multiline editor scrolling.
+- Themed confirmation/error dialogs instead of generic MessageBox.
+- Branded tray control, automatic status views, and scrollable activity log.
+- Component inventory/import/download and signed Tor update staging/rollback.
+
+Preservation:
+- Every engine script under _internal (excluding _internal/gui) is unchanged.
+- All GUI workers and download/update helpers are unchanged except reversible
+  root-visibility maintenance, whose launcher whitelist was updated.
+- Configuration JSON, empty bridge file, application policy templates and
+  VERSION.txt are unchanged. Engine v3.5.1 is not renamed.
+
+Scope and limitations:
+- The portable ZIP is not bundled with Tor/Wintun/tun2socks/lyrebird executables.
+- Any online component setup and source-code changes remain Windows-test candidates.
+- Website-level bypass is not implemented; it must not be simulated by unsafe
+  shared-CDN IP routing exceptions.
+- Source-level pass does not prove Windows GUI or Tor routing correctness.

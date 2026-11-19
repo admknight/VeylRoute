@@ -1,0 +1,169 @@
+{
+  "asOf": "2026-11-19",
+  "status": "STATIC-CHECKED / WINDOWS RUNTIME UNTESTED",
+  "sourceArchive": "TorTunnel-Universal-v3.5.1-Creator-Branded.zip",
+  "sourceSha256": "e64f7982ee91fc0dbdeac37e2bd95136c965833f296604a534afbe6dd1ce9cd3",
+  "engineVersion": "v3.5.1",
+  "guiVersion": "v2.0-preview",
+  "originalSourceFiles": 27,
+  "preservedSourceFiles": 27,
+  "changedBaselineFiles": [
+    "README-FIRST.txt",
+    "_internal/Start-TorTunnel.ps1",
+    "_internal/TorTunnel.AppBypass.ps1",
+    "_internal/TorTunnel.Common.ps1"
+  ],
+  "tests": [
+    {
+      "test": "All source files retained",
+      "status": "PASS"
+    },
+    {
+      "test": "Only approved engine script changes",
+      "status": "PASS"
+    },
+    {
+      "test": "Three approved engine changed",
+      "status": "PASS"
+    },
+    {
+      "test": "Version remains v3.5.1",
+      "status": "PASS"
+    },
+    {
+      "test": "WFP UInt64 corrected",
+      "status": "PASS"
+    },
+    {
+      "test": "No original signed literal left",
+      "status": "PASS"
+    },
+    {
+      "test": "No hidden PowerShell console on rollback",
+      "status": "PASS"
+    },
+    {
+      "test": "Stage9 retried with bounds",
+      "status": "PASS"
+    },
+    {
+      "test": "Modes preserved",
+      "status": "PASS"
+    },
+    {
+      "test": "Session-mode direct DNS warning",
+      "status": "PASS"
+    },
+    {
+      "test": "Default protections unchanged",
+      "status": "PASS"
+    },
+    {
+      "test": "Original bridge sample untouched",
+      "status": "PASS"
+    },
+    {
+      "test": "No auth state or user secrets shipped",
+      "status": "PASS"
+    },
+    {
+      "test": "No third-party executables misleadingly bundled",
+      "status": "PASS"
+    },
+    {
+      "test": "All engine entrypoints present",
+      "status": "PASS"
+    },
+    {
+      "test": "GUI root launcher VBS",
+      "status": "PASS"
+    },
+    {
+      "test": "GUI worker path dynamic",
+      "status": "PASS"
+    },
+    {
+      "test": "No hardcoded installation root in non-doc program",
+      "status": "PASS"
+    },
+    {
+      "test": "All four tray artwork files packaged",
+      "status": "PASS"
+    },
+    {
+      "test": "GUIDE present",
+      "status": "PASS"
+    },
+    {
+      "test": "User-defined Mode selection saved",
+      "status": "PASS"
+    },
+    {
+      "test": "Worker includes mode argument",
+      "status": "PASS"
+    },
+    {
+      "test": "Component downloader checksum pin",
+      "status": "PASS"
+    },
+    {
+      "test": "Tor update source host pinned",
+      "status": "PASS"
+    },
+    {
+      "test": "Tor signing key fingerprint pinned",
+      "status": "PASS"
+    },
+    {
+      "test": "Updater blocks active session",
+      "status": "PASS"
+    },
+    {
+      "test": "First run includes import/download",
+      "status": "PASS"
+    },
+    {
+      "test": "Script UI controls all present in WPF layout",
+      "status": "PASS"
+    },
+    {
+      "test": "At least 20 icon paths in WPF",
+      "status": "PASS"
+    },
+    {
+      "test": "Activity log scrollbars",
+      "status": "PASS"
+    },
+    {
+      "test": "WPF country UI and TOR-only app UI",
+      "status": "PASS"
+    },
+    {
+      "test": "No accidental old R1.3 required warning",
+      "status": "PASS"
+    },
+    {
+      "test": "Brace count sanity: TorTunnel.GuiWorker.ps1",
+      "status": "PASS"
+    },
+    {
+      "test": "Brace count sanity: TorTunnel.BinarySetup.ps1",
+      "status": "PASS"
+    },
+    {
+      "test": "Brace count sanity: TorTunnel.PackageUpdater.ps1",
+      "status": "PASS"
+    }
+  ],
+  "unverified": [
+    "Windows WPF runtime rendering",
+    "PowerShell 5.1 AST syntax parser",
+    "Wintun/tun2socks official download/extraction on Windows",
+    "GPG Tor signature verification on Windows",
+    "WFP application policy behavior",
+    "Network routing, DoH, IPv6 and fail-closed behavior",
+    "Full Install/Stop/Recovery live runtime",
+    "Tray behavior on target Windows OS",
+    "Website bypass not implemented"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "package": "TorTunnel Universal Control Center v2.1 Portable Preview",
+  "engineBaseline": "TorTunnel Universal v3.5.1 Creator-Branded",
+  "date": "2026-11-19",
+  "result": "CANDIDATE - Windows runtime not verified",
+  "scope": "WPF native dialogs, first-run bridge onboarding, generic portable bridge template and existing verified helper acquisition",
+  "checks": {
+    "wpf_application_xaml_xml_parse": "PASS",
+    "embedded_dialog_xaml_xml_parse": "PASS",
+    "new_bridge_link_and_handler": "PASS",
+    "first_run_bridge_prompt_and_consent": "PASS (source-checked; Windows event behavior not executed)",
+    "Wintun_tun2socks_download_hook": "PASS (source-checked; live download not executed)",
+    "Wintun_SHA256_matches_official_website": "PASS (published expected value cross-checked)",
+    "tun2socks_SHA256_matches_official_release_mirror": "PASS (published expected value cross-checked)",
+    "bridge_template_excludes_user_issued_lines": "PASS",
+    "engine_files_identical_to_v2_1_previous_candidate": "PASS",
+    "no_legacy_messagebox_API_in_normal_GUI": "PASS",
+    "all_WPF_rendering": "NOT_RUN (Windows not available)",
+    "Windows_PowerShell_5_1_parser": "NOT_RUN (Windows not available)",
+    "Wintun_tun2socks_live_download": "NOT_RUN (Windows not available)",
+    "Tor_openpgp_positive_and_negative_signature_fixtures": "NOT_RUN (Windows not available)",
+    "Tor_and_tun2socks_connect_end_to_end": "NOT_RUN (Windows not available)",
+    "update_install_rollback_end_to_end": "NOT_RUN (Windows not available)"
+  },
+  "notes": [
+    "External Tor Project bridge site is opened only after user confirmation.",
+    "Bridge credentials are never downloaded or invented automatically.",
+    "Wintun and tun2socks binaries are not embedded. Their install action is user-triggered.",
+    "Existing source v3.5.1 engine code is not altered by this GUI/first-run revision.",
+    "Do not overwrite an existing live install; package is for a fresh local extraction."
+  ]
+}

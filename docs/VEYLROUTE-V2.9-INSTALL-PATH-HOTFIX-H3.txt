@@ -1,0 +1,34 @@
+VeylRoute v2.9 - Install Path Selection Hotfix H3
+
+OBSERVED 2026-11-19: The signature-verified Windows Expert Bundle was prepared
+successfully and UpdateInstall reached isolated extraction. Installation then
+failed with a regular-expression parser error:
+    parsing "^(?:tor|data)\" - Illegal \ at end of pattern.
+
+ROOT CAUSE: The signed-archive hotfix H2 used an invalid PowerShell/.NET
+regex in the installation payload-selection line. Backslash at the end of a
+regex must be escaped, but a regex is unnecessary here.
+
+CORRECTION: Only select extracted paths with the literal, case-insensitive
+Windows path prefixes tor\ and data\, using .StartsWith with
+[StringComparison]::OrdinalIgnoreCase. This includes nested tor and data
+payload files and excludes docs and similarly named folders such as tor2.
+The full archive remains subject to the existing strict safe-entry validation,
+including traversal and link rejection. Only this updater script changed.
+
+IN-PLACE HOTFIX:
+  1. Confirm VeylRoute is not running a component installation; fully exit GUI.
+  2. Back up the existing updater file.
+  3. Replace only _internal\gui\TorTunnel.PackageUpdater.ps1 from this ZIP.
+  4. Preserve config, runtime, Tor, tun2socks and your signed staged archive.
+  5. Relaunch VeylRoute, choose Versions & updates > Install verified update.
+     Do not re-download a previously verified staged bundle unless the GUI
+     reports that it is missing, changed, or no longer verified.
+  6. After a successful installation, run Preflight and Health Check.
+
+VALIDATION: Archive integrity and manifest hashes; exact baseline diff;
+source regression tests for the corrected prefix selection; simulated
+extraction/promotion fixtures with tor, data, docs, and name-collision paths.
+Windows PowerShell 5.1, actual Windows tar extraction, live Tor installation,
+network routing, and rollback are NOT RUN in this environment.
+RELEASE STATE: Windows test candidate; not production-verified.

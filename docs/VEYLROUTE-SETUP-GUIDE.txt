@@ -1,0 +1,73 @@
+VEYLROUTE v2.3 PREVIEW - PORTABLE FIRST RUN AND UPGRADE GUIDE
+Copyright (c) 2026 Zahid Hussain / Scopewise Consulting
+
+A. BEFORE INSTALLING
+- Use a supported Windows 10/11 x64 computer with administrator approval.
+- Close older GUI fully from its tray menu and stop its active tunnel before
+  trying a different copy. Do not run two installations simultaneously.
+- Back up existing config/ and runtime/ folders if switching from an active
+  TorTunnel install. Do not blindly overwrite an existing config directory.
+- Extract the entire new package to a new writable local folder such as
+  D:\Apps\VeylRoute, E:\VeylRoute, or your user profile. Do not change
+  folder/drive while a Tor session is active. Network shares unsupported.
+
+B. LAUNCH
+- Double-click VeylRoute.vbs. Accept the Windows UAC prompt.
+- If WPF fails, START-HERE.cmd opens the original engine's console controls.
+- A GUI-only exit and a Stop/Disconnect are different actions: closing GUI
+  does not stop Tor or restore system network settings. Use Disconnect to stop.
+
+C. PROVISION COMPONENTS (no separate installer required)
+- Open Versions & updates > Check components.
+- If helper components missing, use Download Wintun + tun2socks. It acquires
+  pinned download versions over HTTPS and validates expected checksums.
+- For Tor + lyrebird/obfs4 + GeoIP, use Download & Verify signed Expert Bundle
+  followed by Install verified update. The in-app verifier acquires its .NET
+  library inside the application. Gpg4win is not required. First-time online
+  setup requires internet access and must pass fingerprint/signature checks.
+- Alternatively import binaries from a trusted local folder. Imports are not
+  the same as signature-verified official downloads.
+- Stop/disconnect the tunnel before any binary installation/rollback.
+- The ZIP intentionally has no third-party executables embedded in it.
+
+D. BRIDGES AND SETTINGS
+- The portable template ships with ZERO personal obfs4 bridge entries.
+- On first GUI start, missing bridges trigger a guide to the official
+  https://bridges.torproject.org/ website. It will open in the normal browser
+  only after your approval, and before Tor starts it uses your normal ISP.
+- Choose obfs4, request your lines, copy the COMPLETE lines, then use the
+  Bridges page > Paste from clipboard (or Ctrl+V / Shift+Insert). Validate
+  format (which is not network reachability verification), then Save.
+- On Overview choose SystemWide or SelectedAppsOnly mode. In SelectedAppsOnly
+  mode, system DNS and all non-selected applications remain DIRECT.
+- Set exit-country mode, DNS endpoints, app policy lists and advanced settings.
+- Changes apply on a subsequent connection, not mid-session.
+
+E. CONNECT AND VERIFY
+- Run Preflight; check Activity log for any missing binaries or security errors.
+- Connect, run Health Check. A cached/session view can appear immediately,
+  whereas a live network probe can take additional seconds.
+- Verify exit IP/country, strict DNS and routes in SystemWide mode; verify
+  selected-app behavior separately in SelectedAppsOnly mode.
+- Stop with Disconnect before changing networks or running binary updates.
+- If app becomes unresponsive or another issue occurs, use START-HERE.cmd
+  and its original emergency Stop/Recovery procedures as appropriate.
+
+F. UI CHANGES INCLUDED
+- Geometric tunnel logo in app, branded window/tray icon with status variants.
+- Matching dark/light dropdowns including opened selection lists.
+- Vertically centered dropdown text; rounded/consistent text input chrome.
+- Themed confirmations/errors; native OS UAC and file pickers remain native.
+- Bridge paste button, Ctrl+V/Shift+Insert, format validation.
+- Page mouse-wheel handoff when nested editors reach scroll boundaries.
+- Automatic cached status refresh, background probe, scrollable diagnostic log.
+
+G. RELEASE STATUS AND KNOWN BOUNDARIES
+- GUI source/XAML, file/package integrity and preservation: statically checked.
+- Windows PowerShell 5.1 parsing, WPF rendering, clipboard/scroll behaviors,
+  actual downloads/signatures, Tor runtime, WFP rules, live DNS/leak checks:
+  NOT TESTED in the authoring environment; test on your Windows computer.
+- Website/domain-specific routing bypass: NOT PRESENT. Only application rules.
+- Name clearance/trademark/domain availability for VeylRoute: not certified.
+- Other README files about TorTunnel v3.5.1 are historical engine docs. Internal
+  technical filenames intentionally retain TorTunnel for compatibility.

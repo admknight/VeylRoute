@@ -1,0 +1,149 @@
+{
+  "product": "VeylRoute Control Center v2.4 Preview",
+  "assurance": "STATIC/SOURCE CHECKS ONLY \u2014 WINDOWS AND LIVE TOR OPERATION NOT RUN",
+  "baseline": "VeylRoute v2.3 Preview; engine TorTunnel Universal v3.5.1",
+  "checks": {
+    "v3.5.1 engine + GUI worker unchanged": {
+      "status": "PASS",
+      "detail": "21 internal source files compared by SHA256"
+    },
+    "configuration and launcher unchanged": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "only UI and documentation revised": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "bridge template is empty": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "no executable third-party binaries embedded": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "version strings": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Main WPF XAML parses": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "No duplicate WPF names": {
+      "status": "PASS",
+      "detail": "147 names"
+    },
+    "Actionable/modal WPF XAML parses": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Guidance + optional details + action controls": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Copy log retries and catches clipboard busy": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "No unhandled clipboard SetText call": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Preflight result decoded from log": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Mode-specific Preflight readiness": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Missing component classification": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Inventory missing displayed despite exit 0": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Guided action opens correct GUI page": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Errors presented after worker completion": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Failure never automatically opens logs page": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Queued tray errors shown on restore": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Automatic status checks flagged": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Taskbar explicit application identity": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Window artwork updated for connection state": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Startup modal supports no owner window": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "GUI runtime errors deduplicated": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Start semantic marker checked": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "Readiness semantic marker checked": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "No messagebox fallback remains": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "No promise of automatic new engine behavior": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "PowerShell structural delimiters": {
+      "status": "PASS",
+      "detail": "balanced token delimiters; not PowerShell AST validation"
+    },
+    "Classifiers based on actual engine terminology": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "ZIP CRC integrity": {
+      "status": "PASS",
+      "detail": ""
+    },
+    "ZIP files match package source": {
+      "status": "PASS",
+      "detail": "55 files"
+    },
+    "SHA256 manifest matches all files": {
+      "status": "PASS",
+      "detail": ""
+    }
+  },
+  "limitations": [
+    "No Windows PowerShell 5.1 AST/runtime parser",
+    "No WPF rendering or clipboard contention simulation on Windows",
+    "No live binary download, Tor signature validation, Wintun routing, or DNS leak test",
+    "Taskbar AppUserModelID effect depends on Windows shell and pinning"
+  ]
+}

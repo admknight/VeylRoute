@@ -1,0 +1,24 @@
+VeylRoute Windows v3.0 RC1 - H4 worker log-sharing repair
+=========================================================
+Baseline: v3.0 RC1 with H1, H2 and H3 applied.
+
+Observed Windows incident: GUI worker read an active Start output file via File.ReadAllText
+and raised an IO sharing violation. Health later showed an active, healthy US session.
+The GUI error therefore did not establish that Start or the Tor session had failed.
+
+Correction:
+- Worker reads redirected stdout/stderr with a ReadWrite/Delete-sharing stream,
+  bounded transient-lock retries and deterministic resource disposal.
+- Failure markers and nonempty stderr still produce nonzero exit codes.
+- Avoid writing into the raw .out stream while its redirection owner may hold it.
+- Preserve existing session state if a worker-layer exception occurs. The user
+  should use Status/Health and controlled Disconnect; never delete state files.
+- Regression tests include shared-read behavior and simulated START FAILED with
+  a deliberately incorrect child exit code 0. All tests use disposable fixtures.
+
+Scope: GUI worker and offline qualification only. No Tor, tunnel, DNS, exit
+selection, network configuration, or installer logic changed.
+
+Release: SOURCE CHECKED only. Run tests\VERIFY-WINDOWS.cmd while disconnected
+and exercise a real Start -> Health -> Disconnect on Windows before claiming
+H4 is runtime verified.

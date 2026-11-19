@@ -1,0 +1,45 @@
+﻿TorTunnel Universal v3.5.1 - Change Log
+=======================================================
+
+v3.5.1
+- Added creator identity as a core program detail.
+- Added Author / Programmed by: Zahid Hussain.
+- Added Company: Scopewise Consulting.
+- Added Contact: https://github.com/admknight/VeylRoute/issues / GitHub Issues.
+- Added compact ASCII-art branding to the Control Center and App Manager.
+- Added an About / Credits menu and docs\ABOUT.txt.
+- Corrected legacy-layout cleanup names so old root-level .cmd launchers are actually detected and backed up.
+- Re-audited current-version references; VERSION.txt remains the runtime source of truth.
+
+v3.5.0
+
+- Reorganized the automation into a clean single-entry Control Center.
+
+- Normal users now run only START-HERE.cmd.
+
+- Moved implementation PowerShell files into _internal\.
+
+- Added integrated Start, Status, Stop, setup check, app-management, help, and recovery menus.
+
+- Added automatic backup/migration of known older root-level automation files after the tunnel is disconnected.
+
+- Centralized product-version reporting through VERSION.txt to reduce stale/mismatched version strings.
+
+- Removed version numbers from transient firewall-rule names/display labels.
+
+- Updated config-file comments and all user-facing instructions to the Control Center workflow.
+
+- Retains session-time routing-mode selection: SystemWide or SelectedAppsOnly.
+
+- Retains WFP DIRECT exclusions, TOR-only app policies, Tor-app kill switch/UDP block, bootstrap wait, Lyrebird path handling, strict DoH SystemWide mode, route-status fixes, portable path handling, and legacy recovery.
+
+
+
+Previous lineage
+
+- v3.4.0: choose routing mode on every Start.
+
+- v3.3.x: SelectedAppsOnly inverse split-tunnel mode.
+
+- v3.2.x: bootstrap, Lyrebird, DoH/ICS-safe DNS, route/status, and local GeoIP fixes.
+

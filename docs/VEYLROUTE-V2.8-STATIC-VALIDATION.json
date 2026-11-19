@@ -1,0 +1,268 @@
+{
+  "version": "v2.8 Preview",
+  "baseline": "TorTunnel Universal v3.5.1",
+  "release_tier": "STATIC_CANDIDATE",
+  "checks": [
+    {
+      "check": "WPF XML is well formed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "welcome guide embedded WPF XML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "themed failure dialog embedded WPF XML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Original C-drive path not hardcoded in modified code",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Telemetry precedes helper safety guard",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Safety guard still blocks active relevant processes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Safety guard includes process identifiers",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Downloads require published pinned hashes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Wintun signature required",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Progress writer has bounded retries and fallback",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Progress writer not used to weaken security",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Worker uses original child stderr first",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Worker names genuine subprocess failure in result",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Worker preserves actual failure when staging absent",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "GUI shows actual failing stage and reason",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "GUI offers targeted safety/process remediation",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "GUI still distinguishes file presence and verification",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Bridges template is empty",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "No third-party exe/dll packed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Visible labels updated to v2.8",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: Add-ExcludedApp.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: Add-TorApp.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: Check-TorTunnel.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: Emergency-Reset-TorTunnel.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: Remove-ExcludedApp.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: Remove-TorApp.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: Show-ExcludedApps.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: Show-TorApps.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: Start-TorTunnel.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: Status-TorTunnel.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: Stop-TorTunnel.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: TorTunnel-Control.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: TorTunnel.AppBypass.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine protected: TorTunnel.Common.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Config protected: README.txt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Config protected: bridges.txt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Config protected: excluded-apps.txt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Config protected: settings.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Config protected: tor-apps.txt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Untouched GUI helper: TorTunnel.Maintenance.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Untouched GUI helper: TorTunnel.OpenPgpVerifier.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Untouched GUI helper: TorTunnel.PackageUpdater.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Untouched GUI helper: TorTunnel.VersionCheck.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "No unauthorized modifications outside docs",
+      "pass": true,
+      "detail": "['README-FIRST.txt', '_internal/gui/TorTunnel.BinarySetup.ps1', '_internal/gui/TorTunnel.GuiWorker.ps1', '_internal/gui/TorTunnel.TransferProgress.ps1', 'docs/GUI-VERSION.txt', 'ui/TorTunnel.ModernGui.ps1', 'ui/TorTunnel.ModernGui.xaml']"
+    },
+    {
+      "check": "PowerShell delimiter heuristic ui/TorTunnel.ModernGui.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "PowerShell delimiter heuristic _internal/gui/TorTunnel.BinarySetup.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "PowerShell delimiter heuristic _internal/gui/TorTunnel.GuiWorker.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "PowerShell delimiter heuristic _internal/gui/TorTunnel.TransferProgress.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "ZIP integrity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "ZIP contains GUI + helpers",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "ZIP traversal-safe names",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "passed": 51,
+  "total": 51,
+  "powershell_51_parser": "NOT_RUN",
+  "windows_gui": "NOT_RUN",
+  "windows_binary_download": "NOT_RUN",
+  "live_network": "NOT_RUN"
+}

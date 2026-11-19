@@ -1,0 +1,60 @@
+VEYLROUTE v3.0 WINDOWS RC1 - VALIDATION AND HANDOFF
+Copyright (c) 2026 Zahid Hussain / Scopewise Consulting
+
+BASELINE
+- Cumulative VeylRoute v2.9 installation-path hotfix H3 ZIP.
+- TorTunnel Universal v3.5.1 routing-engine scripts are locked and unchanged.
+- Original config, bridge, runtime and binary folders are not embedded in this
+  upgrade. Fresh release template ships no personal bridge entries.
+
+CHANGES TO CODE
+1. GuiWorker: Fail component actions when their child emits stderr even if
+   the child process returns exit code zero (field-observed ambiguity).
+2. GuiWorker: Require a freshly generated signed-bundle record and verified
+   package hash after Prepare, rather than accepting a stale record.
+3. PackageUpdater: Write an install receipt for BOTH fresh installations and
+   upgrades after a successful version probe. Mark rollback availability.
+4. GuiWorker: Require a fresh install receipt and tor.exe at the destination
+   after Install. No receipt means NOT VERIFIED, not success.
+5. PackageUpdater: Reject rollback of fresh installs with a clear reason.
+6. Rollback button enabled only when a previous Tor folder backup exists.
+7. WPF version label and optional isolated Windows qualification tests.
+
+PRIOR FIXES CARRIED FORWARD
+- Mandatory -Action worker arguments, independent official dist.torproject.org
+  source, NuGet catalog SHA-512 retrieval, built-in OpenPGP verification,
+  signed-archive docs handling, and Windows path-prefix selection instead of
+  a trailing-backslash regex. No signatures or checksums were bypassed.
+
+HOW TO RUN THE NON-DESTRUCTIVE WINDOWS CHECK
+- Close active VeylRoute GUI sessions first for a consistent test context.
+- Double-click tests\VERIFY-WINDOWS.cmd in the extracted candidate folder.
+- The check parses all PowerShell scripts, loads the real WPF XAML, and creates
+  a disposable mock installation to test parameter passing and stderr errors.
+- It does not download, install, route, change DNS, modify WFP or stop Tor.
+- A PASS is limited to parser, WPF load and worker dispatch. It is NOT a live
+  connectivity or updater verification.
+
+LIVE ACCEPTANCE (NOT PERFORMED IN AUTHORING CONTAINER)
+- First run: branded WPF opens, guide lists missing items only, bridge input
+  and clipboard paste work, dropdowns scroll, tray restores to foreground.
+- Components: downloads show real transfer progress, hashes/signatures pass;
+  installed Wintun, tun2socks, Tor, lyrebird, geoip and geoip6 are found.
+- Tor: signed Expert Bundle staged and installed; Tor --version works;
+  failed operations show human-readable dialogs, and rollback restores old
+  installation when there was one.
+- Network: Preflight, both supported routing modes, WFP DIRECT exception,
+  obfs4 circuit establishment, DNS/IPv6/UDP/Edge protections, Stop/Recover,
+  stale session recovery, and full live leak checks require Windows tests.
+- Rollback and interrupted/power-loss update recovery are NOT end-to-end
+  qualified; keep a complete installation backup until tested.
+
+LOCKED SECURITY RULES
+- No unsigned Tor installation; no hash/signature bypass.
+- No broad website DIRECT-bypass rules; only existing app policies are present.
+- No silent DNS downgrade or disabled kill switch.
+- No replacement of an active Tor/tun2socks/lyrebird process.
+- Do not claim protection for unrelated apps in SelectedAppsOnly mode.
+
+When a live Windows check fails, record exact operation, output, and the last
+known working state. Do not retry unrelated fixes or disable safety checks.

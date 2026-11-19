@@ -1,0 +1,81 @@
+HISTORICAL REFERENCE (legacy TorTunnel naming). For current VeylRoute setup, see VEYLROUTE-SETUP-GUIDE.txt.
+
+TorTunnel Control Center v2.0 Preview - Release Notes and Verification
+======================================================================
+Source baseline: TorTunnel Universal v3.5.1 Creator-Branded (uploaded ZIP).
+GUI architecture: Windows PowerShell 5.1 + WPF/XAML with separate hidden
+worker; no proprietary engine rewrite. SystemWide and SelectedAppsOnly modes
+are supported by the supplied original engine.
+
+DELTA - SOURCE ENGINE
+- _internal/TorTunnel.AppBypass.ps1: corrected signed hex UInt64 routing
+  weight conversion using invariant hex Parse (same confirmed bug in v3.2.4).
+- _internal/TorTunnel.Common.ps1: multi-country exit allow-list settings,
+  pool-mode Tor ExitNodes generation, optional startup-country verification,
+  bounded verification retry settings.
+- _internal/Start-TorTunnel.ps1: final exit check for country allow-list;
+  bounded Stage 9 transient connection retry; hidden rollback subprocess
+  with explicit portable Root. No fail-open fallback added.
+- ALL OTHER supplied engine scripts were preserved without changes.
+
+DELTA - GUI AND INTEGRATIONS
+- Complete redesigned WPF GUI with branded vector icons and four tray
+  artwork states, light/dark themes and separate status/diagnostics pages.
+- GUI controls per-session routing mode, selected TOR-app / direct app
+  policies, exit countries (fixed/random/Tor pool), DNS providers,
+  obfs4 bridges, Stage 9 retries and routing protection settings.
+- Hidden Start/Stop/Health/Status/Recovery/Preflight worker, no terminal
+  during GUI use; original START-HERE.cmd manual recovery retained.
+- Automatic status refresh with cached prior session observations;
+  full live network verification remains distinguishable from cached data.
+- Read-only Tor version checks; explicit signed Tor Expert Bundle download,
+  verification, install and rollback; no unattended binary updates.
+- Component inventory, Wintun + tun2socks checked online download,
+  alternative manual import of trusted local binaries, backup on replace.
+- Declutter by original '_internal', 'ui' and 'docs' directories; optional
+  root support-file hidden attribute with reversible manifest.
+- GUI package is portable and self-contained except for THIRD-PARTY
+  binaries and Windows/Windows PowerShell 5.1 prerequisites described in Setup Guide.
+
+PRESERVED
+- Existing original obfs4/Tor, WFP, DNS protection, stop/recovery,
+  selected-mode identity, fail-closed intent, transport paths and settings.
+- Config settings remain in their original layout; obfs4 bridge entries
+  are intentionally cleared in the distributable (not copied from the
+  user-provided source) to avoid exposing private bridge lines.
+  No cached Tor sessions are embedded.
+- Active traffic never rerouted DIRECT as an automatic repair fallback.
+
+KNOWN LIMITATIONS / NOT IMPLEMENTED
+- Website-specific split tunneling requires domain-accurate classification
+  and has NOT been added. Per-executable bypass is supported.
+- Windows DNS is DIRECT in SelectedAppsOnly as in supplied engine.
+- GeoIP country is checked only during specified probes, not guaranteed
+  every future circuit.
+- Online helper downloads use pinned known versions; Tor signed bundles require an in-app managed OpenPGP verifier;
+  an external Gpg4win installation is not required.
+- No third-party binary payload is embedded in the ZIP; network or trusted
+  external/imported files required before first connection.
+- Actual Windows GUI rendering, system-tray operations, PowerShell 5.1
+  execution, installer/downloads, WFP driver, DNS routes and Tor sessions
+  have NOT been tested by this build environment. A Windows test is required
+  before describing this candidate as fully operational.
+
+Control Center v2.1 Preview update (2026-11-19):
+- Removed the separate Gpg4win/GnuPG program requirement.
+- Added built-in OpenPGP verification with automated managed-library acquisition.
+- Tor signing-key fingerprint and subkey binding remain checked before installation.
+- No change to the underlying v3.5.1 Wintun, routing, WFP or DNS engine.
+- The managed verifier has not been exercised on Windows; treat as runtime-test candidate.
+
+Portable first-run and dialog revision (2026-11-19):
+- Added Get obfs4 bridges button pointing to official Tor Project BridgeDB.
+- Added first-launch detection of an empty bridge configuration, with an
+  explicit consent prompt before opening the external request page.
+- Added a one-time onboarding marker; button remains available thereafter.
+- Replaced generic MessageBox prompts with themed WPF confirmation and
+  notification windows; native Windows UAC/file-selection UI remains OS-owned.
+- Removed original uploaded private bridge lines from portable distribution.
+- Retained existing hash-pinned Wintun and tun2socks download/install action.
+- WPF rendering, runtime script parsing and end-to-end Windows setup are
+  not yet tested; this is a preview candidate.

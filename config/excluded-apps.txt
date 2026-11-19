@@ -1,0 +1,8 @@
+﻿# TorTunnel Universal - DIRECT bypass applications
+# Used only when SystemWide is chosen during Start.
+# One full .exe path per line. Prefer START-HERE -> Manage DIRECT-bypass apps.
+# Apps listed here intentionally use the physical IPv4 Internet connection instead of Tor.
+# Their servers can see your normal ISP/public IPv4.
+#
+# Example (remove the leading # only if you really want it direct):
+# "C:\Program Files\Some App\SomeApp.exe"

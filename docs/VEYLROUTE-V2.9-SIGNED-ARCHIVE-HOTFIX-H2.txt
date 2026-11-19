@@ -1,0 +1,33 @@
+VeylRoute v2.9 — Signed Expert Bundle Archive Layout Hotfix H2
+
+OBSERVED 2026-11-19: The actual Tor Windows Expert Bundle 16.0.1
+successfully passed detached OpenPGP signature verification against
+the pinned primary fingerprint EF6E286DDA85EA2A4BA7DE684E2C6E8793298290.
+The following stage failed because the updater assumed all archive
+entries had to be located under tor/ or data/:
+    Unexpected path in signed bundle. Refusing extraction: docs/
+No verified installation record was staged and no Tor binaries installed.
+
+CHANGE: Separate full-archive safety validation from the runtime payload
+whitelist. All archive entry paths remain inspected for Windows-unsafe
+characters, absolute paths, traversal, reserved names and nonregular
+tar entry types (links/special entries are rejected). Valid relative
+documentation paths no longer fail preparation. Only files in tor/ and
+data/ are copied into the staged Tor installation; documentation and
+other harmless signed extras are not promoted. Existing OpenPGP
+verification, staged-package hashes, stopped-session policy and rollback
+are unchanged. The v3.5.1 routing engine is byte-for-byte preserved.
+
+IN-PLACE UPDATE: Fully Exit GUI; back up your installation; copy only
+    _internal\gui\TorTunnel.PackageUpdater.ps1
+from this package into the same location in your existing installation.
+Keep config, runtime, Tor and tun2socks unchanged. The existing GUI still
+shows v2.9 Preview because this is a focused updater-script hotfix.
+Then choose Versions & updates > Download + verify signature. This
+prepares a verified candidate. After a successful staged result, choose
+Install verified update while disconnected; then run Preflight.
+
+TEST STATUS: Static/source/fixture/package testing only. The build environment
+can neither download and inspect the actual 16.0.1 archive nor execute
+Windows PowerShell 5.1, Windows tar.exe, or the live GUI and install path.
+Do not interpret this as a verified end-to-end installation.

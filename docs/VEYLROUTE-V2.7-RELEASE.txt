@@ -1,0 +1,35 @@
+VEYLROUTE CONTROL CENTER v2.7 PREVIEW — TRANSFER COMPLETION FIX
+Engine baseline: TorTunnel Universal v3.5.1 (locked, unchanged).
+
+CHANGES
+- A missing, stale or mismatched component-progress.json can no longer leave the transfer bar in WORKING after the worker exits.
+- The controller requires a fresh Completed record before claiming component-operation success.
+- The hidden worker checks actual helper destination files against a fresh hash-bearing installation receipt.
+- The background worker generates a failed terminal progress record when the component subprocess ends without one; no silent success.
+- The progress writer uses bounded replace retries with a valid backup path so short Windows reader conflicts do not lose telemetry.
+- HTTPS downloads now have shorter per-I/O wait limits and total transfer time limits. No partial archive is installed.
+- On failure, the themed dialog guides the user to component setup and optional technical details.
+- No routing, DNS, WFP, obfs4, engine start/stop/recovery, or configuration format changes.
+
+IF CURRENT v2.6 IS STUCK
+Wait for any helper worker to finish before upgrading; if the footer says ProvisionHelpers completed and readiness shows both missing,
+exit the GUI. Do not start simultaneous downloads or force-replace scripts during a live operation.
+Back up the existing folder before copying the files listed below.
+
+UPGRADE FROM v2.6 — COPY ONLY THESE FILES
+ui\TorTunnel.ModernGui.ps1
+ui\TorTunnel.ModernGui.xaml
+_internal\gui\TorTunnel.GuiWorker.ps1
+_internal\gui\TorTunnel.TransferProgress.ps1
+VeylRoute.vbs  (optional: updates launcher visible label)
+Do not replace config/, runtime/, or installed Tor/tun2socks folders.
+
+TEST
+Open Versions & updates, Refresh status, then Download Wintun + tun2socks.
+Confirm actual bytes or a labelled connection stage. On completion, confirm the terminal state reads INSTALLED,
+that the tun2socks.exe and wintun.dll files are reported as present, and that Preflight has correct mode readiness.
+A failure must show FAILED/NOT VERIFIED and a specific actionable error; no indefinite WORKING state.
+
+NOT VERIFIED
+Windows PowerShell 5.1 parsing and actual network download, signature checks, app installer and live tunnel tests
+cannot be executed in this Linux container. This package is a Windows test candidate, not a verified release.

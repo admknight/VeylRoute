@@ -1,0 +1,13 @@
+VeylRoute v2.9 Preview — official distribution + additional DNS presets
+
+- Main Tor website is no longer a prerequisite for signed bundle preparation. The updater reads the official Tor distribution directory, scans stable numeric releases newest first, and requires a Windows x64 Expert Bundle and matching detached signature.
+- Supports importing an existing signed Expert Bundle and signature through the GUI, with Tor Developers public key pinned to fingerprint EF6E286DDA85EA2A4BA7DE684E2C6E8793298290. No unverified package may be installed.
+- Version check independently reports available Windows Expert Bundle *release* (not misrepresented as core Tor version) when the main release website cannot be reached.
+- Added Cloudflare Malware, AdGuard Default/Unfiltered/Family and CleanBrowsing Security DNS-over-HTTPS presets. Primary and secondary IPv4 and DoH endpoint remain paired; existing saved DNS unaffected.
+- Routing engine v3.5.1 unchanged; no session or bridge configuration modified.
+
+TEST LIMITATION: XML/source/packaging checks only. Cannot run Windows PowerShell 5.1, verify Tor OpenPGP signatures live, or test downloads from the user's ISP here. All network operations remain fail-closed.
+
+IN-APP SIGNED IMPORT: Open Versions & updates > Import signed bundle. Select a local folder containing exactly one tor-expert-bundle-windows-x86_64-X.Y.Z.tar.gz, the exact .tar.gz.asc signature, and tor-signing-key.asc (optional if the trusted signing-key service is reachable). VeylRoute checks the pinned Tor Developers fingerprint and signature before enabling installation. The built-in verifier may need an initial internal cryptography-library download if it is not already cached.
+
+WHEN THE NETWORK IS FILTERED: Official distribution lookup is independent of the blocked www.torproject.org domain. If dist.torproject.org or keys.openpgp.org cannot be resolved, VeylRoute reports the original failure and does not install anything. Extra DNS presets are configuration choices for the next SystemWide connection, not a way to bypass blocked download domains during first run.

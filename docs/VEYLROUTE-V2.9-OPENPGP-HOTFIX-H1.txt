@@ -1,0 +1,31 @@
+VeylRoute v2.9 — OpenPGP Dependency Metadata Hotfix H1
+
+Observed failure (2026-11-19): after downloading an official Tor Expert Bundle,
+OpenPgpVerifier.ps1 requested a NuGet <package>.nupkg.sha512 URL and Windows
+received HTTP 404 BlobNotFound. That URL was not a documented NuGet public
+package-content endpoint. The cryptography library was not acquired and the
+Tor bundle was NOT verified or installed.
+
+Authorized fix: use the official NuGet v3 registration record to obtain its
+catalog-leaf URL; validate the official HTTPS origin and package/version
+identity; read the SHA-512 and package size from the official catalog leaf;
+download the pinned BouncyCastle.Cryptography 2.6.2 package; verify both size
+and SHA-512 BEFORE extracting/loading the .NET Framework DLL. Verification
+remains fail-closed on metadata, download, checksum or signature errors.
+No other code or routing-engine behavior is changed. No extra application is
+required for the designed first-use workflow.
+
+Documentation for the NuGet APIs:
+https://learn.microsoft.com/en-us/nuget/api/package-base-address-resource
+https://learn.microsoft.com/en-us/nuget/api/catalog-resource
+https://learn.microsoft.com/en-us/nuget/api/registration-base-url-resource
+
+IN-PLACE UPDATE: Exit GUI fully. Back up the installation. Copy only
+  _internal\gui\TorTunnel.OpenPgpVerifier.ps1
+from this package into the same relative path in your existing installation.
+Do not overwrite config, runtime, Tor, tun2socks or the installed helper DLL.
+
+VALIDATION LIMITATION: Package and static/source tests only. Official NuGet
+metadata could not be fetched/exercised in this build environment. PowerShell
+5.1, OpenPGP signature verification and live download on Windows are UNTESTED.
+This package is a test candidate, not a production-verified release.

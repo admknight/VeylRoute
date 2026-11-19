@@ -1,0 +1,281 @@
+{
+  "name": "VeylRoute Control Center v2.6 Preview",
+  "engine": "TorTunnel Universal v3.5.1",
+  "checkedAt": "2026-11-19",
+  "checks": [
+    {
+      "name": "XAML parses as XML",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "welcome modal XML",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "custom error dialog XML",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Transfer WPF control wired: TransferPanel",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Transfer WPF control wired: TransferStatus",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Transfer WPF control wired: TransferStage",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Transfer WPF control wired: TransferProgress",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Transfer WPF control wired: TransferBytes",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Transfer WPF control wired: TransferLocation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Transfer WPF control wired: TransferDescription",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "No duplicate WPF names",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Only missing component card visible",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Valid saved bridges hide bridge card",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Wizard final Preflight only after required items",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "UI progress polls on dispatcher timer",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Tray foreground fix explicit",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Tray actions wired",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Transfer downloaded byte count and ContentLength",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Progress atomic-ish temp writes",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Progress record ends valid JSON text",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "HTTPS and domain restrictions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Stage records connected to helper download",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Helper integrity before install",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Signed Tor downloads use shared streamed reader",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "OpenPGP still mandatory",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Install labels only after verification",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Archive path traversal check not stripped",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Exact portable component target locations",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Updater installed Tor target is derived from current portable root",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: TorTunnel-Control.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: Remove-ExcludedApp.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: Show-ExcludedApps.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: Remove-TorApp.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: TorTunnel.Common.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: Emergency-Reset-TorTunnel.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: Start-TorTunnel.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: TorTunnel.AppBypass.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: Check-TorTunnel.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: Add-ExcludedApp.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: Status-TorTunnel.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: Stop-TorTunnel.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: Add-TorApp.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Original engine locked: Show-TorApps.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Worker unchanged",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Configuration unchanged",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "No private obfs4 bridge lines in distributable",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "No third-party executable binaries in package",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Version metadata updated",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Heuristic delimiter balance: ui/TorTunnel.ModernGui.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Heuristic delimiter balance: _internal/gui/TorTunnel.BinarySetup.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Heuristic delimiter balance: _internal/gui/TorTunnel.PackageUpdater.ps1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "Heuristic delimiter balance: _internal/gui/TorTunnel.TransferProgress.ps1",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "testTiers": {
+    "XAML_XML": "PASS",
+    "SOURCE_PRESERVATION": "PASS",
+    "HEURISTIC_DELIMITERS": "PASS",
+    "ZIP_CRC": "PASS",
+    "POWERSHELL_AST_PARSE": "NOT_RUN",
+    "WINDOWS_WPF_RENDER": "NOT_RUN",
+    "TRAY_RESTORE_WINDOWS": "NOT_RUN",
+    "HELPER_DOWNLOAD_WINDOWS": "NOT_RUN",
+    "TOR_SIGNATURE_VERIFICATION_WINDOWS": "NOT_RUN",
+    "PORTABLE_INSTALL_WINDOWS": "NOT_RUN",
+    "LIVE_TOR_CONNECTION": "NOT_RUN"
+  },
+  "releaseState": "STATIC-CHECKED TEST CANDIDATE"
+}

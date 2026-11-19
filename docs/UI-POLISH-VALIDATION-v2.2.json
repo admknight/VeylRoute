@@ -1,0 +1,26 @@
+{
+  "release": "TorTunnel Universal Control Center v2.2 UI Polish Preview",
+  "status": "CANDIDATE - not Windows runtime verified",
+  "source": "TorTunnel Universal Control Center v2.1 Portable Preview",
+  "checks": {
+    "XAML XML parsing": "PASS",
+    "XAML unique named controls": "PASS",
+    "WPF input control PART_ContentHost": "PASS (source/template)",
+    "WPF combo PART_Popup and selection alignment": "PASS (source/template)",
+    "all 4 icon files parse as Windows ICO": "PASS",
+    "logo placeholder removed from XAML": "PASS",
+    "bridge paste button and preview-key handlers": "PASS (source-check)",
+    "text editor and combobox wheel handler attachment": "PASS (source-check)",
+    "unchanged engine and worker scripts byte for byte": "PASS",
+    "default bridge template contains no personal credentials": "PASS",
+    "PowerShell 5.1 grammar parser": "NOT RUN (PowerShell absent)",
+    "WPF visual rendering and focus/scroll behavior": "NOT RUN (Windows absent)",
+    "live bridge clipboard/Save end-to-end": "NOT RUN (Windows absent)",
+    "live install/start/stop/network routing": "NOT RUN (Windows absent)"
+  },
+  "preservedScriptCount": 27,
+  "notes": [
+    "Historical validation files from v2.1 are not runtime evidence for v2.2.",
+    "Bridge text is never transmitted by the GUI paste action."
+  ]
+}

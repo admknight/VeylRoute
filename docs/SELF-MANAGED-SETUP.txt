@@ -1,0 +1,42 @@
+HISTORICAL REFERENCE (legacy TorTunnel naming). For current VeylRoute setup, see VEYLROUTE-SETUP-GUIDE.txt.
+
+TorTunnel Universal Control Center v2.1 Preview - No separate Gpg4win installation
+
+Run TorTunnel GUI.vbs from any writable local folder. On the Updates page:
+  1. Run Check components. Download or import Wintun and tun2socks using their existing controls.
+  2. Click Download + verify signature for the official Tor Windows Expert Bundle.
+  3. The Control Center automatically downloads a managed OpenPGP verification component
+     (BouncyCastle.Cryptography 2.6.2 for .NET Framework) from the official NuGet feed.
+     It compares the downloaded NuGet package SHA512 with the published digest and
+     checks the installed DLL against the receipt on every use. No NuGet command, external
+     application install, Gpg4win, terminal or manual key import is needed.
+  4. The Control Center fetches the Tor signing public key and checks its PINNED primary
+     fingerprint EF6E286DDA85EA2A4BA7DE684E2C6E8793298290. It verifies any
+     signing-subkey binding and the downloaded .asc detached signature.
+  5. Only after verification does Install verified update become available.
+     Stop TorTunnel before install. The previous Tor directory is retained for rollback.
+  6. Run Preflight, connect and verify DNS/routing in Health Check.
+
+Automatic verification is FAIL-CLOSED. If the NuGet feed, signing key server, cryptography
+library, signature algorithm, Windows runtime or network is unavailable, installation
+stops without replacing the active Tor binaries. First use requires Internet access.
+The app continues to provide manually imported binaries as an alternative.
+
+NOTE: This portable source package was statically inspected on Linux. It cannot be
+claimed as a fully verified Windows installer or OpenPGP implementation until a live
+Windows signature-validation test passes against a known-good signed Tor Expert Bundle
+AND rejects tampered payloads, mismatched signatures and unbound signing subkeys.
+This is a validation candidate, not a production-certified security release.
+
+Component trust: the managed .NET library is fetched over HTTPS from official NuGet
+and its package digest from the NuGet SHA512 endpoint. This is a package-integrity check,
+not an independent signature on the managed-library package. The Tor payload itself is
+verified with OpenPGP against the pinned Tor Developers key. No separate Gpg4win install.
+
+Wintun and tun2socks: Versions & updates > Download Wintun + tun2socks.
+This user-approved action downloads, verifies and installs both with backups.
+Obfs4 bridges: the first-run GUI offers the official Tor Project bridge
+request page if no lines are present. CAPTCHA/bridge requests happen in the
+user's browser and must be completed by the user. The GUI then validates the
+pasted lines. No existing user's bridge credentials ship in this package.
+The WPF dialog shell is themed; OS UAC and file pickers remain OS controlled.

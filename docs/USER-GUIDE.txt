@@ -1,0 +1,153 @@
+HISTORICAL REFERENCE (legacy TorTunnel naming). For current VeylRoute setup, see VEYLROUTE-SETUP-GUIDE.txt.
+
+TorTunnel Universal v3.5.1 - User Guide
+=========================================================
+
+AUTHOR / CREATOR
+----------------
+Author / Programmed by: Zahid Hussain
+Company: Scopewise Consulting
+Contact: https://github.com/admknight/VeylRoute/issues / GitHub Issues
+
+1. WHAT TO RUN
+
+--------------
+
+Run START-HERE.cmd. The root folder is intentionally kept simple so new users do not need to choose among many scripts.
+
+
+
+2. START / CONNECT
+
+------------------
+
+Start asks for a routing mode every session.
+
+
+
+[1] SystemWide
+
+    - Normal IPv4 TCP traffic goes through Wintun -> tun2socks -> Tor.
+
+    - Apps configured as DIRECT-bypass exceptions use the physical connection.
+
+    - Windows DNS is temporarily set to strict DoH that follows the Tor-routed system path.
+
+    - Relevant physical IPv6 is disabled while connected by default.
+
+
+
+[2] SelectedAppsOnly
+
+    - Windows and non-selected apps stay on the normal Wi-Fi/Ethernet route.
+
+    - Only configured TOR-only apps receive WFP routing policies to Wintun -> tun2socks -> Tor.
+
+    - No system-wide /1 routes are installed.
+
+    - Optional per-app physical-interface kill switch blocks selected apps from falling back direct.
+
+    - Optional UDP block prevents selected apps from bypassing Tor over UDP.
+
+    - Windows DNS stays on the normal/direct system resolver in this mode.
+
+
+
+[Q] Cancel
+
+    - Makes no networking changes.
+
+
+
+3. APP MANAGEMENT
+
+-----------------
+
+Use the Control Center menus rather than editing lists manually.
+
+
+
+Manage TOR-only apps
+
+    Used only by SelectedAppsOnly mode.
+
+    Stored in config\tor-apps.txt.
+
+
+
+Manage DIRECT-bypass apps
+
+    Used only by SystemWide mode.
+
+    Stored in config\excluded-apps.txt.
+
+
+
+If an application uses helper/service executables, each executable that actually opens network connections may need to be added.
+
+
+
+4. US EXIT SELECTION
+
+--------------------
+
+config\settings.json defaults ExitCountry to "us". The generated torrc uses ExitNodes {us}. Tor chooses among eligible US exits using its normal path-selection/bandwidth weighting. There is no reliable permanent "fastest US exit" switch; pinning one relay can become slower, unavailable, or blocked.
+
+
+
+5. STATUS
+
+---------
+
+Status is mode-aware. In SystemWide mode it expects the two /1 Wintun routes and verifies that the normal system path exits through Tor. In SelectedAppsOnly it expects those /1 routes to be absent, checks WFP app policies, verifies Tor through SOCKS, and checks that the normal system path remains direct.
+
+
+
+6. STOP / DISCONNECT
+
+--------------------
+
+Stop reads runtime\session-state.json and reverses only the state created by the actual running session: routes, WFP policies, firewall rules, DNS/DoH, IPv6, Edge QUIC policy, tun2socks, Tor, and temporary Lyrebird shim state as applicable.
+
+
+
+7. NETWORK CHANGES / REBOOT
+
+---------------------------
+
+Stop before switching Wi-Fi, Ethernet, or hotspot when possible. If Windows is shut down or restarted without Stop, open START-HERE.cmd after reboot and choose Stop / Disconnect once before starting again.
+
+
+
+8. RECOVERY
+
+-----------
+
+Use normal Stop first. Advanced Recovery is for stale/crashed/legacy state and includes a best-effort legacy/manual reset path.
+
+
+
+9. PORTABILITY
+
+--------------
+
+The automation detects the active IPv4 default route and gateway, so it can work with Wi-Fi or wired Ethernet. The TorTunnel folder can live on C:, D:, or another writable local path. Current bundled binaries are x64/amd64; ARM64 requires matching Tor/tun2socks/Wintun binaries.
+
+
+
+10. SELECTED-APPS DNS LIMITATION
+
+--------------------------------
+
+Generic Windows per-app WFP routing does not move the shared Windows DNS Client service into Tor. In SelectedAppsOnly, selected app IPv4 TCP uses Tor, while normal Windows DNS stays direct. This is intentionally reported by Status and should not be confused with Tor Browser's DNS/privacy model.
+
+
+11. ABOUT / CREDITS
+-------------------
+The Control Center displays the creator details on every main screen and provides an About / Credits menu.
+
+Author / Programmed by: Zahid Hussain
+Company: Scopewise Consulting
+Contact: https://github.com/admknight/VeylRoute/issues / GitHub Issues
+
+The same information is recorded in docs\ABOUT.txt.

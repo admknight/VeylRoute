@@ -1,0 +1,25 @@
+VeylRoute Control Center v2.5 Preview — guided first-run setup and component readiness
+
+GUI changes
+- First launch shows a four-step welcome guide; reopen it anytime using Setup guide in the sidebar.
+- The guide takes you to Components, Bridges, connection configuration and Preflight without modifying any network settings automatically.
+- Exit GUI is now available in the sidebar and closes only the controller. Disconnect remains separate.
+- Versions & updates shows per-component Ready/Missing badges for Tor, lyrebird, GeoIP, GeoIP6, Wintun and tun2socks.
+- Only the missing components appear in the action-needed list. Helper download/import buttons are hidden when not needed.
+- obfs4 bridge and signed-update sections also display readiness badges.
+- Presence does not prove authenticity, compatibility, connectivity or live protection. Preflight and health checks are required.
+
+Security and compatibility
+- The existing v3.5.1 routing engine, application policies, DNS settings, Wintun and Tor binary update scripts are unchanged.
+- The guide acknowledgment is written only to config\veylroute-setup-guide.json; no bridge lines or security settings are modified by dismissing the guide.
+- GUI only: All unchanged engine and worker files are compared against v2.4 by SHA256.
+
+Validation
+- XML parse, ZIP integrity, UI control reference checks, helper path mapping and unchanged-file hashes can be checked on Linux.
+- Windows PowerShell 5.1 runtime, first-run modal rendering, file browsing, downloads, Wintun and network operation require Windows testing.
+- This is a preview test candidate, not a production-verified release.
+
+Update diagnostics
+- Tor signed-bundle preparation now records its actual stage and failure reason in runtime\component-updates\last-prepare-result.json.
+- The Updates screen shows the latest failed stage; a themed issue dialog presents the error and guidance.
+- No Tor package is marked verified unless OpenPGP verification and archive-path validation finish successfully.

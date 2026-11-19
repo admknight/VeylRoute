@@ -1,0 +1,50 @@
+VEYLROUTE CONTROL CENTER v2.8 PREVIEW — COMPONENT FAILURE DIAGNOSIS
+Engine baseline: TorTunnel Universal v3.5.1 (byte-identical to v2.7).
+
+OBSERVED ON WINDOWS
+The v2.7 component download displayed 'Background worker did not complete' and both
+Wintun/tun2socks remained Missing. No signed or checksum-verified component install
+has been demonstrated. The original underlying Windows exception was obscured.
+
+SOURCE-CONFIRMED FAILURE PATH
+v2.7 checks for running Tor-related processes before initializing telemetry. A
+safety-blocked operation can therefore exit without a progress record, hiding its
+real exception behind an unreliable generic message. This is a confirmed source
+flaw; whether it caused the user's particular failure is not yet established.
+
+CHANGES
+- Begin helper-operation telemetry before checking for running processes.
+- Name a conflicting process and its PID; preserve the safety restriction.
+- Capture child PowerShell stderr in last-result.json and the themed error dialog.
+- Include actual failing stage/exception in the error dialog with targeted advice.
+- A failed progress-record replace uses bounded retries and a controlled fallback
+  for non-security-critical telemetry; cryptographic gates remain unchanged.
+- A transfer failure cannot be presented as installed or verified.
+- Preserve Engine v3.5.1 scripts, Tor/Wintun binaries (not included), settings,
+  configuration format, bridge data (blank in fresh ZIP), and security policies.
+
+UPGRADE FROM EXISTING v2.7 — COPY ONLY THESE FILES
+Exit GUI (do not leave it hidden in tray), then back up the installation. Extract
+this ZIP separately and copy these files to the matching locations:
+  ui\TorTunnel.ModernGui.ps1
+  ui\TorTunnel.ModernGui.xaml
+  _internal\gui\TorTunnel.BinarySetup.ps1
+  _internal\gui\TorTunnel.GuiWorker.ps1
+  _internal\gui\TorTunnel.TransferProgress.ps1
+Do not overwrite config/, runtime/, Tor/, or tun2socks/. Launch VeylRoute.vbs.
+If any older TorTunnel instance is running, disconnect it normally before
+attempting helper binary replacement.
+
+WINDOWS QUALIFICATION
+1. Click Refresh status; confirm missing components reflect actual file presence.
+2. Click Download Wintun + tun2socks exactly once. Watch for safety-check stage.
+3. If blocked, read the on-screen cause (e.g., a named running process, a TLS
+   error, proxy refusal, missing permission, or a progress write failure).
+4. If completed, verify the installed files and hash-bearing receipt, then run
+   Preflight. A file-present badge alone is not authentication or routing proof.
+5. If failure continues, share the dialog's optional technical details. No
+   manual exploration of logs should be required.
+
+STATUS: STATIC-TEST CANDIDATE. Target Windows PowerShell 5.1 parse, live HTTPS,
+Authenticode, signature checks, installation, rollback, WPF, and network behavior
+were NOT executed here. No claim of a working downloader or production release.

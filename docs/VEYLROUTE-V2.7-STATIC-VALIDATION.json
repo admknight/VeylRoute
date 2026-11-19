@@ -1,0 +1,268 @@
+{
+  "build": "VeylRoute v2.7 transfer-completion candidate",
+  "baseline": "TorTunnel Universal engine 3.5.1",
+  "validation_tier": "STATIC_ONLY",
+  "passed": 51,
+  "total": 51,
+  "checks": [
+    {
+      "check": "WPF XAML well formed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "welcome guide embedded XML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "themed error dialog embedded XML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Portable root derived from script",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "No unapproved root hardcoded in executable code",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "No false complete after worker zero exit without receipt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Worker blocks when completed record missing",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Worker emits explicit failure record",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "GUI requires fresh completed transfer state",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "GUI ends animation for missing receipt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Progress writer uses bounded atomic retries",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Download read/write time bounded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Download total time bounded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Stage outputs from real streaming bytes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Pinned Wintun package SHA retained",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Pinned tun2socks package SHA retained",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "No removal of signature enforcement",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "No dialogs removed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "v2.7 visible labels",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "No bridge secrets in package",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "No third-party executables included",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: Add-ExcludedApp.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: Add-TorApp.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: Check-TorTunnel.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: Emergency-Reset-TorTunnel.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: Remove-ExcludedApp.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: Remove-TorApp.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: Show-ExcludedApps.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: Show-TorApps.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: Start-TorTunnel.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: Status-TorTunnel.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: Stop-TorTunnel.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: TorTunnel-Control.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: TorTunnel.AppBypass.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Engine byte-preserved: TorTunnel.Common.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Config byte-preserved: README.txt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Config byte-preserved: bridges.txt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Config byte-preserved: excluded-apps.txt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Config byte-preserved: settings.json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Config byte-preserved: tor-apps.txt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "GUI support byte-preserved: TorTunnel.BinarySetup.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "GUI support byte-preserved: TorTunnel.Maintenance.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "GUI support byte-preserved: TorTunnel.OpenPgpVerifier.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "GUI support byte-preserved: TorTunnel.PackageUpdater.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "GUI support byte-preserved: TorTunnel.VersionCheck.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Delimiter heuristic: ui/TorTunnel.ModernGui.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Delimiter heuristic: _internal/gui/TorTunnel.GuiWorker.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "Delimiter heuristic: _internal/gui/TorTunnel.TransferProgress.ps1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "ZIP CRC integrity",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "ZIP has required files",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "No traversal in packaged ZIP",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "target_windows_powershell_parse": "NOT_RUN",
+  "windows_gui_render": "NOT_RUN",
+  "live_download_and_install": "NOT_RUN",
+  "tor_runtime": "NOT_RUN"
+}

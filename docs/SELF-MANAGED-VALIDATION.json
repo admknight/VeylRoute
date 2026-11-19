@@ -1,0 +1,29 @@
+{
+  "release": "TorTunnel Universal Control Center v2.1 Portable Preview",
+  "engineVersion": "3.5.1",
+  "codeChanges": [
+    "README-FIRST.txt",
+    "TorTunnel.ModernGui.ps1",
+    "TorTunnel.ModernGui.xaml",
+    "TorTunnel.OpenPgpVerifier.ps1",
+    "TorTunnel.PackageUpdater.ps1",
+    "config/bridges.txt",
+    "docs/GUI-V2-RELEASE-NOTES.txt",
+    "docs/PORTABLE-SETUP-GUIDE.txt"
+  ],
+  "tests": {
+    "zipCRC": "PASS",
+    "manifestHashes": "PASS",
+    "xmlParse": "PASS",
+    "gpgExternalDependencyRemoved": "PASS",
+    "sourceEngineUnchangedFromV2Preview": "PASS",
+    "WindowsPowershellParse": "NOT_RUN",
+    "managedOpenPGPVerifiedOnWindows": "NOT_RUN",
+    "signaturePositiveNegativeFixtures": "NOT_RUN",
+    "onlineDownloadInstallRollback": "NOT_RUN",
+    "firstRunBridgeUiAndDocumentation": "PASS (static only)",
+    "firstRunDialogWpfRendering": "NOT_RUN",
+    "helperDownloadIntegration": "NOT_RUN on Windows"
+  },
+  "result": "CANDIDATE - NOT RUNTIME VERIFIED"
+}

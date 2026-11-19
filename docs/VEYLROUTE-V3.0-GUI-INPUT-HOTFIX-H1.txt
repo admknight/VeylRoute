@@ -1,0 +1,40 @@
+VEYLROUTE WINDOWS v3.0 RC1 - GUI INPUT HOTFIX H1
+Copyright (c) 2026 Zahid Hussain / Scopewise Consulting
+
+OBSERVED
+Moving the mouse wheel over GUI controls caused a fatal WPF error:
+  Cannot convert System.Object[] to System.Windows.Input.MouseWheelEventArgs.
+The original code used param($sender,$args) in a mouse-wheel event handler,
+then passed $args to Route-TTNestedWheel. PowerShell treats $args as a reserved
+automatic array instead of the expected WPF event arguments object.
+
+CHANGES
+- ui/TorTunnel.ModernGui.ps1: bind the wheel event to a typed, nonreserved
+  $wheelEventArgs variable and pass it unchanged to Route-TTNestedWheel.
+- Same GUI source: fix bridge-editor PreviewKeyDown handler, which also used
+  reserved $args, by binding a typed $keyEventArgs variable.
+- tests/Verify-Windows.ps1: add a regression check for both handler contracts.
+- docs/FILE-SHA256-MANIFEST.json: refresh file hashes and include this note.
+
+PRESERVATION
+Only two GUI event handler bindings and the associated qualification/doc
+files changed. TorTunnel engine, Wintun/tun2socks integration, networking,
+updater, XAML, package launchers and baseline user configuration are untouched.
+The hotfix overlay does not contain user config, runtime data or binaries.
+
+VALIDATION
+Source inspection and archive/hash/XML/static-regression checks performed
+in the authoring environment. Windows PowerShell 5.1 WPF mouse-wheel and
+keyboard runtime execution were not available there.
+
+USER RUNTIME CHECK (NO NETWORK CHANGE REQUIRED)
+1. Close the VeylRoute GUI. Keep a backup of the current GUI script.
+2. Extract the hotfix overlay into the existing v3.0 RC1 installation root.
+3. Run tests\VERIFY-WINDOWS.cmd to check parsing and regression contracts.
+4. Relaunch GUI and use the mouse wheel over the left navigation, a text
+   field, and a dropdown. Scroll the obfs4 bridge editor and test its
+   Ctrl+V key handling. Ensure the GUI remains open without an error.
+
+Note: Existing profile/config/bridge and Tor directories are not part of this
+hotfix and must not be replaced. A successful static check does not establish
+a Windows runtime pass or production release approval.

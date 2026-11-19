@@ -1,0 +1,36 @@
+VeylRoute v2.8 - Action Dispatch Hotfix H1 (Windows runtime candidate)
+
+CONFIRMED USER ERROR
+- TorTunnel.BinarySetup.ps1: missing mandatory -Action parameter.
+- TorTunnel.PackageUpdater.ps1: missing mandatory -Action parameter.
+- Both operations stopped before any transfer. GUI completion diagnostics were secondary symptoms.
+
+SOURCE CORRECTION
+- _internal/gui/TorTunnel.GuiWorker.ps1:
+  replace reserved $args variables and function parameter with $childArguments and $ChildArguments;
+  pass the child arguments explicitly as named function arguments;
+  reject child script launches if the mandatory -Action value is absent.
+- ui/TorTunnel.ModernGui.ps1:
+  replace the reserved $args variable with $workerArguments for process invocation.
+- All 8 child -Action mappings compared to their target script ValidateSet values.
+- All engine scripts and config templates are byte-identical to v2.8.
+
+INSTALL IN EXISTING v2.8
+1. In VeylRoute, choose Exit GUI (not just the window close button). Ensure no background operation is active.
+2. Back up the installation directory. Do not overwrite existing Tor, tun2socks, config or runtime.
+3. Copy only these files to the same relative locations:
+     _internal\gui\TorTunnel.GuiWorker.ps1
+     ui\TorTunnel.ModernGui.ps1
+4. Reopen the existing VeylRoute launcher. On Versions & updates, run the helper download once.
+5. If a new error appears, read the on-screen diagnosis. Do not bypass signature or hash verification.
+
+COMPLETE PORTABLE COPY
+The full ZIP can instead be extracted into a fresh local directory.
+Do not use its default config/runtime to replace a previously configured installation.
+
+TEST SCOPE
+- Verified: source dispatch mapping, mandatory target parameters, unchanged engine/config,
+  XAML XML, package/member hashes, and exact changed-file coverage.
+- NOT TESTED: Windows PowerShell 5.1 runtime, live downloads, Tor signature verification,
+  extraction, Authenticode, Wintun/tun2socks installation, live tunnel routing.
+- No successful download is claimed. This corrects the demonstrated parameter loss.

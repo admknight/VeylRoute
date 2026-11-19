@@ -1,0 +1,154 @@
+HISTORICAL REFERENCE (legacy TorTunnel naming). For current VeylRoute setup, see VEYLROUTE-SETUP-GUIDE.txt.
+
+TorTunnel Universal + Control Center v2.1 Self-Managed Preview - Portable Setup Guide
+==========================================================================
+Author / Programmed by: Zahid Hussain
+Company: Scopewise Consulting
+Based on supplied TorTunnel Universal v3.5.1 Creator-Branded
+
+A. Scope and trust
+------------------
+The package is source-preserving PowerShell/WPF. It is NOT a guaranteed or
+certified privacy product. Windows elevated access and Windows PowerShell
+5.1 with the .NET WPF components are required; supported implementation is
+64-bit Windows. Tor binaries can be imported or fetched through the GUI.
+No local network changes occur merely by extracting or opening the GUI.
+Online updates download files only after user confirmation; no binaries are
+replaced during an active TorTunnel session.
+
+B. Extract and open
+-------------------
+1. Extract the entire ZIP to a WRITEABLE LOCAL folder, e.g. D:\TorTunnel.
+   Do not run from a ZIP viewer, UNC share or a read-only folder.
+2. If an earlier TorTunnel folder is active, use ITS OWN Stop to disconnect,
+   and confirm restored normal networking before using this new package.
+3. Double-click TorTunnel GUI.vbs. Click YES in Windows UAC. You may see
+   an elevation prompt, but normal execution hides the PowerShell console.
+4. The Control Center shows a connection dashboard and left navigation.
+   Use Overview for connection state; Activity Log for complete operation
+   logs; Versions & Updates for dependency setup and Tor updates.
+
+C. Two ways to install the supporting binaries
+-----------------------------------------------
+Option 1: Online setup (preferred for independently checked provenance).
+  1. Versions & updates > Check components (Inventory).
+  2. Download Wintun + tun2socks. This uses the official Wintun 0.14.1 ZIP
+     with a pinned SHA256 and a valid Authenticode signature for the DLL;
+     tun2socks uses a pinned SHA256 for a named v2.7.0 Windows x64 release.
+     BOTH must verify before installation. These are downloaded on-demand,
+     not bundled in this controller ZIP.
+  3. Select Download + verify signature on the Updates page. The Control
+     Center automatically acquires its own managed OpenPGP verification
+     component from the official NuGet feed into _internal\lib\openpgp,
+     checks the package SHA512, fetches the Tor Developers signing key,
+     checks the pinned fingerprint and verifies the detached Tor signature.
+     No Gpg4win, separate installer or manual key-import step is required.
+  4. The verified Tor Expert Bundle stays staged in runtime until you approve
+     Install verified update; verification failures block installation.
+  5. Install Verified Tor Bundle: only when DISCONNECTED. The previous Tor
+     directory is backed up if present. New Tor, lyrebird and geoip are
+     taken from the verified bundle. No automatic replacement occurs.
+  6. Check components again. If a dependency fails, review Activity Log.
+
+Option 2: Offline import from your existing verified TorTunnel installation.
+  1. Copy the existing Tor/ and tun2socks/ folders, including all DLLs,
+     tor.exe, lyrebird.exe, geoip and geoip6, to a SEPARATE folder.
+  2. Select Versions & updates > Import binaries and choose that folder.
+  3. Read the user-trust warning carefully. This method checks executable
+     format/presence and preserves backups, but it does NOT cryptographically
+     prove downloaded-file authenticity. Verify origin separately.
+  4. Check components again, then Preflight. Existing Tor components
+     may be older; the signed updater can replace them later.
+
+D. Configure
+------------
+1. In Exit locations, choose Fixed, Random from selected, or a Tor-managed
+   allow-list pool. Exit-country checks are observations, not a guarantee
+   that all later circuits cannot change country.
+2. DNS protection allows official presets or Custom HTTPS DoH endpoints.
+3. Application routing offers DIRECT exceptions for SystemWide, and TOR-only
+   apps for SelectedAppsOnly. The same executable cannot be in both lists.
+4. Obfs4 bridges: provide your own working lines. The engine requires them;
+   no automatically invented bridge entries are added. Example shape:
+       Bridge obfs4 198.51.100.1:443 FINGERPRINT cert=BASE64 iat-mode=0
+   This line is only a format illustration and will NOT connect.
+5. In Advanced settings, keep default leak protections enabled. Select
+   Routing mode on the App routing page; the mode is used for each Start.
+6. Save configuration while disconnected. Config changes are backed up and
+   restored if a save fails; existing config is not modified mid-session.
+
+E. Start, verify, and stop
+-------------------------
+- Preflight checks the portable layout, Tor config, selected applications,
+  bridge format, administrative rights and networking state.
+- Connect starts the hidden PowerShell worker. For SystemWide, /1 routes,
+  strict DoH, WFP/Edge controls and rollback remain authoritative inside
+  the v3.5.1 engine. For SelectedAppsOnly, system DNS is DIRECT and other
+  applications are DIRECT, and only selected apps receive Tor WFP policies.
+- Status/Health are full read-only diagnostic probes, which can take tens
+  of seconds; the dashboard opens faster using cached and session values.
+- Disconnect returns routing and policy settings through the original Stop
+  procedure. X/minimize hides the GUI to the tray, not the Tor session.
+  The tray menu has Exit GUI (leaves current tunnel unchanged).
+- Stop before changing physical network adapters or moving the folder.
+
+F. Updates and rollback
+-----------------------
+- Check for updates is read-only; core Tor and Windows Expert Bundle
+  versions are tracked separately.
+- Download & Verify retrieves a Tor Expert Bundle, signature and official
+  signing key. Installation is blocked without positive signature validation.
+- Install Verified is a second action and requires TorTunnel to be stopped.
+- Rollback restores the previous Tor folder when an update backup exists.
+- Wintun and tun2socks update action is currently a PINNED HELPER INSTALL;
+  it downloads pinned package versions rather than chasing latest, reducing
+  ambiguity. Other updates should be explicitly reviewed before adoption.
+
+G. Recovery
+-----------
+- A bounded 3-attempt Stage 9 curl probe may retry without changing leak
+  controls. Other errors follow v3.5.1 rollback rules.
+- Activity Log shows per-action output plus failure and recovery outcome.
+- If GUI fails, run START-HERE.cmd to use the original manual control.
+- If Windows network settings remain altered after a failed start, use the
+  original Stop/Recovery and inspect its output; never disable firewall
+  protection to force a nominal connection.
+
+H. Portability notes / limitations
+----------------------------------
+- Root paths are resolved from the extract folder, not C:\TorTunnel.
+- Local writable paths are supported. Spaces in the installation path
+  may require a temporary lyrebird executable shim under the Windows
+  system drive; this is a documented original engine behavior.
+- Network shares, unsupported CPU architectures, unsupported Windows
+  versions, read-only drives and unavailable/admin-denied privileges are
+  outside the tested use case.
+- No website-by-website bypass is implemented: WFP matches executables.
+- the built-in OpenPGP verifier is a separate dependency for signed Tor bundle downloads.
+- For actual privacy assurance, verify that application, DNS, IPv6,
+  physical routes and exit country match your intended mode after each
+  important network change. The GUI alone is not proof of leak freedom.
+
+I. Provenance
+------------
+Creator-branded v3.5.1 engine is supplied by the user and remains the
+source baseline. The GUI and component-management layer are added to this
+archive; engine changes are documented individually in GUI-V2-RELEASE-NOTES.
+Wintun from wintun.net; tun2socks from github.com/xjasonlyu/tun2socks;
+Tor from torproject.org / dist.torproject.org; the managed OpenPGP library from api.nuget.org.
+Licenses and file hashes must be checked when these components are obtained.
+
+G. First-run bridge onboarding
+-----------------------------
+This generic distribution intentionally contains NO existing/private bridge
+lines. On first GUI launch with an empty bridge list, the Control Center shows
+the obfs4 bridges page and offers a themed confirmation to open the official
+https://bridges.torproject.org/ service. The service requires you to request
+bridge lines, sometimes with a CAPTCHA. The page opens using your default
+browser and normal ISP connection before Tor is active. Copy complete obfs4 lines into the
+text box, validate, Save, and run Preflight. The 'Get obfs4 bridges' button
+remains available whenever you need replacement lines.
+
+The Wintun and tun2socks installation remains an on-demand, user-approved
+button under Versions & updates. TorTunnel downloads/extracts/verifies them
+without other software. It does not download until you click the button.

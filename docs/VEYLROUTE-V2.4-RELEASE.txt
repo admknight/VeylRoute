@@ -1,0 +1,28 @@
+VEYLROUTE CONTROL CENTER v2.4 PREVIEW — GUIDED DIAGNOSTICS
+
+GUI-ONLY CHANGES from v2.3:
+- Every failed background action shows an actionable WPF dialog, not a log-only notice.
+- Preflight explains missing Tor, lyrebird, GeoIP, Wintun, tun2socks and bridge configuration.
+- Inventory shows missing component results even when its executable returns exit 0.
+- Results are assessed from the engine's actual diagnostic text, not only exit codes.
+- The selected routing-mode readiness result is checked independently of overall Preflight readiness.
+- Themed dialogs give concise explanation, what-to-do guidance, context-specific navigation,
+  and a collapsed optional technical-details area.
+- Clipboard copy retries on transient Windows clipboard locks and reports a recoverable error.
+- Startup errors can show a standalone themed WPF dialog before the main window loads.
+- Taskbar AppUserModelID and state-specific WPF window icons improve Windows taskbar identity.
+- Automatic status failures are notified once per distinct condition; when hidden, the issue
+  is queued for a dialog on restore. Successful automatic checks do not produce popups.
+- No automatic binary replacements, network-security downgrades, or changes to engine code.
+
+VERSIONING: visible v2.4 Preview; authoritative engine version remains v3.5.1.
+EVIDENCE: XML/source/package checks only; Windows UI, networking, and native taskbar behavior
+have not been exercised here. Treat this as a Windows test candidate.
+
+UPGRADING AN ACTIVE v2.3 INSTALLATION:
+1. Exit GUI using the notification-area menu -> Exit GUI (not just X).
+2. Keep your existing installation and bridge configuration; back it up.
+3. Replace only ui\TorTunnel.ModernGui.ps1 and ui\TorTunnel.ModernGui.xaml from this ZIP.
+4. Relaunch VeylRoute.vbs. No Tor, helper, config, runtime or routing-engine files are updated.
+Alternatively extract the entire ZIP to a separate writable local folder for a clean test.
+Do not overlay a new package on an active network session.

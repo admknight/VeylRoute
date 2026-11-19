@@ -1,0 +1,45 @@
+HISTORICAL REFERENCE (legacy TorTunnel naming). For current VeylRoute setup, see VEYLROUTE-SETUP-GUIDE.txt.
+
+TorTunnel Universal v3.5.1 - Install / Upgrade
+=============================================================
+
+AUTHOR / CREATOR
+----------------
+Author / Programmed by: Zahid Hussain
+Company: Scopewise Consulting
+Contact: https://github.com/admknight/VeylRoute/issues / GitHub Issues
+
+THIS ZIP IS THE AUTOMATION LAYER.
+
+The complete working folder also requires the existing Tor\ and tun2socks\ directories/binaries.
+
+
+
+UPGRADE FROM AN OLDER VERSION
+
+-----------------------------
+
+1. If TorTunnel is connected, use the currently installed Stop before replacing files whenever possible.
+
+2. Back up config\bridges.txt, config\tor-apps.txt, config\excluded-apps.txt, and custom settings.json values if you changed them.
+
+3. Extract this package into the TorTunnel root beside Tor\ and tun2socks\.
+
+4. Double-click START-HERE.cmd.
+
+5. When disconnected, the Control Center automatically moves known legacy root launchers/scripts into runtime\legacy-layout-backup-<timestamp> so the root becomes clean. Nothing is deleted.
+
+6. Choose Check Setup / Preflight, then Start / Connect.
+
+
+
+FRESH COMPUTER
+
+--------------
+
+Copy the complete TorTunnel folder (automation + Tor + tun2socks + config) to a writable local path. Connect Wi-Fi or Ethernet, then run START-HERE.cmd -> Check Setup.
+
+
+
+The package does not require a fixed drive letter or fixed Wi-Fi/Ethernet interface index.
+

@@ -1,0 +1,68 @@
+VeylRoute Windows v3.0 RC1 - Hotfix H5 (manual New Circuit)
+Copyright (c) 2026 Zahid Hussain / Scopewise Consulting
+
+BASELINE
+H5 layers on the verified H4 source baseline. Existing TorTunnel Universal v3.5.1
+routing, DNS, Wintun, application policies, Stop and Recovery remain unchanged.
+
+WHAT H5 ADDS
+- A New circuit button on Overview, enabled for an active, verified session.
+- An ephemeral localhost Tor ControlPort generated for newly started H5 sessions.
+- Tor SAFECOOKIE challenge-response authentication (never prints the cookie).
+- Verification of Tor PID, executable path, loopback listener ownership and
+  session-root identity before the signal is sent.
+- One user-initiated SIGNAL NEWNYM request, with 15-second local cooldown.
+- Tor SOCKS exit-IP checks before/after, clearly reporting if the IP changed,
+  stayed the same or could not be verified.
+- An acknowledgement gate: the worker must see the circuit response before
+  reporting success, even if the child PowerShell host exits with code zero.
+- A concise WPF result dialog; detailed output remains in Activity.
+
+IMPORTANT BEHAVIOR
+NEWNYM requests clean circuits for *new* connections. It does not terminate
+existing TCP streams, guarantee a different public IP, bypass the selected
+country restrictions, or substitute for Disconnect/Recover. Tor may rate-limit
+requests. The first connection after a patch must be a fresh H5 Start, because
+existing H4 Tor sessions lack the authenticated control interface.
+
+SECURITY AND COMPATIBILITY
+- ControlPort auto, CookieAuthentication 1, and ControlPortWriteToFile are
+  written to the generated torrc (not the user config).
+- The control request is rejected if local Tor process ownership or SAFECOOKIE
+  server proof cannot be verified.
+- No remote or unauthenticated control listener is configured.
+- No Windows network routing or firewall configuration is changed by New Circuit.
+- Existing country-mode configuration is preserved.
+
+INSTALLATION / RELEASE ROUTE
+- Applying the H5 overlay to an existing portable H4 folder is the safest
+  immediate qualification path. Stop all active sessions first; back up the
+  portable folder. Use the overlay only on the H4 baseline.
+- packaging/BUILD-WINDOWS.ps1 builds VeylRoute.exe on Windows x64 from the
+  included C# wrapper. With -BuildInstaller, it also calls Inno Setup ISCC.exe
+  to build a conventional VeylRoute-Windows-v3.0-RC1-H5-Setup.exe.
+- Neither Tor Expert Bundle nor Wintun/tun2socks binaries are redistributed
+  in this source-only package. VeylRoute's existing verified component setup
+  must provision those under explicit user control.
+- The setup installer creates a SEPARATE installation under Program Files;
+  it does not migrate the old portable config or downloaded binaries.
+- Uninstall retains configuration/runtime and refuses while its own session
+  state exists. Manual review is required before deleting leftover data.
+- Windows EXE and installer are BUILD CANDIDATES until compiled, signed (if
+  distributed publicly) and tested on Windows.
+
+WINDOWS QUALIFICATION
+1. Disconnect the current session and exit the GUI.
+2. Back up the current H4 portable folder and apply H5 as directed.
+3. Run tests/VERIFY-WINDOWS.cmd. Static/simulated checks do NOT change routes.
+4. Connect with the previously working US country; run Health.
+5. Press New circuit once; inspect the acknowledgement and fresh IP result.
+6. Confirm the Tor routing mode/country remains correct, and Status stays
+   healthy. Requesting new circuits should not break ongoing downloads.
+7. Disconnect; confirm normal browsing, routes, DNS and firewall restoration.
+8. Compile and verify EXE/setup separately on a disposable Windows test system.
+
+RELEASE GATE
+A passing script parser or isolated dispatch suite is not live Tor control
+interoperability. Do NOT declare production-ready until live SAFECOOKIE/NEWNYM,
+network restoration, privacy/fail-closed checks and setup/uninstall paths pass.

@@ -1,0 +1,26 @@
+HISTORICAL REFERENCE (legacy TorTunnel naming). For current VeylRoute setup, see VEYLROUTE-SETUP-GUIDE.txt.
+
+TorTunnel Universal Control Center v2.2 — UI POLISH CANDIDATE
+Copyright (c) 2026 Zahid Hussain / Scopewise Consulting
+
+Authorized modifications:
+- WPF XAML: original tunnel-shaped emblem replaces literal T; modern dropdown popup and item templates; consistently rounded input fields with focus, disabled and hover states; bridge-paste button.
+- GUI script: bridge paste handler, Ctrl+V/Shift+Insert, empty comment-only editor, nested mouse wheel routing, theme palette additions, GUI version display.
+- UI assets: four native ICO states regenerated from the same original emblem.
+- Config template: comment-only bridge instructions moved to the guidance; default bridges.txt is empty.
+- Documentation and checksum manifest: updated for this candidate.
+
+Preserved exactly:
+- All _internal engine scripts and all _internal/gui worker/updater scripts from v2.1 baseline.
+- settings.json, excluded-apps.txt, tor-apps.txt, VERSION.txt and entrypoint scripts.
+- WFP, Tor, tun2socks, DoH, selected-app modes, rollback, signatures, update controls.
+
+Behavioral acceptance on Windows (not executed here):
+1. Tray shows icon, no T; connected/disconnected/connecting/warning dots differ.
+2. All closed dropdowns text-centered; popup list dark/light matches selected theme; keyboard selection works.
+3. TextBox focus, typing, Ctrl+A/C/V, caret, scrolling work; corners rounded.
+4. Pasted obfs4 entries preserved exactly except line-ending normalization, Validate and Save still work.
+5. When cursor is on short text field, wheel scrolls containing page; in multiline editor, its contents scroll first and page scrolls at endpoints.
+6. No change to routing or network protection; stop, recovery, updates unaffected.
+
+This is a source-checked candidate. Cannot assert Windows runtime success without testing on target OS.

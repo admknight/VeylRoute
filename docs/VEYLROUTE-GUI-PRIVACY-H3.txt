@@ -1,0 +1,31 @@
+VeylRoute Windows v3.0 RC1 - GUI/Privacy H3 qualification candidate
+=======================================================================
+Scope: UI feedback, diagnostics, safe cancellation, exit-country visibility, and at-a-glance privacy checks.
+Baseline: v3.0 RC1 with GUI Input Hotfix H1 and Windows Qualification Hotfix H2.
+This patch does not install Tor, tun2socks, Wintun, replace the updater, or alter users' configuration/runtime.
+
+WHAT CHANGED
+- Manual actions (Connect, Disconnect, Status, Health, Preflight, Updates, Inventory, maintenance) present brief success/failure dialogs when they finish. Long technical reports stay in Activity.
+- Activity updates while the worker is active by reading redirected child output with shared file access. Lines receive INFO/PROGRESS/WARN/ERROR/OK labels. Raw source logs are not overwritten.
+- During Start, the Overview displays the latest observed bootstrap percentage, and the former Disconnect button becomes Cancel connection. Cancellation is cooperative; the Start engine's normal rollback path remains authoritative. Do NOT kill PowerShell during a network change.
+- A Start failure is never claimed successful merely due to a zero exit code; missing connection confirmation and uncompleted restoration are reported as issues.
+- Countries can be checked against an up-to-date Tor Project Onionoo relay snapshot (running + Exit flag). Zero-exit countries are blocked from a new connection while the snapshot is fresh; missing/stale data is UNKNOWN, not a fictitious zero. Refresh exit information before selecting countries. This does NOT guarantee Tor can bootstrap or visit every site.
+- Overview, under Activity & diagnostics, displays Tor IP validation, strict DoH/plain-DNS safeguards, passive IPv6 binding/default-route inspection, firewall rule presence and DNS leak VERIFICATION STATUS. It runs status checks automatically shortly after successful connection and about every three minutes while active. Recheck button runs Health manually.
+- DNS privacy result must NOT claim LEAK FREE: encryption/firewall status alone cannot prove the actual DNS HTTPS path. The panel says NOT PROVEN until a trusted, independent trace is available. SelectedAppsOnly explicitly states system DNS is direct.
+- Native Windows qualification suite adds static privacy/cancellation/UI-binding tests and an isolated ExitAvailability dispatch stub. No live network alteration is performed by tests/VERIFY-WINDOWS.cmd.
+
+KNOWN LIMITS & ACCEPTANCE
+- Windows PowerShell 5.1, GUI launch, active mouse-wheel input and live cancellation are NOT executable in the authorship environment. Run tests/VERIFY-WINDOWS.cmd on Windows first; expected 24 passed, 0 failed if all checks run successfully.
+- Then, with a safe/recoverable connection, verify: scrolling; Status/Preflight/Health dialogs; actual logs updating as bootstrap advances; Cancel before bootstrap reaches 100%, recovery after cancellation; US connection success, and normal Disconnect/Recovery; refreshed country availability; Overview privacy status after a successful Start. Inspect logs for any error.
+- The Tor Project snapshot describes current Exit-flag relays and country only; it cannot diagnose a 45% directory-descriptor bootstrap stall by itself.
+- IPv6 checks inspect adapter binding state and default routes without sending a direct IPv6 request. This passive observation does not prove all IPv6 traffic is leak free.
+- Live network security / DNS DoH routing, kill-switch bypass and independently traced DNS path remain unverified by this no-network package check.
+- The package contains application scripts only; you must retain your separately provisioned Tor and helper binaries.
+- If a session-state file remains after an error, use VeylRoute's controlled Disconnect/Recovery; do not erase it manually.
+
+SOURCE & INTEGRITY
+- Only listed H3 program files were modified; updater/installer and all other engine scripts retain their H1/H2 bytes.
+- docs/FILE-SHA256-MANIFEST.json lists the SHA256 hash of every delivered file except itself.
+- Official relay API: https://metrics.torproject.org/onionoo.html
+
+Release status: SOURCE-CHECKED CANDIDATE; Windows and live network qualification pending.

@@ -1,59 +1,146 @@
 <div align="center">
 
-# VeylRoute
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,14,18&height=185&section=header&text=VeylRoute&fontSize=58&fontColor=ffffff&animation=twinkling&fontAlignY=35&desc=Privacy%20Routing%20Control%20Center&descSize=18&descAlignY=57" width="100%" alt="VeylRoute — Privacy Routing Control Center">
 
-**Privacy Routing Control Center**  
-*Your connection. Your route. Your privacy.*
+**Your connection. Your route. Your privacy.**
 
-[![Windows qualification and builds](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml/badge.svg)](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml)
-[![Windows](https://img.shields.io/badge/Windows-10%2F11%20x64-2376d1)](docs/BUILDING.md)
-[![Release status](https://img.shields.io/badge/status-RC%20%2F%20qualification-orange)](docs/RELEASE-CHECKLIST.md)
+[![Windows qualification & builds](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml/badge.svg)](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-43A7FF.svg)](LICENSE)
+[![Platform: Windows](https://img.shields.io/badge/platform-Windows%2010%2F11%20x64-2376d1.svg)](docs/BUILDING.md)
+[![Status: Release Candidate](https://img.shields.io/badge/status-RC%20candidate-f4a340.svg)](docs/RELEASE-CHECKLIST.md)
+
+[**Windows builds**](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml) · [**Documentation**](docs/BUILDING.md) · [**Security**](SECURITY.md) · [**Roadmap**](docs/PLATFORMS.md) · [**Issues**](https://github.com/admknight/VeylRoute/issues)
 
 </div>
 
 ---
 
-VeylRoute is a **Windows-first privacy-routing control center** built around Tor, obfs4, Wintun and tun2socks. It provides a GUI for connecting, monitoring privacy safeguards, changing Tor circuits, and restoring Windows networking. The current implementation uses **Windows PowerShell 5.1 and WPF**; the native EXE is a launcher, **not a rewrite of the network engine**.
+## What is VeylRoute?
 
-> **Current source baseline:** Windows v3.0 RC1 H5 (qualification candidate). H4's isolated Windows tests passed 26/26 in the user's environment. H5 New Circuit, installer, privacy containment, and recovery paths still require their own live qualification. There is **no production-ready or leak-free claim**.
+**VeylRoute** is a Windows-first, graphical privacy-routing control center. It coordinates **Tor + obfs4** with **tun2socks + Wintun** and Windows network protections, without requiring users to manage a collection of terminal commands.
 
-## Windows candidate features
+The name blends *Veyl* (a stylized “veil,” suggesting privacy) with *Route* (the path internet traffic takes).
 
-- **SystemWide** and **SelectedAppsOnly** routing, guided preflight, status, health and recovery.
-- Signed Tor Expert Bundle setup workflow and obfs4 bridge support.
-- Exit-country preferences and manual **New circuit** request. A new circuit does **not** guarantee a changed public IP.
-- Live Activity diagnostics, connection progress and cancellation.
-- Overview indicators for Tor routing, DNS safeguards, IPv6 and firewall state. Local checks **do not prove DNS leak-free operation**.
-- **Portable application** and **Setup EXE** build targets, both preserving the existing PowerShell/WPF application.
+> [!IMPORTANT]
+> **Release state: Windows v3.0 RC1 H5 — qualification candidate, not production-verified.** The earlier H4 Windows isolated qualification passed 26/26 on a user-operated machine; H5's live New Circuit behavior, full network/DNS containment, cancellation, selected-app routing, installation, and uninstall still require additional evidence. A green CI badge means the isolated Windows build/tests passed; it is **not** a guarantee of anonymity or leak-free operation.
 
-## Get and build VeylRoute
+## Features at a glance
 
-| Edition | Delivery | Status |
+| Area | What the current Windows implementation offers |
+| :--- | :--- |
+| **Overview** | Connection state, live health summary, exit IP and compact privacy indicators |
+| **Connection** | Tor bootstrap progress, obfs4 bridge support, cancellation and recovery paths |
+| **Routing** | **SystemWide** and **SelectedAppsOnly** modes, with explicit configuration |
+| **Exit locations** | Fixed-country, selected-country pool and country-availability information |
+| **New circuit** | Authenticated Tor **NEWNYM** request, rate limiting, and an exit-IP comparison |
+| **Diagnostics** | Status, Preflight, Health, Activity history and classified messages |
+| **Safeguards** | Strict DoH / DNS firewall settings, IPv6 configuration, Edge controls, session restoration |
+| **Updates** | Component inventory, verified Tor Expert Bundle workflow and package management |
+
+### Connection health is not a promise of anonymity
+
+VeylRoute distinguishes **Tor connected**, **safeguards configured**, and **independently confirmed protection**. In particular, DoH and firewall-rule presence cannot by themselves prove that every DNS request stayed inside Tor. A normal browser routed through Tor is **not** equivalent to Tor Browser's fingerprinting and isolation defenses.
+
+Tor can acknowledge **New circuit** without assigning a new public IP. Existing connections are not forcibly moved to new circuits; the selected country restrictions remain in effect.
+
+## Windows editions
+
+| Edition | What you get | Status |
 | --- | --- | --- |
-| **Windows Portable** | Extractable ZIP with native `VeylRoute.exe` launcher | RC build candidate |
-| **Windows Setup** | Conventional Inno Setup EXE with shortcuts | RC build candidate |
-| **macOS / Linux / Android** | Future platform-specific implementations | Not implemented |
+| **Portable ZIP** | Extractable VeylRoute folder with a native `VeylRoute.exe` GUI launcher | Unsigned RC build target |
+| **Setup EXE** | Inno Setup installer, Start Menu integration and optional desktop shortcut | Unsigned RC build target |
+| **Source** | PowerShell 5.1 / WPF control center, C# launcher source, build scripts and tests | MIT-licensed original project code |
 
-The [Windows build workflow](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml) runs isolated qualification, compiles the launcher and installer, and uploads **unsigned Actions artifacts** after the full H5 source is imported. It does **not** publish releases or claim Windows runtime/privacy testing.
+**Build downloads:** visit [GitHub Actions → Windows qualification and builds](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml), open a successful workflow run and download its **unsigned** artifact. Those build artifacts are not yet endorsed as production releases. Downloaded Tor, Wintun and tun2socks binaries are **not bundled** with source/build artifacts.
 
-See [Building](docs/BUILDING.md), [Release checklist](docs/RELEASE-CHECKLIST.md) and [Platform roadmap](docs/PLATFORMS.md).
+### Basic requirements
 
-### Portable first run
+- Windows 10 or Windows 11, **x64**
+- Windows PowerShell **5.1**, .NET Framework 4.x and WPF
+- Administrator approval (required for network-routing and firewall operations)
+- Internet connectivity or verified local component imports for first-time provisioning
+- A writable local installation/data location; **do not relocate an active session**
 
-On Windows 10/11 x64, extract a validated candidate into a writable local folder. Start `VeylRoute.exe` or the source-only `VeylRoute.vbs`, approve elevation, provision the missing components using the built-in verification flow, configure bridges and routing, then run **Preflight → Connect → Health**. Use **Disconnect** to restore normal networking.
+### First run
 
-This repository does **not** redistribute Tor, Wintun, tun2socks or lyrebird binaries. Do not delete active session-state files or forcibly terminate recovery while routing changes may still exist.
+1. Extract the portable build or install the setup edition **only on a system where no old VeylRoute session is active**.
+2. Launch **VeylRoute** and approve the required Windows elevation.
+3. Use its component setup to provision and verify **Tor + lyrebird**, **Wintun**, and **tun2socks**. Add obfs4 bridges when required; never publish private bridge lines.
+4. Choose your routing mode and exit preferences, save settings, then run **Preflight**.
+5. **Connect → Health → Review Overview**. Use **Disconnect** for normal restoration, and **Recover** if a session does not restore cleanly.
 
-## Security and licensing
+The setup edition does **not** automatically migrate an existing portable folder or install third-party networking binaries. See [Building and installation notes](docs/BUILDING.md).
 
-VeylRoute modifies Windows routes, DNS and firewall rules. Edge routed through Tor does **not** provide Tor Browser-level anonymity. No network software can be declared leak-free solely from an IP check, GUI status, or script parser pass. See [Security](SECURITY.md) and [Third-party components](docs/THIRD-PARTY.md).
+## How the Windows version works
 
-This public repository **does not yet declare a reuse license**. Existing source-file copyrights are preserved; consult [License status](docs/LICENSE-STATUS.md) before reuse or redistribution.
+```text
+VeylRoute.exe (native C# launcher)
+             │ UAC / Windows PowerShell 5.1
+             ▼
+WPF Control Center + GUI Worker
+             │ status / config / log streaming
+             ▼
+TorTunnel Universal v3.5.1 engine
+       ├── Tor + lyrebird (obfs4)
+       ├── tun2socks + Wintun
+       ├── Windows routing, DNS & firewall controls
+       └── Stop / recovery and state restoration
+```
+
+The native EXE is a **launcher around the existing WPF/PowerShell application**, not a new native Tor networking implementation. Internal legacy engine filenames are retained where necessary for backward compatibility.
+
+## Build and qualify on Windows
+
+```powershell
+# Windows PowerShell 5.1 / no live network changes:
+.\tests\VERIFY-WINDOWS.cmd
+
+# Build native Windows launcher:
+.\packaging\BUILD-WINDOWS.ps1
+
+# Build launcher and Inno Setup installer (requires Inno Setup):
+.\packaging\BUILD-WINDOWS.ps1 -BuildInstaller
+```
+
+On pushes and pull requests touching the application, [GitHub Actions](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml) runs isolated checks on a Windows runner. Successful runs upload a portable ZIP, a setup EXE and SHA-256 checksums. The workflow does **not** conduct real Tor/Wintun traffic tests, automatically create public Releases or sign binaries.
+
+### Repository map
+
+```text
+.github/workflows/  Windows build and qualification
+_internal/          TorTunnel engine, workers, recovery and updater
+ui/                 PowerShell/WPF GUI and icons
+config/             Public defaults (private bridges excluded)
+packaging/          Native EXE launcher and Inno Setup sources
+tests/              Isolated Windows qualification suite
+docs/               Setup, security, provenance and future platforms
+tools/              Repository maintenance/import helpers
+```
+
+## Other platforms — future work
+
+| Platform | Status |
+| --- | --- |
+| **Windows 10/11 x64** | Active RC1 H5 implementation |
+| **macOS** | Planned — no app/build yet |
+| **Linux** | Planned — no app/build yet |
+| **Android** | Planned — no app/build yet |
+
+Cross-platform editions will require their own native system routing, permissions and testing; Windows PowerShell/WPF does not automatically run on other operating systems. See the [platform roadmap](docs/PLATFORMS.md).
+
+## Security, attribution and licensing
+
+Privacy-routing software deserves careful scrutiny. Security problems should be handled using [SECURITY.md](SECURITY.md), without posting private bridges, session state, IP addresses, Tor control cookies or credentials in public issues.
+
+**Original VeylRoute source:** [MIT License](LICENSE) — Copyright © 2026 Zahid Hussain / Scopewise Consulting. MIT applies to this repository's original code and documentation; **Tor, lyrebird, Wintun, tun2socks and other third-party tools retain their own licenses** and are not redistributed by this repository. See [third-party notices](docs/THIRD-PARTY.md).
+
+Contributions: [CONTRIBUTING.md](CONTRIBUTING.md). Release gates: [RELEASE-CHECKLIST.md](docs/RELEASE-CHECKLIST.md).
+
+---
 
 <div align="center">
 
-Maintained on GitHub by **[Adam Knight (@admknight)](https://github.com/admknight)**
-
-[Source](https://github.com/admknight/VeylRoute) · [Actions](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml) · [Issues](https://github.com/admknight/VeylRoute/issues) · [Portfolio](https://admknight.github.io/)
+**Maintained by [Adam Knight (@admknight)](https://github.com/admknight)**  
+[Portfolio](https://admknight.github.io/) · [Source](https://github.com/admknight/VeylRoute) · [Actions](https://github.com/admknight/VeylRoute/actions) · [Issue tracker](https://github.com/admknight/VeylRoute/issues)
 
 </div>

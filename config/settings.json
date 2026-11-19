@@ -1,0 +1,21 @@
+{
+  "ExitCountry": "us",
+  "SocksPort": 9050,
+  "DnsMode": "doh",
+  "DohPrimary": "1.1.1.1",
+  "DohSecondary": "1.0.0.1",
+  "DohTemplate": "https://cloudflare-dns.com/dns-query",
+  "BlockPlainDns": true,
+  "SelectedAppsDns": "system",
+  "TorAppKillSwitch": true,
+  "BlockTorAppUdp": true,
+  "BootstrapTimeoutSeconds": 240,
+  "RouteMetric": 5,
+  "DisableIPv6": true,
+  "DisableEdgeQuic": true,
+  "EdgeKillSwitch": true,
+  "OpenEdgeAfterConnect": false,
+  "FreshTorStateOnNewPC": true,
+  "EnableAppExclusions": true,
+  "EnableSelectedTorApps": true
+}

@@ -1,0 +1,38 @@
+VEYLROUTE CONTROL CENTER v2.6 PREVIEW — USER TEST CANDIDATE
+Engine baseline: TorTunnel Universal v3.5.1. All original engine scripts are byte-for-byte preserved.
+
+CHANGES FROM v2.5
+- Tray double-click: show window, reset minimized state, request foreground focus using WPF and Win32 after an explicit user action. Windows focus behavior must be validated on the user's PC.
+- Setup Guide: only show missing component files and missing/invalid bridge entries. A structurally valid saved bridge entry is no longer presented as unfinished. When no components or bridge entries are missing, the guide directs the user to the separate Preflight verification; structural validation is not a live bridge test.
+- Actual component transfer monitor in Versions & updates. The background component workers record download bytes, advertised total bytes (if supplied), current stage, failures, and destination paths in runtime\gui\component-progress.json.
+- New shared transfer helper streams HTTPS downloads with bounded timeouts and safe staging. Wintun and tun2socks continue to require pinned SHA256 checks; Wintun also requires Authenticode. Tor still requires the signed official Expert Bundle and pinned OpenPGP signer fingerprint.
+- Tor update and rollback show preparation, extraction, verification, and promotion stages. No automatic Tor replacement; explicit approval and inactive tunnel still required.
+- Failed component worker actions show the actual last failure stage, when available, in the themed GUI. A missing or stale completion record must never be shown as ready.
+- Updater archive validation now removes only a literal leading ./ instead of blindly trimming all dots and slashes.
+- This release does NOT add a website-level DIRECT bypass or modify Tor network routing safeguards.
+
+SAFETY / LIMITATIONS
+- Portable: installation root derived from script location; no C: drive dependency.
+- Requires Windows x64, Windows PowerShell 5.1, WPF/.NET Framework, administrator approval for network operations, and Internet access for binary downloads.
+- Third-party executables are NOT embedded. Only already installed components are reused; missing components must be downloaded or imported through approved workflows.
+- Imported binaries are not independently signature-verified by this software. Online Tor installation refuses packages failing OpenPGP checks.
+- A component Ready badge means the file exists; only Preflight and Health Check assess operational readiness.
+- Windows WPF rendering, actual downloads, Tor signature verification, tray foreground behavior, installer/rollback, and Tor live networking were NOT RUN in this development environment. This is NOT a production-verified release.
+
+UPGRADE v2.5 -> v2.6 (preserve your working installation)
+1. Disconnect the tunnel and choose Exit GUI. Make a backup copy of the entire folder.
+2. Extract this ZIP to a separate temporary folder. DO NOT replace existing config or runtime data.
+3. Copy these files into the same relative locations in your existing VeylRoute folder:
+   ui\TorTunnel.ModernGui.ps1
+   ui\TorTunnel.ModernGui.xaml
+   _internal\gui\TorTunnel.BinarySetup.ps1
+   _internal\gui\TorTunnel.PackageUpdater.ps1
+   _internal\gui\TorTunnel.TransferProgress.ps1 (NEW)
+4. Launch VeylRoute.vbs. Open Setup guide: a saved format-valid bridge must be absent from the to-do list.
+5. Open Versions & updates and start Download Wintun + tun2socks, where applicable. Observe progress; if it fails, inspect the displayed error stage. Do not assume unverified binaries are installed.
+6. Click the tray icon twice (double-click). The window should restore to the foreground without clicking its taskbar button. Report actual Windows behavior if it does not.
+
+CLEAN INSTALL
+Extract the entire ZIP to a writable local folder and run VeylRoute.vbs. This package does not include your existing bridge lines, tools or runtime. Setup guide will appear on first launch and will show only outstanding requirements.
+
+NO AUTO-MIGRATION of existing session/bridge configuration between folders. Use the in-place upgrade method to preserve your active configuration.

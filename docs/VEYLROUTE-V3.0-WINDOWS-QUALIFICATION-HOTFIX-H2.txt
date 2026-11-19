@@ -1,0 +1,50 @@
+VEYLROUTE v3.0 WINDOWS RC1 - WINDOWS QUALIFICATION HOTFIX H2
+Copyright (c) 2026 Zahid Hussain / Scopewise Consulting
+
+BASELINE
+- Build from v3.0 RC1 GUI Input Hotfix H1 Full qualification candidate.
+- H1 GUI input-handler correction is retained unchanged.
+- No production worker, installer, routing, DNS, Wintun, Tor, bridge,
+  configuration, binaries or update-security code has changed.
+
+OBSERVED WINDOWS FAILURE
+- Windows qualification: 19 PASS, 1 FAIL.
+- Failing case: Worker dispatch: UpdateInstall.
+- Error: could not find TEMP fixture\runtime\last-result.json.
+
+SOURCE-CONFIRMED CAUSE
+- The worker writes last-result.json in Split-Path -Parent $LogPath.
+- The H1 qualification harness passed -LogPath in the fixture root but read
+  the report from the fixture's runtime directory. The paths disagreed.
+- The actual GUI uses runtime\gui for its operation logs and result file.
+- This was a qualification-harness path mismatch, not evidence of a failed
+  Tor bundle installation. The mock test never installs a real bundle.
+
+H2 CHANGE
+- tests\Verify-Windows.ps1 only:
+  * Place mock logs in TEMP fixture\runtime\gui (matching GUI convention).
+  * Derive result path from the supplied -LogPath directory.
+  * Assert action identity, explicit worker failure code 35 in JSON and process,
+    and preservation of the simulated child stderr diagnostic.
+- Update FILE-SHA256-MANIFEST.json for the revised test and this note.
+
+TEST SAFETY
+- The qualifying worker runs with temporary mock engine/setup scripts.
+- The test does not start Tor, download or install binaries, alter DNS,
+  change routes, firewall policies or modify the active session.
+- Do not run the qualification while a GUI session is still modifying the
+  installation, to avoid mixing records from different builds.
+
+HOW TO CHECK ON WINDOWS
+- If applying H2 to H1, exit the GUI, back up the original tests script,
+  and replace only the paths from the H2 overlay.
+- Run tests\VERIFY-WINDOWS.cmd and preserve the complete output.
+- A 20/20 PASS would qualify these isolated Windows checks only; live
+  updater installation, fail-closed routing and recovery require their own
+  runtime evidence. Never take an isolated mock-test PASS as an instruction
+  to install new Tor binaries.
+
+AUTHORING ENVIRONMENT VALIDATION
+- Source patch and ZIP/manifest checks performed on Linux.
+- Native Windows PowerShell 5.1, WPF and mock child dispatch were NOT
+  executed in the authoring environment.

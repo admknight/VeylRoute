@@ -1,0 +1,25 @@
+{
+  "product": "VeylRoute Control Center v2.3 Preview",
+  "release_status": "CANDIDATE - Windows runtime not verified",
+  "source": "TorTunnel Universal Control Center v2.2 UI Polish Preview",
+  "checks": {
+    "WPF XAML parses as XML": "PASS",
+    "WPF named controls unique and required elements present": "PASS",
+    "shared modern dialogs and bridge paste wiring": "PASS (source)",
+    "nested wheel handoff and theme dropdown templates": "PASS (source)",
+    "four branded ICO headers": "PASS (static)",
+    "launcher relative path and no C drive dependency": "PASS (source)",
+    "unchanged engine scripts": "PASS (SHA256)",
+    "unchanged updater/worker scripts except maintenance": "PASS (SHA256)",
+    "unchanged configuration and fallback menu": "PASS (SHA256)",
+    "bridge configuration empty in distributed copy": "PASS",
+    "PowerShell 5.1 parsing": "NOT RUN (runtime unavailable)",
+    "WPF rendered visual QA": "NOT RUN (Windows runtime unavailable)",
+    "clipboard/scroll behavior on Windows": "NOT RUN",
+    "component download/signature verification": "NOT RUN",
+    "Tor connect/stop/rollback and network privacy": "NOT RUN"
+  },
+  "engine_files_unchanged": 14,
+  "network_behavior_modified": false,
+  "website_bypass_implemented": false
+}

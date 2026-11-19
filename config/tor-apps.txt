@@ -1,0 +1,5 @@
+﻿# TorTunnel Universal - TOR-only applications
+# Used only when SelectedAppsOnly is chosen during Start.
+# One full .exe path per line. Prefer START-HERE -> Manage TOR-only apps.
+# Selected app IPv4 TCP is routed through Wintun -> tun2socks -> Tor.
+# Windows DNS remains on the normal/direct resolver in SelectedAppsOnly mode.
