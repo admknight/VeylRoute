@@ -1,0 +1,67 @@
+name: Linux experimental build and contract tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'platforms/linux/**'
+      - '.github/workflows/linux-build.yml'
+  pull_request:
+    paths:
+      - 'platforms/linux/**'
+      - '.github/workflows/linux-build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-build:
+    name: Linux isolated tests and unsigned Debian / portable artifacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python and shell syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m compileall -q platforms/linux/veylroute
+          bash -n platforms/linux/check-environment.sh
+          bash -n platforms/linux/tests/test-probe.sh
+          bash -n platforms/linux/tests/test-netns.sh
+          bash -n platforms/linux/packaging/build-linux.sh
+      - name: Run isolated Linux regression tests (no live network changes)
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=platforms/linux python3 -m unittest discover -s platforms/linux/tests -p 'test_*.py' -v
+          bash platforms/linux/tests/test-probe.sh
+          PYTHONPATH=platforms/linux python3 -m veylroute.app version
+      - name: Optional nftables syntax / lifecycle check in isolated network namespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v nft >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq nftables
+          fi
+          bash platforms/linux/tests/test-netns.sh
+      - name: Build Debian and portable Linux packages without installation
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash platforms/linux/packaging/build-linux.sh "$GITHUB_WORKSPACE/linux-artifacts"
+          cd linux-artifacts
+          sha256sum --check SHA256SUMS-Linux.txt
+          dpkg-deb --info VeylRoute-Linux-0.1.0-Preview.deb
+          dpkg-deb --contents VeylRoute-Linux-0.1.0-Preview.deb | grep -q '/usr/bin/veylroute'
+          tar -tzf VeylRoute-Linux-0.1.0-Portable.tar.gz | grep -q '/veylroute/app.py'
+          test "$(find . -name '*.deb' | wc -l)" = 1
+      - name: Upload unsigned Linux development artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: VeylRoute-Linux-0.1.0-Experimental-unsigned
+          path: linux-artifacts/*
+          retention-days: 30
+          if-no-files-found: error
