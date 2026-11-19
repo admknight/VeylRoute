@@ -1,0 +1,66 @@
+name: Publish Linux v0.1.0 experimental development packages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-linux-v0.1.0.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish:
+    if: github.repository == 'admknight/VeylRoute'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PINNED_RUN: '44585890987'
+      SOURCE_SHA: '9fe4bcb0645b94080d7cf22e1db9700baf321e16'
+      TAG: 'linux-v0.1.0-experimental'
+    steps:
+      - name: Checkout immutable release notes
+        uses: actions/checkout@v4
+      - name: Verify pinned Linux CI success and release status
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PINNED_RUN" --jq .head_sha)" = "$SOURCE_SHA"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PINNED_RUN" --jq .conclusion)" = "success"
+          test -f docs/RELEASE-linux-v0.1.0.md
+      - name: Download exact CI package artifacts and verify sha256
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh run download "$PINNED_RUN" --repo "$GITHUB_REPOSITORY"             --name VeylRoute-Linux-0.1.0-Experimental-unsigned -D release-assets
+          cd release-assets
+          test -f VeylRoute-Linux-0.1.0-Preview.deb
+          test -f VeylRoute-Linux-0.1.0-Portable.tar.gz
+          test -f SHA256SUMS-Linux.txt
+          sha256sum --check SHA256SUMS-Linux.txt
+          printf '%s\n' 'd6482b29773533b1cf3eae0311e4c5d9dd66d320b8688f55e4fdce612384fe49  VeylRoute-Linux-0.1.0-Portable.tar.gz' | sha256sum --check -
+          printf '%s\n' '91d2a8b505f9654e16baf02536bb8768be89adb5dd49cb70bab2dbbd84c25b11  VeylRoute-Linux-0.1.0-Preview.deb' | sha256sum --check -
+          dpkg-deb --info VeylRoute-Linux-0.1.0-Preview.deb | grep -q 'Version: 0.1.0'
+          dpkg-deb --contents VeylRoute-Linux-0.1.0-Preview.deb | grep -q '/usr/bin/veylroute'
+          tar -tzf VeylRoute-Linux-0.1.0-Portable.tar.gz | grep -q '/veylroute/app.py'
+      - name: Publish experimental prerelease (not Windows stable/latest)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            test "$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isPrerelease --jq .isPrerelease)" = true
+            echo 'Experimental tag already exists; existing assets unchanged'
+            exit 0
+          fi
+          gh release create "$TAG" \
+            release-assets/VeylRoute-Linux-0.1.0-Preview.deb \
+            release-assets/VeylRoute-Linux-0.1.0-Portable.tar.gz \
+            release-assets/SHA256SUMS-Linux.txt \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$SOURCE_SHA" \
+            --title 'VeylRoute Linux v0.1.0 - experimental development build' \
+            --notes-file docs/RELEASE-linux-v0.1.0.md \
+            --prerelease
