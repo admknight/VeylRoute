@@ -1,0 +1,35 @@
+name: Linux foundation (non-network qualification)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'platforms/linux/**'
+      - '.github/workflows/linux-foundation.yml'
+  pull_request:
+    paths:
+      - 'platforms/linux/**'
+      - '.github/workflows/linux-foundation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    name: Read-only Linux prerequisite probe and isolated tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify shell syntax
+        shell: bash
+        run: |
+          bash -n platforms/linux/check-environment.sh
+          bash -n platforms/linux/tests/test-probe.sh
+      - name: Run isolated contract tests (no sudo, no live network changes)
+        shell: bash
+        run: bash platforms/linux/tests/test-probe.sh
+      - name: Show read-only prerequisite report
+        shell: bash
+        run: bash platforms/linux/check-environment.sh --json
