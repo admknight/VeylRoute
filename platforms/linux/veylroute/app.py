@@ -544,11 +544,16 @@ def get_parser() -> argparse.ArgumentParser:
     parser.add_argument("--json", action="store_true", help="Machine-readable result")
     sub = parser.add_subparsers(dest="action", required=True)
     for command in ("prepare", "preflight", "start", "cancel", "status", "health",
-                    "stop", "recover", "new-circuit", "version", "gui"):
+                    "stop", "recover", "new-circuit", "version", "gui",
+                    "desktop-install", "desktop-remove", "update-check", "update-prepare",
+                    "update-apply"):
         p = sub.add_parser(command)
         if command in ("preflight", "start"):
             p.add_argument("--exit-country", default="auto", help="Auto or two-letter ISO exit country")
             p.add_argument("--bridges-file", default="", help="Private obfs4 bridge config file")
+        if command == "update-apply":
+            p.add_argument("--receipt", required=True, help="Path to the verified downloaded update receipt")
+            p.add_argument("--parent-pid", type=int, default=0, help="Wait until the GUI process exits")
     return parser
 
 
@@ -575,15 +580,33 @@ def main(argv: list[str] | None = None) -> int:
             result = disconnect()
         elif args.action == "recover":
             result = recover()
-        else:
+        elif args.action == "new-circuit":
             result = new_circuit()
+        elif args.action in ("desktop-install", "desktop-remove"):
+            if os.geteuid() == 0:
+                raise VeylRouteError("Portable menu integration must run as the desktop user, not root")
+            from . import desktop
+            if args.action == "desktop-install":
+                result = {"desktop_shortcut": str(desktop.install()), "mode": "portable"}
+            else:
+                result = {"desktop_shortcut_removed": desktop.remove()}
+        elif args.action in ("update-check", "update-prepare", "update-apply"):
+            from . import updates
+            if args.action == "update-check":
+                result = updates.check()
+            elif args.action == "update-prepare":
+                result = {"verified_receipt": str(updates.prepare(updates.check()))}
+            else:
+                result = {"update_result": updates.apply(Path(args.receipt), args.parent_pid)}
+        else:
+            raise VeylRouteError("Unsupported Linux operation")
         if args.json:
             print(json.dumps(result, indent=2, sort_keys=True))
         else:
             for k, v in result.items():
                 print(f"{k.replace('_', ' ').capitalize()}: {v}")
         return 0
-    except (VeylRouteError, ValueError, OSError, subprocess.SubprocessError, control.ControlError) as ex:
+    except (VeylRouteError, ValueError, OSError, subprocess.SubprocessError, control.ControlError, RuntimeError) as ex:
         if args.json:
             print(json.dumps({"error": str(ex), "status": "failed"}))
         else:

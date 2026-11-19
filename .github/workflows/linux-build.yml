@@ -1,4 +1,4 @@
-name: Linux experimental build and contract tests
+name: Linux experimental build and desktop parity qualification
 
 on:
   push:
@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   qualify-build:
-    name: Linux isolated tests and unsigned Debian / portable artifacts
+    name: Linux v0.2.0 tests and unsigned packages
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -31,37 +31,50 @@ jobs:
           bash -n platforms/linux/tests/test-probe.sh
           bash -n platforms/linux/tests/test-netns.sh
           bash -n platforms/linux/packaging/build-linux.sh
-      - name: Run isolated Linux regression tests (no live network changes)
+      - name: Isolated Linux controller/desktop/update tests (no live network changes)
         shell: bash
         run: |
           set -euo pipefail
           PYTHONPATH=platforms/linux python3 -m unittest discover -s platforms/linux/tests -p 'test_*.py' -v
           bash platforms/linux/tests/test-probe.sh
           PYTHONPATH=platforms/linux python3 -m veylroute.app version
-      - name: Optional nftables syntax / lifecycle check in isolated network namespace
+      - name: Desktop Entry spec and headless Tk icon/layout smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq xvfb python3-tk python3-pil desktop-file-utils
+          desktop-file-validate platforms/linux/packaging/veylroute.desktop
+          PYTHONPATH=platforms/linux xvfb-run -a python3 platforms/linux/tests/test-gui-smoke.py
+      - name: nftables install/remove only in disposable network namespace
         shell: bash
         run: |
           set -euo pipefail
           if ! command -v nft >/dev/null 2>&1; then
-            sudo apt-get update -qq
             sudo apt-get install -y -qq nftables
           fi
           bash platforms/linux/tests/test-netns.sh
-      - name: Build Debian and portable Linux packages without installation
+      - name: Build unsigned Debian and portable artifacts without installing
         shell: bash
         run: |
           set -euo pipefail
           bash platforms/linux/packaging/build-linux.sh "$GITHUB_WORKSPACE/linux-artifacts"
           cd linux-artifacts
           sha256sum --check SHA256SUMS-Linux.txt
-          dpkg-deb --info VeylRoute-Linux-0.1.0-Preview.deb
-          dpkg-deb --contents VeylRoute-Linux-0.1.0-Preview.deb | grep -q '/usr/bin/veylroute'
-          tar -tzf VeylRoute-Linux-0.1.0-Portable.tar.gz | grep -q '/veylroute/app.py'
+          dpkg-deb --info VeylRoute-Linux-0.2.0-Preview.deb
+          dpkg-deb --contents VeylRoute-Linux-0.2.0-Preview.deb > debian-contents.txt
+          tar -tzf VeylRoute-Linux-0.2.0-Portable.tar.gz > portable-contents.txt
+          grep -F '/usr/bin/veylroute' debian-contents.txt >/dev/null
+          grep -F '/usr/share/applications/veylroute.desktop' debian-contents.txt >/dev/null
+          grep -F '/usr/share/icons/hicolor/256x256/apps/veylroute.png' debian-contents.txt >/dev/null
+          grep -F '/veylroute/updates.py' portable-contents.txt >/dev/null
+          grep -F '/assets/veylroute.png' portable-contents.txt >/dev/null
           test "$(find . -name '*.deb' | wc -l)" = 1
-      - name: Upload unsigned Linux development artifacts
+          rm -f debian-contents.txt portable-contents.txt
+      - name: Upload experimental Linux packages
         uses: actions/upload-artifact@v4
         with:
-          name: VeylRoute-Linux-0.1.0-Experimental-unsigned
+          name: VeylRoute-Linux-0.2.0-Experimental-unsigned
           path: linux-artifacts/*
           retention-days: 30
           if-no-files-found: error

@@ -1,10 +1,15 @@
 [Desktop Entry]
+Version=1.0
 Type=Application
-Name=VeylRoute (Linux Preview)
+Name=VeylRoute (Linux)
 GenericName=Privacy Routing Control Center
 Comment=Experimental Linux Tor routing control center
 Exec=veylroute-gui
+TryExec=veylroute-gui
 Terminal=false
-Categories=Network;Utility;
-Icon=network-vpn
+Categories=Network;
+Keywords=Tor;privacy;network;
+Icon=veylroute
 StartupNotify=true
+StartupWMClass=Veylroute
+SingleMainWindow=true
