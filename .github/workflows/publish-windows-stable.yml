@@ -1,0 +1,63 @@
+name: Publish verified Windows 3.0.0 stable release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-windows-stable.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish:
+    if: github.repository == 'admknight/VeylRoute'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PINNED_RUN: '44507797802'
+      SOURCE_SHA: 'c34df13aea2c208b2c543205bdc500a79c4e8509'
+      TAG: 'v3.0.0'
+    steps:
+      - name: Checkout release notes
+        uses: actions/checkout@v4
+      - name: Verify pinned passing Windows build
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PINNED_RUN" --jq .head_sha)" = "$SOURCE_SHA"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$PINNED_RUN" --jq .conclusion)" = "success"
+          test -f docs/RELEASE-v3.0.0.md
+      - name: Retrieve unchanged Windows H5 assets and verify checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh run download "$PINNED_RUN" --repo "$GITHUB_REPOSITORY" -n VeylRoute-Windows-v3.0-RC1-H5-unsigned -D release-assets
+          cd release-assets
+          test -f VeylRoute-Windows-v3.0-RC1-H5-Portable.zip
+          test -f VeylRoute-Windows-v3.0-RC1-H5-Setup.exe
+          test -f SHA256SUMS.txt
+          sha256sum --check SHA256SUMS.txt
+          unzip -Z1 VeylRoute-Windows-v3.0-RC1-H5-Portable.zip | grep -q '/LICENSE$'
+          unzip -Z1 VeylRoute-Windows-v3.0-RC1-H5-Portable.zip | grep -q '/VeylRoute.exe$'
+      - name: Publish latest stable GitHub Release
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            test "$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json isPrerelease --jq .isPrerelease)" = "false"
+            echo 'Stable release already exists; no assets changed.'
+            exit 0
+          fi
+          gh release create "$TAG" \
+            release-assets/VeylRoute-Windows-v3.0-RC1-H5-Portable.zip \
+            release-assets/VeylRoute-Windows-v3.0-RC1-H5-Setup.exe \
+            release-assets/SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$SOURCE_SHA" \
+            --title 'VeylRoute Windows v3.0.0 - stable (H5 verified build)' \
+            --notes-file docs/RELEASE-v3.0.0.md \
+            --latest
