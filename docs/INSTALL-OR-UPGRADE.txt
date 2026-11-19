@@ -1,12 +1,12 @@
-HISTORICAL REFERENCE (legacy TorTunnel naming). For current VeylRoute setup, see VEYLROUTE-SETUP-GUIDE.txt.
+﻿HISTORICAL REFERENCE (legacy TorTunnel naming). For current VeylRoute setup, see VEYLROUTE-SETUP-GUIDE.txt.
 
 TorTunnel Universal v3.5.1 - Install / Upgrade
 =============================================================
 
 AUTHOR / CREATOR
 ----------------
-Author / Programmed by: Zahid Hussain
-Company: Scopewise Consulting
+Developer: Adam Knight
+Public developer: Adam Knight
 Contact: https://github.com/admknight/VeylRoute/issues / GitHub Issues
 
 THIS ZIP IS THE AUTOMATION LAYER.

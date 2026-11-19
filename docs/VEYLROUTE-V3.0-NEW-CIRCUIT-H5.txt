@@ -1,5 +1,5 @@
 VeylRoute Windows v3.0 RC1 - Hotfix H5 (manual New Circuit)
-Copyright (c) 2026 Zahid Hussain / Scopewise Consulting
+Copyright (c) 2026 Adam Knight
 
 BASELINE
 H5 layers on the verified H4 source baseline. Existing TorTunnel Universal v3.5.1

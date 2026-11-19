@@ -1,4 +1,4 @@
-HISTORICAL REFERENCE (legacy TorTunnel naming). For current VeylRoute setup, see VEYLROUTE-SETUP-GUIDE.txt.
+﻿HISTORICAL REFERENCE (legacy TorTunnel naming). For current VeylRoute setup, see VEYLROUTE-SETUP-GUIDE.txt.
 
 TorTunnel Universal v3.5.1 - About / Credits
 ======================================================
@@ -7,8 +7,8 @@ PROGRAM IDENTITY
 ----------------
 Product: TorTunnel Universal
 Version: v3.5.1
-Author / Programmed by: Zahid Hussain
-Company: Scopewise Consulting
+Developer: Adam Knight
+Public developer: Adam Knight
 Contact: https://github.com/admknight/VeylRoute/issues / GitHub Issues
 
 PURPOSE
@@ -19,4 +19,4 @@ NORMAL ENTRY POINT
 ------------------
 Run START-HERE.cmd.
 
-The Control Center displays the creator identity as a core program detail and provides an About / Credits menu.
+The Control Center provides credits, licensing and edition-specific updates on the About VeylRoute page.

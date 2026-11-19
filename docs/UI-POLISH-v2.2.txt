@@ -1,7 +1,7 @@
 HISTORICAL REFERENCE (legacy TorTunnel naming). For current VeylRoute setup, see VEYLROUTE-SETUP-GUIDE.txt.
 
 TorTunnel Universal Control Center v2.2 — UI POLISH CANDIDATE
-Copyright (c) 2026 Zahid Hussain / Scopewise Consulting
+Copyright (c) 2026 Adam Knight
 
 Authorized modifications:
 - WPF XAML: original tunnel-shaped emblem replaces literal T; modern dropdown popup and item templates; consistently rounded input fields with focus, disabled and hover states; bridge-paste button.

@@ -1,9 +1,9 @@
-HISTORICAL REFERENCE (legacy TorTunnel naming). For current VeylRoute setup, see VEYLROUTE-SETUP-GUIDE.txt.
+﻿HISTORICAL REFERENCE (legacy TorTunnel naming). For current VeylRoute setup, see VEYLROUTE-SETUP-GUIDE.txt.
 
 TorTunnel Universal + Control Center v2.1 Self-Managed Preview - Portable Setup Guide
 ==========================================================================
-Author / Programmed by: Zahid Hussain
-Company: Scopewise Consulting
+Developer: Adam Knight
+Public developer: Adam Knight
 Based on supplied TorTunnel Universal v3.5.1 Creator-Branded
 
 A. Scope and trust

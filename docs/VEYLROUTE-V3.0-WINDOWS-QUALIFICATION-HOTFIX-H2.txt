@@ -1,5 +1,5 @@
 VEYLROUTE v3.0 WINDOWS RC1 - WINDOWS QUALIFICATION HOTFIX H2
-Copyright (c) 2026 Zahid Hussain / Scopewise Consulting
+Copyright (c) 2026 Adam Knight
 
 BASELINE
 - Build from v3.0 RC1 GUI Input Hotfix H1 Full qualification candidate.

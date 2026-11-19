@@ -1,17 +1,19 @@
-; VeylRoute H5 - compile with Inno Setup on Windows after building VeylRoute.exe.
-; This packages application scripts and native launcher; it does NOT bundle Tor/Wintun/tun2socks.
-; Keep existing settings and never replace an active networking session.
+; VeylRoute Windows 3.0.1 installer. Preserves the existing AppId for H5 upgrades.
+; Does not bundle Tor, Wintun, lyrebird or tun2socks networking binaries.
 [Setup]
 AppId={{8BC2FBF6-E0C5-5EF6-9C34-6CBE370151B1}
 AppName=VeylRoute Control Center
-AppVersion=3.0.0.5
-AppVerName=VeylRoute Control Center 3.0 RC1 H5
-AppPublisher=Scopewise Consulting
+AppVersion=3.0.1.0
+AppVerName=VeylRoute Control Center 3.0.1
+AppPublisher=Adam Knight
+AppPublisherURL=https://github.com/admknight
+AppSupportURL=https://github.com/admknight/VeylRoute/issues
+AppUpdatesURL=https://github.com/admknight/VeylRoute/releases/latest
 DefaultDirName={autopf}\VeylRoute
 DefaultGroupName=VeylRoute
 PrivilegesRequired=admin
 OutputDir=output
-OutputBaseFilename=VeylRoute-Windows-v3.0-RC1-H5-Setup
+OutputBaseFilename=VeylRoute-Windows-v3.0.1-Setup
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
@@ -31,6 +33,7 @@ Source: "..\START-HERE.cmd"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\VERSION.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README-FIRST.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
+Source: "install-context-setup.json"; DestDir: "{app}"; DestName: "install-context.json"; Flags: ignoreversion
 Source: "..\ui\*"; DestDir: "{app}\ui"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\_internal\*"; DestDir: "{app}\_internal"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\docs\*"; DestDir: "{app}\docs"; Flags: ignoreversion recursesubdirs createallsubdirs

@@ -9,6 +9,6 @@ The PowerShell scripts remain individually callable for advanced automation. The
 
 Program credits
 ---------------
-Author / Programmed by: Zahid Hussain
-Company: Scopewise Consulting
+Developer: Adam Knight
+Public developer: Adam Knight
 Contact: https://github.com/admknight/VeylRoute/issues / GitHub Issues

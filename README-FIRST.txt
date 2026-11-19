@@ -1,5 +1,5 @@
-VEYLROUTE CONTROL CENTER v3.0 WINDOWS RC1
-Creator: Zahid Hussain / Scopewise Consulting (c) 2026
+VEYLROUTE CONTROL CENTER v3.0.1
+Creator: Adam Knight (c) 2026
 Engine: TorTunnel Universal v3.5.1, unchanged network/routing scripts
 
 PORTABLE FIRST RUN (Windows 10/11 x64, administrator approval required)

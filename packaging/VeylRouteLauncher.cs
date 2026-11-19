@@ -1,6 +1,5 @@
-// Copyright (c) 2026 Zahid Hussain / Scopewise Consulting.
-// Native, windowless shell for the existing PowerShell/WPF control center.
-// No Tor networking, firewall changes or configuration is implemented here.
+// Copyright (c) 2026 Adam Knight.
+// Native, windowless shell for the PowerShell/WPF Control Center.
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -41,7 +40,6 @@ internal static class VeylRouteLauncher
         try { Process.Start(p); return 0; }
         catch (Win32Exception ex)
         {
-            // A cancelled elevation dialog is not a startup crash.
             if (ex.NativeErrorCode == 1223) return 1;
             MessageBox.Show("Could not launch VeylRoute: " + ex.Message,
                 "VeylRoute", MessageBoxButtons.OK, MessageBoxIcon.Error);

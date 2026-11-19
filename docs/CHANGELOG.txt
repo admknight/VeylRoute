@@ -3,8 +3,8 @@
 
 v3.5.1
 - Added creator identity as a core program detail.
-- Added Author / Programmed by: Zahid Hussain.
-- Added Company: Scopewise Consulting.
+- Added Author / Programmed by: Adam Knight.
+- Public GitHub developer: Adam Knight (@admknight).
 - Added Contact: https://github.com/admknight/VeylRoute/issues / GitHub Issues.
 - Added compact ASCII-art branding to the Control Center and App Manager.
 - Added an About / Credits menu and docs\ABOUT.txt.

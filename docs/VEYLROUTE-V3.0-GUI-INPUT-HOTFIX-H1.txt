@@ -1,5 +1,5 @@
 VEYLROUTE WINDOWS v3.0 RC1 - GUI INPUT HOTFIX H1
-Copyright (c) 2026 Zahid Hussain / Scopewise Consulting
+Copyright (c) 2026 Adam Knight
 
 OBSERVED
 Moving the mouse wheel over GUI controls caused a fatal WPF error:

@@ -19,6 +19,9 @@ $script:BridgesPath = Join-Path $script:ConfigDir 'bridges.txt'
 $script:AppsPath = Join-Path $script:ConfigDir 'excluded-apps.txt'
 $script:TorAppsPath = Join-Path $script:ConfigDir 'tor-apps.txt'
 $script:PendingImportDirectory = ''
+$script:AppUpdateCheckPath = Join-Path $script:Root 'runtime\gui\app-release.json'
+$script:AppUpdateReceipt = Join-Path $script:Root 'runtime\app-updates\verified-app-update.json'
+$script:AppUpdater = Join-Path $script:Root '_internal\gui\TorTunnel.AppUpdate.ps1'
 $script:StatePath = Join-Path $script:Root 'runtime\session-state.json'
 $script:WorkerPath = Join-Path $script:Root '_internal\gui\TorTunnel.GuiWorker.ps1'
 $script:LogDir = Join-Path $script:Root 'runtime\gui'
@@ -367,6 +370,10 @@ function Set-NavActive([string]$Name) {
             $button.FontWeight = [System.Windows.FontWeights]::Normal
         }
     }
+    if($script:Ui.ContainsKey('BtnAbout')){
+        $script:Ui.BtnAbout.Background=if($Name -eq 'About'){$script:Window.Resources['TT.Glow']}else{$script:Window.Resources['TT.Sidebar']}
+        $script:Ui.BtnAbout.Foreground=if($Name -eq 'About'){$script:Window.Resources['TT.Accent']}else{$script:Window.Resources['TT.Text']}
+    }
 }
 function Show-Page([string]$Name) {
     if (-not $script:UiReady) { return }
@@ -379,17 +386,73 @@ function Show-Page([string]$Name) {
         Security=@('Advanced settings','Protection controls and network tuning');
         Updates=@('Versions & updates','Signed Tor Expert Bundle updates and rollback');
         Activity=@('Activity log','Full diagnostic output from the existing engine');
-        Maintenance=@('Maintenance','Reversible file-visibility and recovery controls')
+        Maintenance=@('Maintenance','Reversible file-visibility and recovery controls');
+        About=@('About VeylRoute','Application information, credits and updates')
     }
     if (-not $titles.ContainsKey($Name)) { return }
     foreach ($key in $titles.Keys) {
         $script:Ui['Page' + $key].Visibility = if ($key -eq $Name) { [System.Windows.Visibility]::Visible } else { [System.Windows.Visibility]::Collapsed }
     }
+    $script:Ui.PageAbout.Visibility=if($Name -eq 'About') {[System.Windows.Visibility]::Visible}else{[System.Windows.Visibility]::Collapsed}
     $script:PageName = $Name
     $script:Ui.HeaderTitle.Text = $titles[$Name][0]
     $script:Ui.HeaderSubtitle.Text = $titles[$Name][1]
     Set-NavActive $Name
     if($Name -in @('Updates','Bridges')){[void](Refresh-VeylComponentReadiness)}
+    if($Name -eq 'About'){Refresh-VeylAbout}
+}
+
+function Get-VeylAboutMode {
+    $marker=Join-Path $script:Root 'install-context.json'
+    if(Test-Path -LiteralPath $marker -PathType Leaf){
+        try{
+            $data=Read-Json $marker
+            if([int]$data.format -eq 1 -and [string]$data.installMode -in @('portable','setup')){return [string]$data.installMode}
+        }catch{}
+        return 'unknown'
+    }
+    if((Test-Path -LiteralPath (Join-Path $script:Root 'unins000.exe')) -and
+       (Test-Path -LiteralPath (Join-Path $script:Root 'unins000.dat'))){return 'setup'}
+    foreach($path in @([string]$env:ProgramFiles,[string]${env:ProgramFiles(x86)})){
+        if($path -and $script:Root.StartsWith(($path.TrimEnd('\')+'\'),[StringComparison]::OrdinalIgnoreCase)){return 'unknown'}
+    }
+    return 'portable'
+}
+function Refresh-VeylAbout {
+    if(-not $script:UiReady){return}
+    $version='3.0.1'
+    try{$version=(Read-Text (Join-Path $script:Root 'docs\APP-VERSION.txt')).Trim()}catch{}
+    if(-not $version){$version='Unknown'}
+    $mode=Get-VeylAboutMode
+    $script:Ui.AboutHeroVersion.Text='Version '+$version+' | Windows x64'
+    $script:Ui.AboutAppVersion.Text='App version: '+$version
+    $script:Ui.AboutInstallType.Text='Edition: '+$(switch($mode){'portable'{'Portable'}'setup'{'Installed (Setup EXE)'}default{'Unverified'}})
+    $script:Ui.AboutUpdateMethod.Text='Update method: '+$(switch($mode){'portable'{'Verified portable ZIP'}'setup'{'Verified Setup EXE'}default{'Unknown - repair edition marker'}})
+    $script:Ui.AboutUpdateChannel.Text='Channel: Stable'
+    $status='Not checked';$latest='Not checked'
+    $check=$null
+    try{$check=Read-Json $script:AppUpdateCheckPath}catch{}
+    if($check -and [string]$check.mode -eq $mode -and [string]$check.currentVersion -eq $version){
+        $latest=[string]$check.latestVersion
+        $status=switch([string]$check.status){'UpdateAvailable'{'A newer stable application update is available.'}'UpToDate'{"You're up to date."}'LocalNewer'{'Current version is newer than the latest stable release.'}default{'Unable to verify update status.'}}
+    }
+    $script:Ui.AboutLatestVersion.Text='Latest stable: '+$latest
+    $script:Ui.AboutUpdateStatus.Text=$status
+    $script:Ui.BtnAboutCheckUpdate.IsEnabled=(-not (In-Progress) -and $mode -ne 'unknown')
+    $script:Ui.BtnAboutUpdateNow.IsEnabled=(-not (In-Progress) -and -not (Has-Session) -and $mode -ne 'unknown' -and $check -and [string]$check.status -eq 'UpdateAvailable' -and [string]$check.currentVersion -eq $version)
+}
+function Launch-VeylPreparedAppUpdate {
+    if(In-Progress -or (Has-Session)){throw 'Disconnect and finish background operations before applying a VeylRoute update.'}
+    $receipt=Read-Json $script:AppUpdateReceipt
+    if(-not $receipt -or [string]$receipt.status -ne 'Verified' -or [string]$receipt.mode -ne (Get-VeylAboutMode)){throw 'A matching verified application update is not staged.'}
+    $file=[string]$receipt.packagePath
+    if(-not(Test-Path -LiteralPath $file -PathType Leaf) -or (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash -ne [string]$receipt.sha256){throw 'Staged application update did not pass SHA-256 verification.'}
+    $runner=Join-Path $script:Root ('runtime\app-updates\apply-'+[guid]::NewGuid().ToString('N')+'.ps1')
+    Copy-Item -LiteralPath $script:AppUpdater -Destination $runner -ErrorAction Stop
+    $arguments='-NoLogo -NoProfile -NonInteractive -STA -ExecutionPolicy Bypass -WindowStyle Hidden -File "'+$runner+'" -Action Apply -Root "'+$script:Root+'" -ParentPid '+$PID+' -Receipt "'+$script:AppUpdateReceipt+'"'
+    if($arguments.Contains('""')){throw 'Invalid application updater arguments.'}
+    Start-Process -FilePath $script:PowerShellExe -ArgumentList $arguments -WorkingDirectory $script:Root -WindowStyle Hidden -ErrorAction Stop | Out-Null
+    Exit-Gui
 }
 
 # Read-only component readiness. File presence is NEVER treated as signature or runtime verification.
@@ -1306,6 +1369,7 @@ function Update-SessionUI {
     foreach ($n in @('BtnStatus','BtnHealth','BtnUpdates')) { $script:Ui[$n].IsEnabled=-not $busy }
     $script:Ui.BtnSave.IsEnabled=(-not $busy -and -not (Has-Session))
     $script:Ui.BtnReload.IsEnabled=(-not $busy)
+    if($script:Ui.ContainsKey('BtnAboutCheckUpdate')){Refresh-VeylAbout}
     $script:Ui.BtnTidy.IsEnabled=(-not $busy -and -not (Has-Session))
     $script:Ui.BtnUntidy.IsEnabled=(-not $busy -and -not (Has-Session))
     $script:Ui.BtnPrepareUpdate.IsEnabled=(-not $busy)
@@ -1437,7 +1501,7 @@ function Request-VeylStartCancellation {
 function Run-Action([string]$Action,[bool]$Automatic=$false) {
     if (In-Progress) { throw 'A background operation is already running.' }
     if (-not (Test-Path -LiteralPath $script:WorkerPath -PathType Leaf)) { throw 'Missing TorTunnel.GuiWorker.ps1 from the current installation.' }
-    if ($Action -in @('Start','Preflight','Tidy','Untidy','UpdateInstall','UpdateRollback','ProvisionHelpers','ImportComponents') -and (Has-Session)) { throw 'An active session-state file exists. Stop or recover first.' }
+    if ($Action -in @('Start','Preflight','Tidy','Untidy','UpdateInstall','UpdateRollback','ProvisionHelpers','ImportComponents','AppUpdatePrepare') -and (Has-Session)) { throw 'An active session-state file exists. Stop or recover first.' }
     if (-not (Test-Path -LiteralPath $script:LogDir)) { [void](New-Item -ItemType Directory -Path $script:LogDir -Force) }
     $script:BusyAutomatic=$Automatic
     $script:BusyAction=$Action
@@ -1817,6 +1881,8 @@ function Show-VeylOperationSummary([string]$Action,[string]$Raw) {
         }
         'Health' { $title='Health check';$message='Health: '+[string]$d['overall']+$(if($d['exit ip']){"`r`nTor exit: "+[string]$d['exit ip']}else{''});$advice='Local DNS safeguards do not prove an external DNS leak test. See Overview for the evidence limits and remedies.' }
         'Preflight' { $title='Preflight ready';$message='The selected routing mode passed readiness checks. It is ready to attempt a connection.';$advice='Preflight does not establish a Tor circuit or prove network privacy.' }
+        'AppUpdateCheck' { $title='Application update check';$message=[string]$script:Ui.AboutUpdateStatus.Text;$advice='About VeylRoute shows the current version, install edition and matching update path.' }
+        'AppUpdatePrepare' { $title='Application package verified';$message='A version-specific VeylRoute package was downloaded and its SHA-256 checked.';$advice='The current application has not been replaced. The separate updater requires you to close the GUI before applying it.' }
         'Updates' { $title='Update check complete';$message='The component version check finished.';$advice='Review the current and latest version values on Versions & updates.' }
         'ExitAvailability' { $title='Tor exit information refreshed';$message='The current running exit-relay data was retrieved from the Tor Project.';$advice='Exit flag and country describe the published relay list, not guaranteed website reachability.' }
         'Inventory' { $title='Component check complete';$message='The local component inventory finished.';$advice='Check component badges on Versions & updates for missing files.' }
@@ -1904,6 +1970,20 @@ function Finish-Action {
         $script:Ui.AutoRefreshNotice.Text='Status checked '+(Get-Date -Format 'HH:mm:ss')+' | Next automatic check in 3 minutes.'
     } elseif ($issue -and $done -in @('Start','Status','Health')) {
         $script:Ui.AutoRefreshNotice.Text='The latest check needs attention. Open the on-screen guidance.'
+    }
+    if($done -in @('AppUpdateCheck','AppUpdatePrepare')){
+        Refresh-VeylAbout
+        if($done -eq 'AppUpdateCheck' -and -not $issue){Show-Page 'About'}
+        if($done -eq 'AppUpdatePrepare' -and -not $issue -and -not $wasAutomatic){
+            try {
+                $receipt=Read-Json $script:AppUpdateReceipt
+                if(-not $receipt -or [string]$receipt.status -ne 'Verified' -or -not(Test-Path -LiteralPath ([string]$receipt.packagePath) -PathType Leaf)){throw 'Verified update receipt missing after preparation.'}
+                if(Ask ('Verified '+[string]$receipt.tag+' ('+[string]$receipt.mode+') is ready. Close VeylRoute and apply the update now? The update helper will wait for the GUI to exit.') 'Install VeylRoute update'){
+                    Launch-VeylPreparedAppUpdate
+                    return
+                }
+            }catch{Present-VeylIssue (Get-VeylIssue -Action 'Application update' -Text $_.Exception.Message)}
+        }
     }
     if($done -eq 'ExitAvailability'){
         Load-VeylExitAvailability
@@ -2108,6 +2188,28 @@ function Wire-Events {
         catch{Notice $_.Exception.Message 'Health check unavailable' ([System.Windows.MessageBoxImage]::Error)}
     })
     $script:Ui.BtnSetupGuide.Add_Click({try{Show-VeylSetupGuide}catch{Notice $_.Exception.Message 'Setup guide' ([System.Windows.MessageBoxImage]::Error)}})
+    $script:Ui.BtnAbout.Add_Click({Show-Page 'About'})
+    $script:Ui.BtnAboutGitHub.Add_Click({Start-Process 'https://github.com/admknight/VeylRoute' | Out-Null})
+    $script:Ui.BtnAboutReleaseNotes.Add_Click({Start-Process 'https://github.com/admknight/VeylRoute/releases/latest' | Out-Null})
+    $script:Ui.BtnAboutLicenses.Add_Click({
+        try{Start-Process -FilePath 'notepad.exe' -ArgumentList ('"'+(Join-Path $script:Root 'LICENSE')+'"') | Out-Null}
+        catch{Notice $_.Exception.Message 'License unavailable' ([System.Windows.MessageBoxImage]::Error)}
+    })
+    $script:Ui.BtnAboutFullUpdates.Add_Click({Show-Page 'Updates'})
+    $script:Ui.BtnAboutCheckUpdate.Add_Click({
+        try{Run-Action 'AppUpdateCheck'}catch{Notice $_.Exception.Message 'Application update check' ([System.Windows.MessageBoxImage]::Error)}
+    })
+    $script:Ui.BtnAboutUpdateNow.Add_Click({
+        try{
+            if(Has-Session){Notice 'Disconnect first. Application updates cannot replace files while Tor routing or recovery is active.' 'Disconnect required';return}
+            $edition=Get-VeylAboutMode
+            if($edition -eq 'unknown'){throw 'Installation type is unverified. Repair the install marker before updating.'}
+            $description=if($edition -eq 'setup'){'download the verified Setup EXE and run its normal installer after closing VeylRoute'}else{'download the verified portable ZIP, back up application files and replace only program files after VeylRoute closes'}
+            if(Ask ('VeylRoute will '+$description+'. Your config, Tor, tun2socks and runtime data stay in place. Continue?') 'Update VeylRoute'){
+                Run-Action 'AppUpdatePrepare'
+            }
+        }catch{Notice $_.Exception.Message 'Application update unavailable' ([System.Windows.MessageBoxImage]::Error)}
+    })
     $script:Ui.BtnExitGui.Add_Click({Exit-Gui})
     $script:Ui.BtnTheme.Add_Click({
         if ([System.Windows.SystemParameters]::HighContrast) { Notice 'Windows high contrast is active; the OS theme is retained.'; return }
@@ -2386,7 +2488,7 @@ public static class VeylRouteNativeIdentity {
 }
 '@ -ErrorAction Stop
         }
-        $code=[VeylRouteNativeIdentity]::SetCurrentProcessExplicitAppUserModelID('Scopewise.VeylRoute.ControlCenter')
+        $code=[VeylRouteNativeIdentity]::SetCurrentProcessExplicitAppUserModelID('AdamKnight.VeylRoute.ControlCenter')
         if($code -ne 0){Set-Footer 'Windows did not accept the custom taskbar identity.'}
     }catch{try{Set-Footer ('Taskbar icon identity unavailable: '+$_.Exception.Message)}catch{}}
 }
@@ -2418,7 +2520,7 @@ function GUI-Startup {
     $script:App.ShutdownMode=[System.Windows.ShutdownMode]::OnMainWindowClose
     $script:App.Add_SessionEnding({ $script:ExitRequested=$true })
     $names=@(
-        'BtnTheme','LblTheme','BtnSetupGuide','BtnExitGui','CmbRouteMode','LblRouteWarning','AutoRefreshNotice','UpdateStage','BtnPrepareUpdate','BtnImportSignedUpdate','BtnInstallUpdate','BtnRollbackUpdate','HeaderTitle','HeaderSubtitle','HeaderState','StatusDot','HeroState','HeroDescription','FooterText',
+        'BtnTheme','LblTheme','BtnSetupGuide','BtnAbout','BtnExitGui','CmbRouteMode','LblRouteWarning','AutoRefreshNotice','UpdateStage','BtnPrepareUpdate','BtnImportSignedUpdate','BtnInstallUpdate','BtnRollbackUpdate','HeaderTitle','HeaderSubtitle','HeaderState','StatusDot','HeroState','HeroDescription','FooterText',
         'DashboardLastAction','PrivacyHeadline','PrivacyCheckedAt','BtnPrivacyRecheck','PrivacyTorValue','PrivacyTorNote','PrivacyDnsValue','PrivacyDnsNote',
         'PrivacyLeakValue','PrivacyLeakNote','PrivacyIpv6Value','PrivacyIpv6Note','PrivacyFirewallValue','PrivacyFirewallNote','PrivacyRemedy',
         'CardIp','CardIpNote','CardCountry','CardCountryNote','CardDns','CardDnsNote','CardRoute','CardRouteNote',
@@ -2432,6 +2534,7 @@ function GUI-Startup {
         'TransferPanel','TransferStatus','TransferStage','TransferProgress','TransferBytes','TransferLocation','TransferDescription',
         'InventorySummary','MissingComponentsPanel','MissingComponentsList','ChipTor','StateTor','ChipLyrebird','StateLyrebird','ChipGeoIP','StateGeoIP',
         'ChipGeoIP6','StateGeoIP6','ChipTun2socks','StateTun2socks','ChipWintun','StateWintun','ChipBridges','StateBridges','ChipSignedUpdate','StateSignedUpdate',
+        'PageAbout','AboutHeroVersion','AboutAppVersion','AboutInstallType','AboutUpdateChannel','AboutUpdateMethod','AboutLatestVersion','AboutUpdateStatus','BtnAboutCheckUpdate','BtnAboutUpdateNow','BtnAboutReleaseNotes','BtnAboutGitHub','BtnAboutLicenses','BtnAboutFullUpdates',
         'LogHeader','LogSeveritySummary','TxtLog','BtnCopyLog','BtnOpenLogFolder','BtnTidy','BtnUntidy','BtnRecoveryMaintenance','BtnReload','BtnSave'
     )
     foreach ($suffix in @('Dashboard','Countries','Dns','Apps','Bridges','Security','Updates','Activity','Maintenance')) {

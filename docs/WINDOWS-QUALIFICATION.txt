@@ -1,5 +1,5 @@
 VEYLROUTE v3.0 WINDOWS RC1 - VALIDATION AND HANDOFF
-Copyright (c) 2026 Zahid Hussain / Scopewise Consulting
+Copyright (c) 2026 Adam Knight
 
 BASELINE
 - Cumulative VeylRoute v2.9 installation-path hotfix H3 ZIP.

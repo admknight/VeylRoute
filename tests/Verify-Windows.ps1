@@ -23,7 +23,8 @@ Check 'Portable launcher and core scripts' {
         '_internal\gui\TorTunnel.GuiWorker.ps1','_internal\gui\TorTunnel.PackageUpdater.ps1',
         '_internal\gui\TorTunnel.OpenPgpVerifier.ps1','_internal\Start-TorTunnel.ps1',
         '_internal\Stop-TorTunnel.ps1','_internal\Emergency-Reset-TorTunnel.ps1','_internal\NewCircuit-TorTunnel.ps1',
-        '_internal\gui\TorTunnel.ExitAvailability.ps1')) {
+        '_internal\gui\TorTunnel.ExitAvailability.ps1','_internal\gui\TorTunnel.AppUpdate.ps1',
+        'docs\APP-VERSION.txt','install-context.json')) {
         if(-not(Test-Path -LiteralPath (Join-Path $root $item) -PathType Leaf)) {throw ('Missing: '+$item)}
     }
 }
@@ -64,6 +65,50 @@ Check 'GUI control bindings match WPF named elements' {
         if(-not $registered.Contains("'"+$key+"'")){throw ('GUI code did not register: '+$key)}
         if(-not $xamlText.Contains('Name="'+$key+'"')){throw ('WPF layout does not define: '+$key)}
     }
+}
+Check 'About navigation, update buttons and installation context' {
+    $gui=[IO.File]::ReadAllText((Join-Path $root 'ui\TorTunnel.ModernGui.ps1'))
+    $xaml=[IO.File]::ReadAllText((Join-Path $root 'ui\TorTunnel.ModernGui.xaml'))
+    foreach($key in @('BtnAbout','PageAbout','AboutInstallType','AboutAppVersion','AboutUpdateStatus','BtnAboutCheckUpdate','BtnAboutUpdateNow','BtnAboutGitHub','BtnAboutLicenses','BtnAboutFullUpdates')){
+        if(-not $xaml.Contains('Name="'+$key+'"')){throw ('About UI does not define: '+$key)}
+        if(-not $gui.Contains("'"+$key+"'")){throw ('About control is not registered: '+$key)}
+    }
+    if(-not $gui.Contains("Run-Action 'AppUpdateCheck'") -or -not $gui.Contains("Run-Action 'AppUpdatePrepare'")){throw 'About page is not connected to both worker actions.'}
+    if($xaml -match 'Adam Knight|Adam Knight'){throw 'Private identity remains in public WPF GUI.'}
+    $mode=Get-Content -LiteralPath (Join-Path $root 'install-context.json') -Raw | ConvertFrom-Json
+    if([int]$mode.format -ne 1 -or [string]$mode.installMode -ne 'portable'){throw 'Portable payload lacks its explicit install marker.'}
+}
+Check 'Application update safeguards and edition-specific packaging' {
+    $updater=[IO.File]::ReadAllText((Join-Path $root '_internal\gui\TorTunnel.AppUpdate.ps1'))
+    $worker=[IO.File]::ReadAllText((Join-Path $root '_internal\gui\TorTunnel.GuiWorker.ps1'))
+    foreach($required in @('SHA256SUMS.txt','Get-InstallMode','Get-ReleaseInfo','Assert-Sha','Assert-Idle','Apply-Portable','-Setup.exe','-Portable.zip','ParentPid','Get-ChildPath','backup-','app-update','[IO.Compression.ZipFile]::ExtractToDirectory')){
+        if(-not $updater.Contains($required)){throw ('App update safeguard missing: '+$required)}
+    }
+    if(-not $updater.Contains('if($mode -eq '+[char]39+'setup'+[char]39+')')){throw 'No setup-specific updater path.'}
+    if(-not $worker.Contains("'AppUpdatePrepare'") -or -not $worker.Contains("'AppUpdateCheck'")){throw 'Worker lacks app update dispatch.'}
+    if($updater -match '(?im)\s+-SkipCertificateCheck'){throw 'App updater must not skip TLS certificate verification.'}
+    foreach($rel in @('packaging\install-context-setup.json','packaging\install-context-portable.json')){
+        $path=Join-Path $root $rel
+        if(Test-Path -LiteralPath (Join-Path $root 'packaging') -PathType Container){
+            if(-not(Test-Path -LiteralPath $path -PathType Leaf)){throw ('Missing mode marker: '+$rel)}
+        }
+    }
+}
+Check 'Application updater Probe is local and never touches Tor networking' {
+    $exe=Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe'
+    $dir=Join-Path ([IO.Path]::GetTempPath()) ('VeylRoute-ModeProbe-'+[guid]::NewGuid().ToString('N'))
+    try{
+        New-Item -ItemType Directory -Path (Join-Path $dir 'docs') -Force | Out-Null
+        [IO.File]::WriteAllText((Join-Path $dir 'docs\APP-VERSION.txt'),'3.0.1')
+        [IO.File]::WriteAllText((Join-Path $dir 'install-context.json'),'{"format":1,"installMode":"portable"}')
+        $up=Join-Path $root '_internal\gui\TorTunnel.AppUpdate.ps1'
+        $out=& $exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $up -Action Probe -Root $dir 2>&1
+        if($LASTEXITCODE -ne 0 -or ($out -join "`n") -notmatch 'INSTALL MODE: portable'){throw ('Portable mode probe failed: '+($out -join ' '))}
+        [IO.File]::WriteAllText((Join-Path $dir 'unins000.dat'),'fixture')
+        [IO.File]::WriteAllText((Join-Path $dir 'install-context.json'),'{"format":1,"installMode":"setup"}')
+        $out=& $exe -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $up -Action Probe -Root $dir 2>&1
+        if($LASTEXITCODE -ne 0 -or ($out -join "`n") -notmatch 'INSTALL MODE: setup'){throw ('Setup mode probe failed: '+($out -join ' '))}
+    }finally{Remove-Item -LiteralPath $dir -Recurse -Force -ErrorAction SilentlyContinue}
 }
 Check 'Privacy dashboard binds live source fields' {
     $guiText=[IO.File]::ReadAllText((Join-Path $root 'ui\TorTunnel.ModernGui.ps1'))
@@ -203,6 +248,26 @@ $rec=[ordered]@{format=1;source='Tor Project Onionoo running relays with Exit fl
 Write-Output 'DISPATCH_OK ExitAvailability'
 '@
     [IO.File]::WriteAllText((Join-Path $gui 'TorTunnel.ExitAvailability.ps1'),$availabilityStub,$utf8)
+    $appUpdateStub=@'
+[CmdletBinding()]
+param([string]$Root,[string]$Action)
+$now=[datetime]::UtcNow.ToString('o')
+if($Action -eq 'Check'){
+    $record=[ordered]@{format=1;checkedAtUtc=$now;status='UpToDate';mode='portable';tag='v3.0.1'}
+    $path=Join-Path $Root 'runtime\gui\app-release.json'
+    [IO.File]::WriteAllText($path,($record|ConvertTo-Json))
+}elseif($Action -eq 'Prepare'){
+    $folder=Join-Path $Root 'runtime\app-updates'
+    [IO.Directory]::CreateDirectory($folder)|Out-Null
+    $file=Join-Path $folder 'fixture.zip'
+    [IO.File]::WriteAllText($file,'STUB')
+    $sha=(Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash
+    $record=[ordered]@{format=1;verifiedAtUtc=$now;status='Verified';mode='portable';packagePath=$file;sha256=$sha}
+    [IO.File]::WriteAllText((Join-Path $folder 'verified-app-update.json'),($record|ConvertTo-Json))
+}
+Write-Output ('DISPATCH_OK AppUpdate Action='+$Action)
+'@
+    [IO.File]::WriteAllText((Join-Path $gui 'TorTunnel.AppUpdate.ps1'),$appUpdateStub,$utf8)
     $newCircuitStub=@'
 [CmdletBinding()]
 param([string]$Root)
@@ -221,6 +286,8 @@ Write-Output 'DISPATCH_OK engine'
         @('Health','', 'DISPATCH_OK engine'),
         @('Recover','', 'DISPATCH_OK engine'),
         @('Updates','', 'DISPATCH_OK engine'),
+        @('AppUpdateCheck','', 'DISPATCH_OK AppUpdate Action=Check'),
+        @('AppUpdatePrepare','', 'DISPATCH_OK AppUpdate Action=Prepare'),
         @('ExitAvailability','', 'DISPATCH_OK ExitAvailability'),
         @('Inventory','', 'DISPATCH_OK Action=Inventory'),
         @('ProvisionHelpers','', 'DISPATCH_OK Action=DownloadHelpers'),

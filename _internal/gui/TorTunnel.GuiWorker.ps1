@@ -1,7 +1,7 @@
 ﻿# TorTunnel Universal v2.0 GUI worker. Windows PowerShell 5.1, elevated from the VBS launcher.
 [CmdletBinding()]
 param(
-  [Parameter(Mandatory=$true)][ValidateSet('Start','Stop','Preflight','Status','Health','Recover','Updates','Tidy','Untidy','UpdatePrepare','UpdateInstall','UpdateRollback','Inventory','ProvisionHelpers','ImportComponents','ExitAvailability','NewCircuit')][string]$Action,
+  [Parameter(Mandatory=$true)][ValidateSet('Start','Stop','Preflight','Status','Health','Recover','Updates','Tidy','Untidy','UpdatePrepare','UpdateInstall','UpdateRollback','Inventory','ProvisionHelpers','ImportComponents','ExitAvailability','NewCircuit','AppUpdateCheck','AppUpdatePrepare')][string]$Action,
   [Parameter(Mandatory=$true)][string]$Root,
   [Parameter(Mandatory=$true)][string]$LogPath,
   [ValidateSet('SystemWide','SelectedAppsOnly')][string]$RoutingMode='SystemWide',
@@ -28,6 +28,8 @@ $engineScript=switch($Action){
   'Status' {Join-Path $internal 'Status-TorTunnel.ps1'}
   'Health' {Join-Path $internal 'Status-TorTunnel.ps1'}
   'Updates' {Join-Path $guiInternal 'TorTunnel.VersionCheck.ps1'}
+  'AppUpdateCheck' {Join-Path $guiInternal 'TorTunnel.AppUpdate.ps1'}
+  'AppUpdatePrepare' {Join-Path $guiInternal 'TorTunnel.AppUpdate.ps1'}
   'ExitAvailability' {Join-Path $guiInternal 'TorTunnel.ExitAvailability.ps1'}
   'NewCircuit' {Join-Path $internal 'NewCircuit-TorTunnel.ps1'}
   'Tidy' {Join-Path $guiInternal 'TorTunnel.Maintenance.ps1'}
@@ -76,7 +78,8 @@ function Invoke-Hidden([string]$Script,[string]$ChildArguments,[string]$Out,[str
   # All child -Action values must survive PowerShell parameter binding. $args is reserved.
   if(($Script -eq (Join-Path $guiInternal 'TorTunnel.BinarySetup.ps1') -or
       $Script -eq (Join-Path $guiInternal 'TorTunnel.PackageUpdater.ps1') -or
-      $Script -eq (Join-Path $guiInternal 'TorTunnel.Maintenance.ps1')) -and
+      $Script -eq (Join-Path $guiInternal 'TorTunnel.Maintenance.ps1') -or
+      $Script -eq (Join-Path $guiInternal 'TorTunnel.AppUpdate.ps1')) -and
       $ChildArguments -notmatch '(?i)(^|\s)-Action\s+\S+'){
       throw "Worker dispatch error: missing required -Action for $Action. No child was launched."
   }
@@ -98,6 +101,8 @@ try{
     'Stop' {'-NoPause'}
     'Recover' {'-NoPause -Recovery'}
     'Updates' {'-OutputPath "'+(Join-Path $rootPath 'runtime\gui\versions.json')+'"'}
+    'AppUpdateCheck' {'-Action Check'}
+    'AppUpdatePrepare' {'-Action Prepare'}
     'ExitAvailability' {''}
     'Tidy' {'-Action Tidy'}
     'Untidy' {'-Action Untidy'}
@@ -171,6 +176,28 @@ try{
       }
     }catch{}
     if(-not $installedValid){$code=36;$details='Tor installation returned without a fresh installed-bundle receipt and matching Tor executable at the portable destination. Installation cannot be confirmed.'}
+  }
+  if($code -eq 0 -and $Action -eq 'AppUpdateCheck'){
+    $found=$false
+    try{
+      $r=Get-Content -LiteralPath (Join-Path $rootPath 'runtime\gui\app-release.json') -Raw -ErrorAction Stop | ConvertFrom-Json
+      $fresh=([datetime]::Parse([string]$r.checkedAtUtc)).ToUniversalTime() -ge $taskStartedUtc.AddSeconds(-3)
+      $found=([int]$r.format -eq 1 -and $fresh -and [string]$r.status -in @('UpdateAvailable','UpToDate','LocalNewer') -and
+              [string]$r.mode -in @('portable','setup') -and [string]$r.tag -match '^v\d+\.\d+\.\d+$')
+    }catch{}
+    if(-not $found){$code=39;$details='Application update check returned no fresh version/edition receipt.'}
+  }
+  if($code -eq 0 -and $Action -eq 'AppUpdatePrepare'){
+    $found=$false
+    try{
+      $r=Get-Content -LiteralPath (Join-Path $rootPath 'runtime\app-updates\verified-app-update.json') -Raw -ErrorAction Stop | ConvertFrom-Json
+      $fresh=([datetime]::Parse([string]$r.verifiedAtUtc)).ToUniversalTime() -ge $taskStartedUtc.AddSeconds(-3)
+      $file=[string]$r.packagePath
+      $found=([int]$r.format -eq 1 -and $fresh -and [string]$r.status -eq 'Verified' -and
+              [string]$r.mode -in @('portable','setup') -and (Test-Path -LiteralPath $file -PathType Leaf) -and
+              (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash -eq [string]$r.sha256)
+    }catch{}
+    if(-not $found){$code=40;$details='Application update preparation returned no fresh verified package with a matching SHA-256.'}
   }
   if($code -eq 0 -and $Action -eq 'ExitAvailability'){
     $cache=Join-Path $rootPath 'runtime\gui\exit-availability.json'

@@ -1,5 +1,5 @@
 VEYLROUTE v2.3 PREVIEW - PORTABLE FIRST RUN AND UPGRADE GUIDE
-Copyright (c) 2026 Zahid Hussain / Scopewise Consulting
+Copyright (c) 2026 Adam Knight
 
 A. BEFORE INSTALLING
 - Use a supported Windows 10/11 x64 computer with administrator approval.

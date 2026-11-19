@@ -35,8 +35,8 @@ function Get-TTVersionNumber {
 
 function Get-TTProductCredits {
     return [pscustomobject]@{
-        Author  = 'Zahid Hussain'
-        Company = 'Scopewise Consulting'
+        Author  = 'Adam Knight'
+        Company = ''
         Email   = 'https://github.com/admknight/VeylRoute/issues'
         Phone   = 'GitHub Issues'
     }

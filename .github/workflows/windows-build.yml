@@ -39,18 +39,22 @@ jobs:
       - name: Check source and safe public defaults
         shell: pwsh
         run: |
-          $required = @('tests/Verify-Windows.ps1', 'ui/TorTunnel.ModernGui.ps1', 'ui/TorTunnel.ModernGui.xaml', '_internal/Start-TorTunnel.ps1', 'packaging/BUILD-WINDOWS.ps1', 'packaging/VeylRoute.iss', 'packaging/VeylRouteLauncher.cs', 'config/settings.json', 'config/bridges.txt')
+          $required = @('tests/Verify-Windows.ps1', 'ui/TorTunnel.ModernGui.ps1', 'ui/TorTunnel.ModernGui.xaml', '_internal/Start-TorTunnel.ps1', 'packaging/BUILD-WINDOWS.ps1', 'packaging/VeylRoute.iss', 'packaging/VeylRouteLauncher.cs', '_internal/gui/TorTunnel.AppUpdate.ps1', 'install-context.json', 'packaging/install-context-setup.json', 'config/settings.json', 'config/bridges.txt')
           foreach ($path in $required) {
-            if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Missing H5 source: $path" }
+            if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Missing H6 source: $path" }
           }
           if ((Get-Item -LiteralPath 'config/bridges.txt').Length -ne 0) { throw 'Refusing to build: committed bridge config must remain empty.' }
           Get-Content -LiteralPath 'config/settings.json' -Raw | ConvertFrom-Json | Out-Null
+          if((Get-Content -LiteralPath 'docs/APP-VERSION.txt' -Raw).Trim() -ne '3.0.1'){throw 'Unexpected H6 application version.'}
+          $portableMode=Get-Content -LiteralPath 'install-context.json' -Raw | ConvertFrom-Json
+          $setupMode=Get-Content -LiteralPath 'packaging/install-context-setup.json' -Raw | ConvertFrom-Json
+          if($portableMode.installMode -ne 'portable' -or $setupMode.installMode -ne 'setup'){throw 'Incorrect edition metadata.'}
           $manifest = Get-Content -LiteralPath 'docs/FILE-SHA256-MANIFEST.json' -Raw | ConvertFrom-Json
           foreach ($entry in $manifest.files.PSObject.Properties) {
             $path = [string]$entry.Name
             if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Manifest file missing: $path" }
             $actual = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash
-            if ($actual -ne [string]$entry.Value) { throw "H5 baseline integrity mismatch: $path" }
+            if ($actual -ne [string]$entry.Value) { throw "H6 source integrity mismatch: $path" }
           }
       - name: Run native Windows PowerShell qualification (no live network changes)
         shell: pwsh
@@ -87,15 +91,17 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $stage = Join-Path $env:RUNNER_TEMP 'VeylRoute-Windows-v3.0-RC1-H5'
+          $stage = Join-Path $env:RUNNER_TEMP 'VeylRoute-Windows-v3.0.1'
           $out = Join-Path $env:GITHUB_WORKSPACE 'artifacts'
           New-Item -ItemType Directory -Path $stage,$out -Force | Out-Null
-          foreach ($item in @('README-FIRST.txt','LICENSE','START-HERE.cmd','VERSION.txt','VeylRoute.vbs','VeylRoute.exe','_internal','ui','config','docs','tests')) {
+          foreach ($item in @('README-FIRST.txt','LICENSE','install-context.json','START-HERE.cmd','VERSION.txt','VeylRoute.vbs','VeylRoute.exe','_internal','ui','config','docs','tests')) {
             if (-not (Test-Path -LiteralPath $item)) { throw "Missing portable payload: $item" }
             Copy-Item -LiteralPath $item -Destination (Join-Path $stage $item) -Recurse -Force
           }
           $portable = Join-Path $out 'VeylRoute-Windows-v3.0-RC1-H5-Portable.zip'
           Compress-Archive -LiteralPath $stage -DestinationPath $portable -CompressionLevel Optimal -Force
+          $mode=Get-Content -LiteralPath (Join-Path $stage 'install-context.json') -Raw | ConvertFrom-Json
+          if($mode.installMode -ne 'portable'){throw 'Portable ZIP does not contain the portable edition marker.'}
           $setup = Join-Path $env:GITHUB_WORKSPACE 'packaging\output\VeylRoute-Windows-v3.0-RC1-H5-Setup.exe'
           if (-not (Test-Path -LiteralPath $setup -PathType Leaf)) { throw 'Expected Setup EXE missing.' }
           Copy-Item -LiteralPath $setup -Destination $out -Force
@@ -107,7 +113,7 @@ jobs:
       - name: Upload unsigned qualification builds
         uses: actions/upload-artifact@v4
         with:
-          name: VeylRoute-Windows-v3.0-RC1-H5-unsigned
+          name: VeylRoute-Windows-v3.0.1-H6-unsigned
           path: artifacts/*
           if-no-files-found: error
           retention-days: 14

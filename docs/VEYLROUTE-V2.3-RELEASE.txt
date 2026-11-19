@@ -2,7 +2,7 @@ VEYLROUTE CONTROL CENTER v2.3 PREVIEW - CHANGE AND RELEASE RECORD
 Source: TorTunnel Universal Control Center v2.2 UI Polish Preview
 Engine baseline: TorTunnel Universal v3.5.1
 Date: 2026-11-19
-Author: Zahid Hussain / Scopewise Consulting
+Author: Adam Knight
 
 Changes from v2.2:
 - Approved visible product name: VeylRoute, sidebar/window/modal/tray/status.

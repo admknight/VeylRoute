@@ -74,6 +74,14 @@ These are **unsigned stable-release binaries**, designated stable following the 
 
 The setup edition does **not** automatically migrate an existing portable folder or install third-party networking binaries. See [Building and installation notes](docs/BUILDING.md).
 
+## About VeylRoute and smart updates
+
+The next Windows candidate **v3.0.1 (H6)** adds a dedicated **About VeylRoute** page in place of the old sidebar copyright footer, with app/version details, developer credit **Adam Knight (@admknight)**, MIT acknowledgements and a simple **Check for updates** / **Download & update** flow.
+
+The updater deliberately distinguishes an **installed Setup edition** from a **Portable edition** using an explicit edition marker. It checks **stable GitHub releases**, selects only the matching Setup EXE or portable ZIP, verifies the published SHA-256 checksum, and requires a disconnected session. Installed editions run the normal installer after the GUI exits; portable editions back up and update application files without replacing configuration, Tor, tun2socks or runtime data. The detailed Tor component updater remains on **Versions & updates**.
+
+**Current stable download:** [Windows v3.0.0](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0). The v3.0.1 updater changes are a new source/build candidate until their Windows runtime qualification is complete.
+
 ## How the Windows version works
 
 ```text
@@ -135,7 +143,7 @@ Cross-platform editions will require their own native system routing, permission
 
 Privacy-routing software deserves careful scrutiny. Security problems should be handled using [SECURITY.md](SECURITY.md), without posting private bridges, session state, IP addresses, Tor control cookies or credentials in public issues.
 
-**Original VeylRoute source:** [MIT License](LICENSE), with rights-holder attribution preserved in its license and source notices. Public GitHub maintainer: **Adam Knight (@admknight)**. MIT applies to this repository's original code and documentation; **Tor, lyrebird, Wintun, tun2socks and other third-party tools retain their own licenses** and are not redistributed by this repository. See [third-party notices](docs/THIRD-PARTY.md).
+**Original VeylRoute source:** [MIT License](LICENSE), with the project's public developer attribution as **Adam Knight (@admknight)** in the current source. Public GitHub maintainer: **Adam Knight (@admknight)**. MIT applies to this repository's original code and documentation; **Tor, lyrebird, Wintun, tun2socks and other third-party tools retain their own licenses** and are not redistributed by this repository. See [third-party notices](docs/THIRD-PARTY.md).
 
 Contributions: [CONTRIBUTING.md](CONTRIBUTING.md). Release gates: [RELEASE-CHECKLIST.md](docs/RELEASE-CHECKLIST.md).
 

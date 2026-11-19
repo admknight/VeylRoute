@@ -1,0 +1,20 @@
+VeylRoute 3.0.1 — application updater (separate from Tor component updates)
+
+About page: current version, explicit portable/setup mode, stable GitHub release,
+and request-based Check / Download & update controls. Checks do not replace files.
+
+Portable: SHA-256 verified ZIP, applied only after GUI exits. New code is backed
+up under runtime/app-updates; config, runtime, Tor and tun2socks are never replaced.
+A failed file copy attempts rollback of touched application files.
+
+Setup: SHA-256 verified Setup EXE, launched only after GUI exits. The original
+Inno Setup AppId is unchanged; the installer preserves config on upgrade.
+Uninstall / installation remain blocked while session-state exists.
+
+Both: no update while a session-state file exists, no automatic disconnect,
+no unverified download, no bypass of certificate checks; existing installation
+mode remains authoritative. A successful check does not imply an update exists.
+
+Security limitation: SHA-256 from the same GitHub release is integrity evidence,
+not a cryptographic developer code signature; builds are unsigned. Only
+admknight/VeylRoute stable releases are accepted. For support, use GitHub issues.
