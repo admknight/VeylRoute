@@ -74,7 +74,7 @@ Check 'About navigation, update buttons and installation context' {
         if(-not $gui.Contains("'"+$key+"'")){throw ('About control is not registered: '+$key)}
     }
     if(-not $gui.Contains("Run-Action 'AppUpdateCheck'") -or -not $gui.Contains("Run-Action 'AppUpdatePrepare'")){throw 'About page is not connected to both worker actions.'}
-    if($xaml -match 'Adam Knight|Adam Knight'){throw 'Private identity remains in public WPF GUI.'}
+    if($xaml -match 'Text="&\#169;' -or $xaml -match 'Company:'){throw 'Previous sidebar attribution remains in the public WPF GUI.'}
     $mode=Get-Content -LiteralPath (Join-Path $root 'install-context.json') -Raw | ConvertFrom-Json
     if([int]$mode.format -ne 1 -or [string]$mode.installMode -ne 'portable'){throw 'Portable payload lacks its explicit install marker.'}
 }
