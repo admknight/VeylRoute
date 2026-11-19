@@ -6,9 +6,9 @@
 
 [![Windows qualification & builds](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml/badge.svg)](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-43A7FF.svg)](LICENSE)
-[![Windows prerelease](https://img.shields.io/github/v/release/admknight/VeylRoute?include_prereleases&label=Windows%20RC&color=f4a340)](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0-rc1-h5)
+[![Windows release](https://img.shields.io/github/v/release/admknight/VeylRoute?label=Windows&color=43A7FF)](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0)
 [![Platform: Windows](https://img.shields.io/badge/platform-Windows%2010%2F11%20x64-2376d1.svg)](docs/BUILDING.md)
-[![Status: Release Candidate](https://img.shields.io/badge/status-RC%20candidate-f4a340.svg)](docs/RELEASE-CHECKLIST.md)
+[![Status: Stable](https://img.shields.io/badge/status-stable-43A7FF)](docs/RELEASE-CHECKLIST.md)
 
 [**Windows builds**](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml) · [**Documentation**](docs/BUILDING.md) · [**Security**](SECURITY.md) · [**Roadmap**](docs/PLATFORMS.md) · [**Issues**](https://github.com/admknight/VeylRoute/issues)
 
@@ -23,7 +23,7 @@
 The name blends *Veyl* (a stylized “veil,” suggesting privacy) with *Route* (the path internet traffic takes).
 
 > [!IMPORTANT]
-> **Release state: Windows v3.0 RC1 H5 — qualification candidate, not production-verified.** The earlier H4 Windows isolated qualification passed 26/26 on a user-operated machine; H5's live New Circuit behavior, full network/DNS containment, cancellation, selected-app routing, installation, and uninstall still require additional evidence. A green CI badge means the isolated Windows build/tests passed; it is **not** a guarantee of anonymity or leak-free operation.
+> **Current release: Windows v3.0.0 stable.** This release reuses the byte-identical RC1 H5 build that the project owner reports has been tested successfully on Windows. GitHub's isolated Windows PowerShell/WPF checks passed **31/31**, and both packages compiled. Runtime acceptance is **owner-reported**, not independently reproduced here. The binaries are unsigned; CI is **not** proof of anonymity or leak-free DNS.
 
 ## Features at a glance
 
@@ -48,13 +48,13 @@ Tor can acknowledge **New circuit** without assigning a new public IP. Existing 
 
 | Edition | What you get | Status |
 | --- | --- | --- |
-| **Portable ZIP** | Extractable VeylRoute folder with a native `VeylRoute.exe` GUI launcher | Unsigned RC build target |
-| **Setup EXE** | Inno Setup installer, Start Menu integration and optional desktop shortcut | Unsigned RC build target |
+| **Portable ZIP** | Extractable VeylRoute folder with a native `VeylRoute.exe` GUI launcher | Stable release (unsigned H5 build) |
+| **Setup EXE** | Inno Setup installer, Start Menu integration and optional desktop shortcut | Stable release (unsigned H5 build) |
 | **Source** | PowerShell 5.1 / WPF control center, C# launcher source, build scripts and tests | MIT-licensed original project code |
 
-**Download Windows RC1 H5 (unsigned pre-release):** [Setup EXE](https://github.com/admknight/VeylRoute/releases/download/v3.0.0-rc1-h5/VeylRoute-Windows-v3.0-RC1-H5-Setup.exe) · [Portable ZIP](https://github.com/admknight/VeylRoute/releases/download/v3.0.0-rc1-h5/VeylRoute-Windows-v3.0-RC1-H5-Portable.zip) · [SHA-256 checksums](https://github.com/admknight/VeylRoute/releases/download/v3.0.0-rc1-h5/SHA256SUMS.txt) · [Release notes](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0-rc1-h5).
+**Download Windows v3.0.0 stable:** [Setup EXE](https://github.com/admknight/VeylRoute/releases/download/v3.0.0/VeylRoute-Windows-v3.0-RC1-H5-Setup.exe) · [Portable ZIP](https://github.com/admknight/VeylRoute/releases/download/v3.0.0/VeylRoute-Windows-v3.0-RC1-H5-Portable.zip) · [SHA-256 checksums](https://github.com/admknight/VeylRoute/releases/download/v3.0.0/SHA256SUMS.txt) · [Release notes](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0). The retained RC1 H5 filenames identify the unchanged, tested binaries.
 
-These are **unsigned qualification candidates**, not yet production-verified. The separate [GitHub Actions build history](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml) records their source qualification and compilation. Downloaded Tor, Wintun and tun2socks binaries are **not bundled** with release/source artifacts.
+These are **unsigned stable-release binaries**, designated stable following the project owner's report of successful Windows testing. The separate [GitHub Actions build history](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml) records source qualification and compilation. Downloaded Tor, Wintun and tun2socks binaries are **not bundled** with release/source artifacts.
 
 ### Basic requirements
 
@@ -105,7 +105,7 @@ The native EXE is a **launcher around the existing WPF/PowerShell application**,
 .\packaging\BUILD-WINDOWS.ps1 -BuildInstaller
 ```
 
-On pushes and pull requests touching the application, [GitHub Actions](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml) runs isolated checks on a Windows runner. Successful runs upload a portable ZIP, a setup EXE and SHA-256 checksums. The workflow does **not** conduct real Tor/Wintun traffic tests, automatically create public Releases or sign binaries.
+On pushes and pull requests touching the application, [GitHub Actions](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml) runs isolated checks on a Windows runner. Successful runs upload a portable ZIP, a setup EXE and SHA-256 checksums. Routine builds do **not** perform live Tor/Wintun traffic tests, automatically publish public Releases or sign binaries.
 
 ### Repository map
 
@@ -124,7 +124,7 @@ tools/              Repository maintenance/import helpers
 
 | Platform | Status |
 | --- | --- |
-| **Windows 10/11 x64** | Active RC1 H5 implementation |
+| **Windows 10/11 x64** | v3.0.0 stable release (RC1 H5 binaries) |
 | **macOS** | Planned — no app/build yet |
 | **Linux** | Planned — no app/build yet |
 | **Android** | Planned — no app/build yet |
@@ -135,7 +135,7 @@ Cross-platform editions will require their own native system routing, permission
 
 Privacy-routing software deserves careful scrutiny. Security problems should be handled using [SECURITY.md](SECURITY.md), without posting private bridges, session state, IP addresses, Tor control cookies or credentials in public issues.
 
-**Original VeylRoute source:** [MIT License](LICENSE) — Copyright © 2026 Zahid Hussain / Scopewise Consulting. MIT applies to this repository's original code and documentation; **Tor, lyrebird, Wintun, tun2socks and other third-party tools retain their own licenses** and are not redistributed by this repository. See [third-party notices](docs/THIRD-PARTY.md).
+**Original VeylRoute source:** [MIT License](LICENSE), with rights-holder attribution preserved in its license and source notices. Public GitHub maintainer: **Adam Knight (@admknight)**. MIT applies to this repository's original code and documentation; **Tor, lyrebird, Wintun, tun2socks and other third-party tools retain their own licenses** and are not redistributed by this repository. See [third-party notices](docs/THIRD-PARTY.md).
 
 Contributions: [CONTRIBUTING.md](CONTRIBUTING.md). Release gates: [RELEASE-CHECKLIST.md](docs/RELEASE-CHECKLIST.md).
 
