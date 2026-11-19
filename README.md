@@ -6,6 +6,7 @@
 
 [![Windows qualification & builds](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml/badge.svg)](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-43A7FF.svg)](LICENSE)
+[![Windows prerelease](https://img.shields.io/github/v/release/admknight/VeylRoute?include_prereleases&label=Windows%20RC&color=f4a340)](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0-rc1-h5)
 [![Platform: Windows](https://img.shields.io/badge/platform-Windows%2010%2F11%20x64-2376d1.svg)](docs/BUILDING.md)
 [![Status: Release Candidate](https://img.shields.io/badge/status-RC%20candidate-f4a340.svg)](docs/RELEASE-CHECKLIST.md)
 
@@ -51,7 +52,9 @@ Tor can acknowledge **New circuit** without assigning a new public IP. Existing 
 | **Setup EXE** | Inno Setup installer, Start Menu integration and optional desktop shortcut | Unsigned RC build target |
 | **Source** | PowerShell 5.1 / WPF control center, C# launcher source, build scripts and tests | MIT-licensed original project code |
 
-**Build downloads:** visit [GitHub Actions → Windows qualification and builds](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml), open a successful workflow run and download its **unsigned** artifact. Those build artifacts are not yet endorsed as production releases. Downloaded Tor, Wintun and tun2socks binaries are **not bundled** with source/build artifacts.
+**Download Windows RC1 H5 (unsigned pre-release):** [Setup EXE](https://github.com/admknight/VeylRoute/releases/download/v3.0.0-rc1-h5/VeylRoute-Windows-v3.0-RC1-H5-Setup.exe) · [Portable ZIP](https://github.com/admknight/VeylRoute/releases/download/v3.0.0-rc1-h5/VeylRoute-Windows-v3.0-RC1-H5-Portable.zip) · [SHA-256 checksums](https://github.com/admknight/VeylRoute/releases/download/v3.0.0-rc1-h5/SHA256SUMS.txt) · [Release notes](https://github.com/admknight/VeylRoute/releases/tag/v3.0.0-rc1-h5).
+
+These are **unsigned qualification candidates**, not yet production-verified. The separate [GitHub Actions build history](https://github.com/admknight/VeylRoute/actions/workflows/windows-build.yml) records their source qualification and compilation. Downloaded Tor, Wintun and tun2socks binaries are **not bundled** with release/source artifacts.
 
 ### Basic requirements
 
