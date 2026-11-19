@@ -14,6 +14,7 @@ on:
       - 'VeylRoute.vbs'
       - 'VERSION.txt'
       - 'docs/FILE-SHA256-MANIFEST.json'
+      - '.github/workflows/windows-build.yml'
   pull_request:
     paths:
       - '_internal/**'
@@ -25,6 +26,7 @@ on:
       - 'VeylRoute.vbs'
       - 'VERSION.txt'
       - 'docs/FILE-SHA256-MANIFEST.json'
+      - '.github/workflows/windows-build.yml'
 
 permissions:
   contents: read
