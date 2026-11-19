@@ -98,11 +98,11 @@ jobs:
             if (-not (Test-Path -LiteralPath $item)) { throw "Missing portable payload: $item" }
             Copy-Item -LiteralPath $item -Destination (Join-Path $stage $item) -Recurse -Force
           }
-          $portable = Join-Path $out 'VeylRoute-Windows-v3.0-RC1-H5-Portable.zip'
+          $portable = Join-Path $out 'VeylRoute-Windows-v3.0.1-Portable.zip'
           Compress-Archive -LiteralPath $stage -DestinationPath $portable -CompressionLevel Optimal -Force
           $mode=Get-Content -LiteralPath (Join-Path $stage 'install-context.json') -Raw | ConvertFrom-Json
           if($mode.installMode -ne 'portable'){throw 'Portable ZIP does not contain the portable edition marker.'}
-          $setup = Join-Path $env:GITHUB_WORKSPACE 'packaging\output\VeylRoute-Windows-v3.0-RC1-H5-Setup.exe'
+          $setup = Join-Path $env:GITHUB_WORKSPACE 'packaging\output\VeylRoute-Windows-v3.0.1-Setup.exe'
           if (-not (Test-Path -LiteralPath $setup -PathType Leaf)) { throw 'Expected Setup EXE missing.' }
           Copy-Item -LiteralPath $setup -Destination $out -Force
           $lines = Get-ChildItem -LiteralPath $out -File | Sort-Object Name | ForEach-Object {
