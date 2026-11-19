@@ -13,7 +13,7 @@ on:
       - 'START-HERE.cmd'
       - 'VeylRoute.vbs'
       - 'VERSION.txt'
-      - '.github/workflows/windows-build.yml'
+      - 'docs/FILE-SHA256-MANIFEST.json'
   pull_request:
     paths:
       - '_internal/**'
@@ -24,7 +24,7 @@ on:
       - 'START-HERE.cmd'
       - 'VeylRoute.vbs'
       - 'VERSION.txt'
-      - '.github/workflows/windows-build.yml'
+      - 'docs/FILE-SHA256-MANIFEST.json'
 
 permissions:
   contents: read
@@ -45,6 +45,13 @@ jobs:
           }
           if ((Get-Item -LiteralPath 'config/bridges.txt').Length -ne 0) { throw 'Refusing to build: committed bridge config must remain empty.' }
           Get-Content -LiteralPath 'config/settings.json' -Raw | ConvertFrom-Json | Out-Null
+          $manifest = Get-Content -LiteralPath 'docs/FILE-SHA256-MANIFEST.json' -Raw | ConvertFrom-Json
+          foreach ($entry in $manifest.files.PSObject.Properties) {
+            $path = [string]$entry.Name
+            if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw "Manifest file missing: $path" }
+            $actual = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash
+            if ($actual -ne [string]$entry.Value) { throw "H5 baseline integrity mismatch: $path" }
+          }
       - name: Run native Windows PowerShell qualification (no live network changes)
         shell: pwsh
         run: |
