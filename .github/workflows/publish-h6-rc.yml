@@ -1,0 +1,64 @@
+name: Publish Windows v3.0.1 H6 candidate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-h6-rc.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish:
+    if: github.repository == 'admknight/VeylRoute'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RUN_ID: '44568059908'
+      SOURCE_SHA: 'cb487027cf34c2bb7761aa686bb042b8e1e20795'
+      TAG: 'v3.0.1-rc1'
+    steps:
+      - name: Checkout release note
+        uses: actions/checkout@v4
+      - name: Require passing pinned Windows qualification/build
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID" --jq .head_sha)" = "$SOURCE_SHA"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID" --jq .conclusion)" = "success"
+          test -f docs/RELEASE-v3.0.1-rc1.md
+      - name: Download exact H6 candidate and verify checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh run download "$RUN_ID" --repo "$GITHUB_REPOSITORY" -n VeylRoute-Windows-v3.0.1-H6-unsigned -D release-assets
+          cd release-assets
+          test -f VeylRoute-Windows-v3.0.1-Portable.zip
+          test -f VeylRoute-Windows-v3.0.1-Setup.exe
+          test -f SHA256SUMS.txt
+          sha256sum --check SHA256SUMS.txt
+          unzip -Z1 VeylRoute-Windows-v3.0.1-Portable.zip | grep -q '/LICENSE$'
+          unzip -Z1 VeylRoute-Windows-v3.0.1-Portable.zip | grep -q '/VeylRoute.exe$'
+          unzip -Z1 VeylRoute-Windows-v3.0.1-Portable.zip | grep -q '/install-context.json$'
+          unzip -p VeylRoute-Windows-v3.0.1-Portable.zip '*/install-context.json' | grep -q '"installMode":"portable"'
+      - name: Publish as unsigned prerelease (leave stable unchanged)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo 'Candidate already published; leaving unchanged.'
+            exit 0
+          fi
+          gh release create "$TAG" \
+            release-assets/VeylRoute-Windows-v3.0.1-Portable.zip \
+            release-assets/VeylRoute-Windows-v3.0.1-Setup.exe \
+            release-assets/SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$SOURCE_SHA" \
+            --title 'VeylRoute Windows v3.0.1 RC1 - About & Smart Updates' \
+            --notes-file docs/RELEASE-v3.0.1-rc1.md \
+            --prerelease
